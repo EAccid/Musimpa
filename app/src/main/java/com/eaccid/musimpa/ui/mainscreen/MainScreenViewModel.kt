@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.ui
+package com.eaccid.musimpa.ui.mainscreen
 
 import androidx.lifecycle.ViewModel
 import com.eaccid.musimpa.repository.MoviesRepository

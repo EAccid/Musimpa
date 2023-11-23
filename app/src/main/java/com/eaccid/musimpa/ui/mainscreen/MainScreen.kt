@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.ui
+package com.eaccid.musimpa.ui.mainscreen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

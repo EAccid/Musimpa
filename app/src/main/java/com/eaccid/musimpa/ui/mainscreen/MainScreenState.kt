@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.ui
+package com.eaccid.musimpa.ui.mainscreen
 
 //todo extract just data class with state
 typealias GreetingText = String
