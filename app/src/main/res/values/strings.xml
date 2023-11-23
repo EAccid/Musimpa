@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Musimpa</string>
+    <string name="app_greeting_text">Hello</string>
+    <string name="app_greeting_text_error">Trey again</string>
 </resources>
