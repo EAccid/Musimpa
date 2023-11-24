@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.eaccid.musimpa.ui.mainscreen.MainScreen
+import com.eaccid.musimpa.ui.ScreenNavigation
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(1.0f),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen()
+                    ScreenNavigation()
                 }
             }
         }

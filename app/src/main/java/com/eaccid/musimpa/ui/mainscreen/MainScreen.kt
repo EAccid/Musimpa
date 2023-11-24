@@ -11,23 +11,35 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.eaccid.musimpa.ui.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
+import com.eaccid.musimpa.utils.showToast
 import org.koin.androidx.compose.koinViewModel
 
-
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavController) {
+    val context = LocalContext.current//todo check if there is better solution
     val viewModel: MainScreenViewModel = koinViewModel()
     val viewState by viewModel.uiState.collectAsState()
-    MainScreenContent(viewState) { viewModel.login() }
+    MainScreenContent(viewState, onLoginClicked = {
+        viewModel.login()
+        context.showToast("onLoginClicked")
+    }, onMoviesClicked = {
+        navController.navigate(Screen.MoviesScreen.route)
+        context.showToast("onMoviesClicked")
+    })
 }
 
 @Composable
-fun MainScreenContent(viewState: MainScreenState, onLoginClicked: () -> Unit) {
+fun MainScreenContent(
+    viewState: MainScreenState, onLoginClicked: () -> Unit, onMoviesClicked: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize(1.0f)
@@ -42,17 +54,19 @@ fun MainScreenContent(viewState: MainScreenState, onLoginClicked: () -> Unit) {
             modifier = columnChildModifier, text = viewState.text
         )
         if (viewState == MainScreenState.NoData || viewState == MainScreenState.Error) {
-            Button(modifier = columnChildModifier.width(150.dp), onClick = onLoginClicked) {
+            Button(
+                modifier = columnChildModifier.width(150.dp), onClick = onLoginClicked
+            ) {
                 Text(text = "Login")
             }
         } else {
-            Button(modifier = columnChildModifier.width(150.dp),
-                onClick = { /*TODO navigation jet pack*/ }) {
+            Button(
+                modifier = columnChildModifier.width(150.dp), onClick = onMoviesClicked
+            ) {
                 Text(text = "Start movies")
             }
         }
     }
-
 }
 
 class MainViewPreviewParameterProvider : PreviewParameterProvider<MainScreenState> {
@@ -63,8 +77,8 @@ class MainViewPreviewParameterProvider : PreviewParameterProvider<MainScreenStat
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview(@PreviewParameter(MainViewPreviewParameterProvider::class) viewState: MainScreenState) {
+fun MainScreenPreview(@PreviewParameter(MainViewPreviewParameterProvider::class) viewState: MainScreenState) {
     MusimpaTheme {
-        MainScreenContent(viewState) {}
+        MainScreenContent(viewState, {}, {})
     }
 }

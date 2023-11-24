@@ -84,6 +84,7 @@ dependencies {
     implementation("io.insert-koin:koin-core:3.5.2-RC1")
     implementation("io.insert-koin:koin-android:3.5.2-RC1")
     implementation("io.insert-koin:koin-androidx-compose:3.5.2-RC1")
+    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -93,6 +94,7 @@ dependencies {
 
     //koin test
     testImplementation("io.insert-koin:koin-test-junit4:3.5.2-RC1")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
