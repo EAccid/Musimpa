@@ -86,6 +86,10 @@ dependencies {
     implementation("io.insert-koin:koin-androidx-compose:3.5.2-RC1")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
 
+    //api json
+    implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

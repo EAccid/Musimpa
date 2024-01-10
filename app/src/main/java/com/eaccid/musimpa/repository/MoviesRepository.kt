@@ -1,5 +1,7 @@
 package com.eaccid.musimpa.repository
 
-class MoviesRepository {
+interface MoviesRepository {
+    fun login()
 
+    //getMovies from cache
 }
