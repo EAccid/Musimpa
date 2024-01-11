@@ -1,0 +1,47 @@
+package com.eaccid.musimpa.repository
+
+import android.util.Log
+import com.eaccid.musimpa.BuildConfig
+import com.eaccid.musimpa.LocalPreferences
+import com.eaccid.musimpa.entities.Authentication
+import com.eaccid.musimpa.utils.API_VERSION
+import com.eaccid.musimpa.utils.EMPTY_STRING_VALUE
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+class AuthenticationRepositoryImpl(
+    private val serviceAPI: TMDbServiceAPI,
+    private val preferences: LocalPreferences
+) :
+    AuthenticationRepository {
+
+    //TODO handle responstatus
+
+    override fun login() {
+        val params = mapOf("api_key" to BuildConfig.THE_MOVIE_DB_API_KEY)
+        val authenticationCall: Call<Authentication> = serviceAPI.requestToken(API_VERSION, params)
+        authenticationCall.enqueue(object : Callback<Authentication> {
+            override fun onResponse(
+                call: Call<Authentication>,
+                response: Response<Authentication>
+            ) {
+                val auth: Authentication? = response.body()
+                Log.i("Authorization", auth?.toString() ?: "empty body")
+                val success = auth?.success ?: false
+                preferences.saveString(
+                    LocalPreferences.SharedKeys.TOKEN.key,
+                    auth?.request_token ?: EMPTY_STRING_VALUE
+                )
+//                if (success) redirectToAuthenticateWebView(
+                auth?.request_token ?: EMPTY_STRING_VALUE
+//                )
+            }
+
+            override fun onFailure(call: Call<Authentication>, t: Throwable) {
+                preferences.saveString(LocalPreferences.SharedKeys.TOKEN.key, EMPTY_STRING_VALUE)
+            }
+        })
+    }
+
+}
