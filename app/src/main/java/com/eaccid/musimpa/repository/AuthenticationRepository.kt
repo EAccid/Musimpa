@@ -1,6 +1,7 @@
 package com.eaccid.musimpa.repository
 
-interface AuthenticationRepository {
-    fun login()
+import com.eaccid.musimpa.entities.Authentication
 
+interface AuthenticationRepository {
+    suspend fun login(): Authentication
 }

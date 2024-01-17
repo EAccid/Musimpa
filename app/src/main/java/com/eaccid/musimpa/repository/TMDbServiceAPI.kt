@@ -9,10 +9,10 @@ import retrofit2.http.*
 interface TMDbServiceAPI {
 
     @GET("{version}/authentication/token/new")
-    fun requestToken(
+    suspend fun requestToken(
         @Path(value = "version") version: Int,
         @QueryMap options: Map<String, String>
-    ): Call<Authentication>
+    ): Authentication
 
     @POST("{version}/authentication/session/new")
     fun createSession(
