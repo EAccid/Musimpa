@@ -4,7 +4,7 @@ import com.eaccid.musimpa.LocalPreferences
 import com.eaccid.musimpa.LocalSharedPreferences
 import com.eaccid.musimpa.repository.AuthenticationRepository
 import com.eaccid.musimpa.repository.AuthenticationRepositoryImpl
-import com.eaccid.musimpa.repository.TMDbServiceAPI
+import com.eaccid.musimpa.network.TMDbServiceAPI
 import com.eaccid.musimpa.ui.mainscreen.MainScreenViewModel
 import com.eaccid.musimpa.ui.movieslist.ui.theme.MoviesScreenViewModel
 import com.eaccid.musimpa.utils.BASE_URL

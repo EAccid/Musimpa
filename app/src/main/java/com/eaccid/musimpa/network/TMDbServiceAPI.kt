@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.repository
+package com.eaccid.musimpa.network
 
 import com.eaccid.musimpa.entities.*
 import retrofit2.Call
