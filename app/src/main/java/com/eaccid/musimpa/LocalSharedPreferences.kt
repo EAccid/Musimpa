@@ -12,14 +12,14 @@ class LocalSharedPreferences(private val context: Context) : LocalPreferences {
 
     override fun saveString(key: String, value: String) {
         //todo delete temp
-        context.showToast("set = $value")
+        context.showToast("set key = $key, value = $value")
         preferences.edit().putString(APP_PREF, value).apply()
     }
 
     override fun getString(key: String): String {
 //        todo delete temp
         val value = preferences.getString(key, "") ?: ""
-        context.showToast("get = $value")
+        context.showToast("get key = $key, value = $value")
         return value
     }
 

@@ -18,10 +18,21 @@ class MainScreenViewModel(
         MutableStateFlow(MainScreenState.NoData)
     val uiState: StateFlow<MainScreenState> = _uiState.asStateFlow()
 
+    init {
+        if (authenticationRepository.isUserLoggedIn())
+            _uiState.value = MainScreenState.Success
+        else {
+            _uiState.value = MainScreenState.NoData
+        }
+    }
+
     fun login() {
         viewModelScope.launch {
-            _uiState.value = when (authenticationRepository.login()) {
-                is ApiResponse.Success -> MainScreenState.Success
+            _uiState.value = when (authenticationRepository.getToken()) {
+                is ApiResponse.Success -> {
+                    MainScreenState.NavigateToWebView
+                }
+
                 else -> MainScreenState.Error
             }
         }
@@ -30,6 +41,13 @@ class MainScreenViewModel(
     override fun onCleared() {
         super.onCleared()
         Log.i("MainScreenViewModel", "is cleared")
+    }
+
+    fun onWebAction(succeed: Boolean) {
+        if (succeed)
+            _uiState.value = MainScreenState.Success
+        else
+            _uiState.value = MainScreenState.Error
     }
 }
 

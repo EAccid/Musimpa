@@ -1,5 +1,9 @@
 package com.eaccid.musimpa.ui.mainscreen
 
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,7 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.eaccid.musimpa.ui.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import com.eaccid.musimpa.utils.showToast
@@ -33,45 +39,97 @@ fun MainScreen(navController: NavController) {
     }, onMoviesClicked = {
         navController.navigate(Screen.MoviesScreen.route)
         context.showToast("onMoviesClicked")
-    })
+    }, onWebActionSucceed = { succeed: Boolean ->
+        viewModel.onWebAction(succeed)
+    },
+        navController
+    )
 }
 
+//todo get rid of navController parameter / handle states properly, perhaps with data class
 @Composable
 fun MainScreenContent(
-    viewState: MainScreenState, onLoginClicked: () -> Unit, onMoviesClicked: () -> Unit
+    viewState: MainScreenState,
+    onLoginClicked: () -> Unit,
+    onMoviesClicked: () -> Unit,
+    onWebActionSucceed: (Boolean) -> Unit,
+    navController: NavController
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(1.0f)
-            .padding(all = 16.dp)
 
-    ) {
-        val columnChildModifier = Modifier
-            .padding(bottom = 12.dp)
-            // Align Modifier.Element requires a ColumnScope
-            .align(Alignment.CenterHorizontally)
-        Text(
-            modifier = columnChildModifier, text = viewState.text
-        )
-        if (viewState == MainScreenState.NoData || viewState == MainScreenState.Error) {
-            Button(
-                modifier = columnChildModifier.width(150.dp), onClick = onLoginClicked
-            ) {
-                Text(text = "Login")
-            }
-        } else {
-            Button(
-                modifier = columnChildModifier.width(150.dp), onClick = onMoviesClicked
-            ) {
-                Text(text = "Start movies")
+
+    Box() {
+        Column(
+            modifier = Modifier
+                .fillMaxSize(1.0f)
+                .padding(all = 16.dp)
+
+        ) {
+            val columnChildModifier = Modifier
+                .padding(bottom = 12.dp)
+                // Align Modifier.Element requires a ColumnScope
+                .align(Alignment.CenterHorizontally)
+            Text(
+                modifier = columnChildModifier, text = viewState.text
+            )
+            when (viewState) {
+                MainScreenState.NoData, MainScreenState.Error -> {
+                    Button(
+                        modifier = columnChildModifier.width(150.dp), onClick = onLoginClicked
+                    ) {
+                        Text(text = "Login")
+                    }
+                }
+
+                MainScreenState.NavigateToMovies -> {
+                    navController.navigate(Screen.MoviesScreen.route)
+                }
+
+                MainScreenState.NavigateToWebView-> {
+                    WebView(url = viewState.tempWebViewUrlHolder, TMDBWebViewClient(onWebActionSucceed))
+                }
+                else -> {
+                    Button(
+                        modifier = columnChildModifier.width(150.dp), onClick = onMoviesClicked
+                    ) {
+                        Text(text = "Start movies")
+                    }
+                }
             }
         }
     }
 }
 
+@Composable
+fun WebView(url: String, webViewClient: WebViewClient) {
+    AndroidView(
+        modifier = Modifier.fillMaxSize(1.0f),
+        factory = { context ->
+            WebView(context).apply {
+                this.webViewClient = webViewClient
+            }
+        },
+        update = { webView ->
+            webView.loadUrl(url)
+        }
+    )
+}
+
+class TMDBWebViewClient(val succeed: (Boolean) -> Unit) : WebViewClient() {
+    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+        val url: String = request?.url.toString() ?: ""
+        if (url.contains("/allow")) {
+            succeed(true)
+            return false
+        }
+        view?.loadUrl(url)
+        return super.shouldOverrideUrlLoading(view, request)
+    }
+}
+
 class MainViewPreviewParameterProvider : PreviewParameterProvider<MainScreenState> {
     override val values = sequenceOf(
-        MainScreenState.NoData, MainScreenState.Error, MainScreenState.Success
+        MainScreenState.NavigateToWebView
+//        MainScreenState.NoData, MainScreenState.Error, MainScreenState.Success
     )
 }
 
@@ -79,6 +137,6 @@ class MainViewPreviewParameterProvider : PreviewParameterProvider<MainScreenStat
 @Composable
 fun MainScreenPreview(@PreviewParameter(MainViewPreviewParameterProvider::class) viewState: MainScreenState) {
     MusimpaTheme {
-        MainScreenContent(viewState, {}, {})
+        MainScreenContent(viewState, {}, {}, {}, rememberNavController())
     }
 }
