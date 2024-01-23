@@ -1,14 +1,23 @@
 package com.eaccid.musimpa.ui.mainscreen
 
-import com.eaccid.musimpa.utils.AUTHENTICATE_REQUEST_TOKEN_URL
-
 typealias GreetingText = String
 
-//todo extract just data class with state
-sealed class MainScreenState(val text: GreetingText, var tempWebViewUrlHolder: String = "AUTHENTICATE_REQUEST_TOKEN_URL + requestToken") {
+sealed class MainScreenState(
+    val text: GreetingText = ""
+) {
     object Success : MainScreenState("Let's start!") //todo get text from resources
     object Error : MainScreenState("Try again.")
-    object NoData : MainScreenState("Hello!") // todo some loading/new app status
-    object NavigateToMovies : MainScreenState("")
-    object NavigateToWebView : MainScreenState("")
+    object NoData : MainScreenState("Hello!")
+    object OnSiteLogin : MainScreenState()
 }
+
+//todo refactor state handling
+data class MainScreenViewState(
+    val state: MainScreenState = MainScreenState.NoData,
+    val loginData: LoginOnSiteData? = null
+)
+
+data class LoginOnSiteData(
+    val url: String
+)
+

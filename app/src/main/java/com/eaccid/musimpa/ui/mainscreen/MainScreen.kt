@@ -1,5 +1,6 @@
 package com.eaccid.musimpa.ui.mainscreen
 
+import android.annotation.SuppressLint
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -22,7 +23,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.eaccid.musimpa.ui.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import com.eaccid.musimpa.utils.showToast
@@ -41,19 +41,16 @@ fun MainScreen(navController: NavController) {
         context.showToast("onMoviesClicked")
     }, onWebActionSucceed = { succeed: Boolean ->
         viewModel.onWebAction(succeed)
-    },
-        navController
+    }
     )
 }
 
-//todo get rid of navController parameter / handle states properly, perhaps with data class
 @Composable
 fun MainScreenContent(
-    viewState: MainScreenState,
+    viewState: MainScreenViewState,
     onLoginClicked: () -> Unit,
     onMoviesClicked: () -> Unit,
-    onWebActionSucceed: (Boolean) -> Unit,
-    navController: NavController
+    onWebActionSucceed: (Boolean) -> Unit
 ) {
 
 
@@ -69,9 +66,9 @@ fun MainScreenContent(
                 // Align Modifier.Element requires a ColumnScope
                 .align(Alignment.CenterHorizontally)
             Text(
-                modifier = columnChildModifier, text = viewState.text
+                modifier = columnChildModifier, text = viewState.state.text
             )
-            when (viewState) {
+            when (viewState.state) {
                 MainScreenState.NoData, MainScreenState.Error -> {
                     Button(
                         modifier = columnChildModifier.width(150.dp), onClick = onLoginClicked
@@ -79,14 +76,14 @@ fun MainScreenContent(
                         Text(text = "Login")
                     }
                 }
-
-                MainScreenState.NavigateToMovies -> {
-                    navController.navigate(Screen.MoviesScreen.route)
+                //todo handle onsite login url
+                MainScreenState.OnSiteLogin -> {
+                    WebView(
+                        url = viewState.loginData?.url ?: "",
+                        TMDBWebViewClient(onWebActionSucceed)
+                    )
                 }
 
-                MainScreenState.NavigateToWebView-> {
-                    WebView(url = viewState.tempWebViewUrlHolder, TMDBWebViewClient(onWebActionSucceed))
-                }
                 else -> {
                     Button(
                         modifier = columnChildModifier.width(150.dp), onClick = onMoviesClicked
@@ -99,6 +96,7 @@ fun MainScreenContent(
     }
 }
 
+@SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebView(url: String, webViewClient: WebViewClient) {
     AndroidView(
@@ -109,6 +107,7 @@ fun WebView(url: String, webViewClient: WebViewClient) {
             }
         },
         update = { webView ->
+            webView.settings.javaScriptEnabled = true
             webView.loadUrl(url)
         }
     )
@@ -126,17 +125,17 @@ class TMDBWebViewClient(val succeed: (Boolean) -> Unit) : WebViewClient() {
     }
 }
 
-class MainViewPreviewParameterProvider : PreviewParameterProvider<MainScreenState> {
+class MainViewPreviewParameterProvider : PreviewParameterProvider<MainScreenViewState> {
     override val values = sequenceOf(
-        MainScreenState.NavigateToWebView
+        MainScreenViewState(MainScreenState.NoData)
 //        MainScreenState.NoData, MainScreenState.Error, MainScreenState.Success
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun MainScreenPreview(@PreviewParameter(MainViewPreviewParameterProvider::class) viewState: MainScreenState) {
+fun MainScreenPreview(@PreviewParameter(MainViewPreviewParameterProvider::class) viewState: MainScreenViewState) {
     MusimpaTheme {
-        MainScreenContent(viewState, {}, {}, {}, rememberNavController())
+        MainScreenContent(viewState, {}, {}, {})
     }
 }
