@@ -1,10 +1,10 @@
 package com.eaccid.musimpa.dikoin
 
-import com.eaccid.musimpa.LocalPreferences
+import com.eaccid.musimpa.LocalData
 import com.eaccid.musimpa.LocalSharedPreferences
+import com.eaccid.musimpa.network.TMDbServiceAPI
 import com.eaccid.musimpa.repository.AuthenticationRepository
 import com.eaccid.musimpa.repository.AuthenticationRepositoryImpl
-import com.eaccid.musimpa.network.TMDbServiceAPI
 import com.eaccid.musimpa.ui.mainscreen.MainScreenViewModel
 import com.eaccid.musimpa.ui.movieslist.ui.theme.MoviesScreenViewModel
 import com.eaccid.musimpa.utils.BASE_URL
@@ -20,7 +20,7 @@ val repositoryModule = module {
 
     fun provideAuthenticationRepository(
         api: TMDbServiceAPI,
-        pref: LocalPreferences
+        pref: LocalData
     ): AuthenticationRepository {
         return AuthenticationRepositoryImpl(api, pref)
     }
@@ -39,13 +39,12 @@ val repositoryModule = module {
         return retrofit.create(TMDbServiceAPI::class.java)
     }
     single { provideTMDbServiceAPI(get()) }
-    single<LocalPreferences> { LocalSharedPreferences(androidContext()) }
+    single<LocalData> { LocalSharedPreferences(androidContext()) }
 }
 
 
 //todo split modules
 val musimpaModule = module {
-
 
     viewModel { MainScreenViewModel(get()) }
     viewModel { MoviesScreenViewModel() }

@@ -6,4 +6,5 @@ import com.eaccid.musimpa.network.ApiResponse
 interface AuthenticationRepository {
     suspend fun getToken(): ApiResponse<Authentication>
     fun isUserLoggedIn(): Boolean
+    suspend fun createSessionId(): ApiResponse<Authentication>
 }

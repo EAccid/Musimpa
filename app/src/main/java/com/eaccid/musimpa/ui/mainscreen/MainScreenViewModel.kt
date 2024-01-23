@@ -35,7 +35,7 @@ class MainScreenViewModel(
                 _uiState.update {
                     it.copy(
                         state = MainScreenState.OnSiteLogin, loginData = LoginOnSiteData(
-                            (AUTHENTICATE_REQUEST_TOKEN_URL + apiResponse.data.request_token) ?: ""
+                            (AUTHENTICATE_REQUEST_TOKEN_URL + apiResponse.data.request_token)
                         )
                     )
                 }
@@ -49,10 +49,16 @@ class MainScreenViewModel(
     }
 
     fun onWebAction(succeed: Boolean) {
-        if (succeed)
-            _uiState.update { it.copy(state = MainScreenState.Success) }
-        else
-            _uiState.update { it.copy(state = MainScreenState.Error) }
+        if (succeed) {
+            Log.i("MusimpaApp", "onWebAction = $succeed")
+            viewModelScope.launch {
+                val apiResponse = authenticationRepository.createSessionId()
+                if (apiResponse is ApiResponse.Success) {
+                    _uiState.update { it.copy(state = MainScreenState.Success) }
+                    return@launch
+                }
+            }
+        }
+        _uiState.update { it.copy(state = MainScreenState.Error) }
     }
 }
-
