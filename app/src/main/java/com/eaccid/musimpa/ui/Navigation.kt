@@ -1,6 +1,7 @@
 package com.eaccid.musimpa.ui
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -17,6 +18,13 @@ fun ScreenNavigation() {
         composable(route = Screen.MoviesScreen.route) {
             MoviesScreen(navController = navController)
         }
+        composable(route = Screen.MovieDetailsScreen.route) {
+            MovieDetailsScreen(navController = navController)
+        }
     }
+}
 
+@Composable
+fun MovieDetailsScreen(navController: NavHostController) {
+    TODO("Not yet implemented")
 }

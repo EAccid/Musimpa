@@ -4,9 +4,10 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
 }
 
-val STRING = "String"
+val string = "String"
 val keysPropertiesFile = rootProject.file("keys.properties")
 val keysProperties = Properties()
 keysProperties.load(FileInputStream(keysPropertiesFile))
@@ -43,9 +44,9 @@ android {
 
     buildTypes.forEach {
         it.buildConfigField(
-            STRING, "THE_MOVIE_DB_API_KEY", keysProperties.getProperty("apiKeyTMDb")
+            string, "THE_MOVIE_DB_API_KEY", keysProperties.getProperty("apiKeyTMDb")
         )
-        it.buildConfigField(STRING, "YOUTUBE_API_KEY", keysProperties.getProperty("apiKeyYouTube"))
+        it.buildConfigField(string, "YOUTUBE_API_KEY", keysProperties.getProperty("apiKeyYouTube"))
     }
 
     compileOptions {
@@ -80,6 +81,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.navigation:navigation-compose:2.7.6")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 
     //koin
     implementation("io.insert-koin:koin-core:3.5.2-RC1")

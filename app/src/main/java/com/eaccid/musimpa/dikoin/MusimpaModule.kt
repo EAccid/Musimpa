@@ -5,6 +5,8 @@ import com.eaccid.musimpa.LocalSharedPreferences
 import com.eaccid.musimpa.network.TMDbServiceAPI
 import com.eaccid.musimpa.repository.AuthenticationRepository
 import com.eaccid.musimpa.repository.AuthenticationRepositoryImpl
+import com.eaccid.musimpa.repository.MoviesRepository
+import com.eaccid.musimpa.repository.MoviesRepositoryImpl
 import com.eaccid.musimpa.ui.mainscreen.MainScreenViewModel
 import com.eaccid.musimpa.ui.movieslist.ui.theme.MoviesScreenViewModel
 import com.eaccid.musimpa.utils.BASE_URL
@@ -25,6 +27,15 @@ val repositoryModule = module {
         return AuthenticationRepositoryImpl(api, pref)
     }
     single { provideAuthenticationRepository(get(), get()) }
+
+    fun provideMoviesRepository(
+        api: TMDbServiceAPI,
+        pref: LocalData
+    ): MoviesRepository {
+        return MoviesRepositoryImpl(api, pref)
+    }
+    single { provideMoviesRepository(get(), get()) }
+
     //network
     single<Retrofit> {
         val moshi = Moshi.Builder()
@@ -45,6 +56,6 @@ val repositoryModule = module {
 val musimpaModule = module {
 
     viewModel { MainScreenViewModel(get()) }
-    viewModel { MoviesScreenViewModel() }
+    viewModel { MoviesScreenViewModel(get()) }
 
 }
