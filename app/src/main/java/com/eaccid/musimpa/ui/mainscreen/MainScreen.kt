@@ -30,7 +30,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainScreen(navController: NavController) {
-    val context = LocalContext.current//todo check if there is better solution
+    val context = LocalContext.current //todo check if there is better solution
     val viewModel: MainScreenViewModel = koinViewModel()
     val viewState by viewModel.uiState.collectAsState()
     MainScreenContent(viewState, onLoginClicked = {
@@ -76,7 +76,7 @@ fun MainScreenContent(
                         Text(text = "Login")
                     }
                 }
-                //todo handle onsite login url
+                //todo handle onsite login url properly
                 MainScreenState.OnSiteLogin -> {
                     WebView(
                         url = viewState.loginData?.url ?: "",

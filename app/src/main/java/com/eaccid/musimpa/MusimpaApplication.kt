@@ -16,5 +16,5 @@ class MusimpaApplication : Application() {
         }
     }
 
-    private fun getModules() = listOf(repositoryModule,musimpaModule)
+    private fun getModules() = listOf(repositoryModule, musimpaModule)
 }

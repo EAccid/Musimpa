@@ -45,12 +45,12 @@ class MainScreenViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        Log.i("MainScreenViewModel", "is cleared")
+        Log.i("MusimpaApp", "MainScreenViewModel is cleared")
     }
 
     fun onWebAction(succeed: Boolean) {
+        Log.i("MusimpaApp", "onWebAction = $succeed")
         if (succeed) {
-            Log.i("MusimpaApp", "onWebAction = $succeed")
             viewModelScope.launch {
                 val apiResponse = authenticationRepository.createSessionId()
                 if (apiResponse is ApiResponse.Success) {

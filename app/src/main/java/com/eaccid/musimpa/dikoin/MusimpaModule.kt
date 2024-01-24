@@ -42,8 +42,6 @@ val repositoryModule = module {
     single<LocalData> { LocalSharedPreferences(androidContext()) }
 }
 
-
-//todo split modules
 val musimpaModule = module {
 
     viewModel { MainScreenViewModel(get()) }

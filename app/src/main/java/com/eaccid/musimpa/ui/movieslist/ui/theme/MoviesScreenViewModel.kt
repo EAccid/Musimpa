@@ -6,6 +6,6 @@ import androidx.lifecycle.ViewModel
 class MoviesScreenViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
-        Log.i("MoviesViewModel", "is cleared")
+        Log.i("MusimpaApp", "MoviesViewModel is cleared")
     }
 }
