@@ -8,7 +8,7 @@ import com.eaccid.musimpa.repository.AuthenticationRepositoryImpl
 import com.eaccid.musimpa.repository.MoviesRepository
 import com.eaccid.musimpa.repository.MoviesRepositoryImpl
 import com.eaccid.musimpa.ui.mainscreen.MainScreenViewModel
-import com.eaccid.musimpa.ui.movieslist.ui.theme.MoviesScreenViewModel
+import com.eaccid.musimpa.ui.movieslist.MoviesScreenViewModel
 import com.eaccid.musimpa.utils.BASE_URL
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.ui.movieslist.ui.theme
+package com.eaccid.musimpa.ui.uientities
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

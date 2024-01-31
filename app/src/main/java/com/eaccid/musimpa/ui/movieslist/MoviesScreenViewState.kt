@@ -1,4 +1,6 @@
-package com.eaccid.musimpa.ui.movieslist.ui.theme
+package com.eaccid.musimpa.ui.movieslist
+
+import com.eaccid.musimpa.ui.uientities.MovieItem
 
 //todo add Loading
 sealed class MoviesScreenViewState {

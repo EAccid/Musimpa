@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.ui.movieslist.ui.theme
+package com.eaccid.musimpa.ui.movieslist
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.eaccid.musimpa.entities.Discover
 import com.eaccid.musimpa.network.ApiResponse
 import com.eaccid.musimpa.repository.MoviesRepository
+import com.eaccid.musimpa.ui.uientities.MovieItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
