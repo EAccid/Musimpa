@@ -8,6 +8,7 @@ import com.eaccid.musimpa.repository.AuthenticationRepositoryImpl
 import com.eaccid.musimpa.repository.MoviesRepository
 import com.eaccid.musimpa.repository.MoviesRepositoryImpl
 import com.eaccid.musimpa.ui.mainscreen.MainScreenViewModel
+import com.eaccid.musimpa.ui.moviedetails.MovieDetailsScreenViewModel
 import com.eaccid.musimpa.ui.movieslist.MoviesScreenViewModel
 import com.eaccid.musimpa.utils.BASE_URL
 import com.squareup.moshi.Moshi
@@ -57,5 +58,6 @@ val musimpaModule = module {
 
     viewModel { MainScreenViewModel(get()) }
     viewModel { MoviesScreenViewModel(get()) }
+    viewModel { MovieDetailsScreenViewModel(get(), get()) }
 
 }
