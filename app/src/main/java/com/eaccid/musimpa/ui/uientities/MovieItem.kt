@@ -3,16 +3,17 @@ package com.eaccid.musimpa.ui.uientities
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
+//todo delete default values
 @Parcelize
 data class MovieItem(
-    val id: Int,
-    val originalTitle: String?,
-    val releaseDate: String?,
-    val posterPath: String?,
-    val title: String?,
-    val overview: String?,
-    val voteAverage: Double?,
-    val tagline: String?,
+    val id: Int = 0,
+    val originalTitle: String? = "originalTitle",
+    val releaseDate: String? = "releaseDate",
+    val posterPath: String? = "posterPath",
+    val title: String? = "title",
+    val overview: String? = "overview",
+    val voteAverage: Double? = 0.0,
+    val tagline: String? = "tagline",
 //    val genres: List<Genre>?,
-    val runtime: Int?
+    val runtime: Int? = 0
 ) : Parcelable
