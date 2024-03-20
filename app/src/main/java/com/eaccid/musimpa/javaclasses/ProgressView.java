@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.ui.customview;
+package com.eaccid.musimpa.javaclasses;
 
 import android.content.Context;
 import android.content.res.ColorStateList;

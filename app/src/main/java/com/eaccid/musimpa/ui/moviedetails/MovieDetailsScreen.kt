@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.eaccid.musimpa.ui.customview.ProgressView
+import com.eaccid.musimpa.javaclasses.ProgressView
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import com.eaccid.musimpa.ui.uientities.MovieItem
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
