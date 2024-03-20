@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ProgressViewBaseStyle">
+        <item name="progress_view_finished_stroke_color">@color/progressViewFinishedStrokeColor</item>
+        <item name="progress_view_unfinished_stroke_color">@color/colorPrimary</item>
+        <item name="progress_view_text_color">@color/colorPrimaryDark</item>
+        <item name="progress_view_text_size">10dp</item>
+    </style>
+</resources>

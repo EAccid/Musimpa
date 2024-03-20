@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ProgressView">
+        <attr name="progress_view_background_color" format="color" />
+        <attr name="progress_view_finished_stroke_color" format="color" />
+        <attr name="progress_view_unfinished_stroke_color" format="color" />
+        <attr name="progress_view_progress" format="integer" />
+        <attr name="progress_view_progress_stroke_width" format="integer" />
+        <attr name="progress_view_starting_angle" format="integer" />
+        <attr name="progress_view_show_progress" format="integer" />
+        <attr name="progress_view_text_color" format="color" />
+        <attr name="progress_view_text_size" format="dimension" />
+    </declare-styleable>
+</resources>
