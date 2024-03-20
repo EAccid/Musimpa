@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MovieDetailsScreenViewModel(
-    private val state: SavedStateHandle,
+    state: SavedStateHandle,
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
     private val movieId: String = checkNotNull(state["movieId"])
@@ -34,11 +34,23 @@ class MovieDetailsScreenViewModel(
 
     private fun getMovieDetails(movieId: String) {
         viewModelScope.launch {
-            val movie: ApiResponse<Movie> =
+            val movieResponse: ApiResponse<Movie> =
                 moviesRepository.getMovie(movieId = Integer.parseInt(movieId))
-            if (movie is ApiResponse.Success)
+            if (movieResponse is ApiResponse.Success) {
+                val movie = movieResponse.data
+                val movieItem = movie.toMovieItem()
+                val videosResponse =
+                    moviesRepository.getMovieVideos(movieId = Integer.parseInt(movieId))
+                if (videosResponse is ApiResponse.Success && videosResponse.data.results != null) {
+                    for (video in videosResponse.data.results) {
+                        if (video.official && video.key.isNotEmpty()) {
+                            movieItem.videoKey = video.key
+                        }
+                    }
+                }
                 _uiState.value =
-                    MovieDetailsScreenViewState.Success(movie = movie.data.toMovieItem())
+                    MovieDetailsScreenViewState.Success(movie = movieItem)
+            }
         }
     }
 

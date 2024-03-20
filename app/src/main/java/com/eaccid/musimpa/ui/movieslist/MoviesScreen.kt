@@ -38,7 +38,6 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MoviesScreen(navController: NavController) {
-    val context = LocalContext.current //todo check if there is better solution
     val viewModel: MoviesScreenViewModel = koinViewModel()
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
     MoviesScreenContent(viewState, onItemClicked = { movieItem ->

@@ -4,6 +4,7 @@ import com.eaccid.musimpa.BuildConfig
 import com.eaccid.musimpa.LocalData
 import com.eaccid.musimpa.entities.Discover
 import com.eaccid.musimpa.entities.Movie
+import com.eaccid.musimpa.entities.VideosResult
 import com.eaccid.musimpa.network.ApiResponse
 import com.eaccid.musimpa.network.TMDbServiceAPI
 import com.eaccid.musimpa.network.safeApiRequest
@@ -24,13 +25,24 @@ class MoviesRepositoryImpl(
         return safeApiRequest { serviceAPI.discoverAll(API_VERSION, params) }
     }
 
-    override suspend fun getMovie(movieId: Int): ApiResponse<Movie>{
+    override suspend fun getMovie(movieId: Int): ApiResponse<Movie> {
         val params = mapOf(
             "api_key" to BuildConfig.THE_MOVIE_DB_API_KEY,
             "language" to "en-US"
         )
-        return safeApiRequest { serviceAPI.getMovie(API_VERSION, movieId, params)
+        return safeApiRequest {
+            serviceAPI.getMovie(API_VERSION, movieId, params)
+        }
     }
-}
+
+    override suspend fun getMovieVideos(movieId: Int): ApiResponse<VideosResult> {
+        val params = mapOf(
+            "api_key" to BuildConfig.THE_MOVIE_DB_API_KEY,
+            "language" to "en-US"
+        )
+        return safeApiRequest {
+            serviceAPI.getMovieVideos(API_VERSION, movieId, params)
+        }
+    }
 
 }

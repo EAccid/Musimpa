@@ -15,5 +15,6 @@ data class MovieItem(
     val voteAverage: Double? = 0.0,
     val tagline: String? = "tagline",
 //    val genres: List<Genre>?,
-    val runtime: Int? = 0
+    val runtime: Int? = 0,
+    var videoKey: String = ""
 ) : Parcelable
