@@ -42,8 +42,7 @@ fun MovieDetailsScreen(movieId: String) {
 
 @Composable
 fun MoviesDetailsScreenContent(
-    viewState: MovieDetailsScreenViewState
-) {
+    viewState: MovieDetailsScreenViewState) {
     if (viewState is MovieDetailsScreenViewState.Success) {
         val dataItem: MovieItem = viewState.movie
         Column(
@@ -105,6 +104,7 @@ fun MoviesDetailsScreenContent(
                     .padding(0.dp, 16.dp, 0.dp, 0.dp),
                 text = "Overview",
                 style = TextStyle(
+                    fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     color = Color.DarkGray
                 )
@@ -116,7 +116,7 @@ fun MoviesDetailsScreenContent(
             )
         }
     } else {
-        Text(text = "todo no data error handling")
+        Text(text = "todo 'no data' / 'error' handling")
     }
 }
 
