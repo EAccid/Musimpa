@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import androidx.core.net.toUri
+import com.eaccid.musimpa.entities.Movie
+import com.eaccid.musimpa.ui.uientities.MovieItem
 
 const val BASE_URL = "https://api.themoviedb.org/"
 const val MOVIE_IMAGE_URL_PATH = "image.tmdb.org/t/p/"
@@ -21,6 +23,20 @@ fun Context.showToast(message: String) {
 
 fun String.toImageUri(posterSize: PosterSize): Uri {
     return (posterSize.imagePath + this).toUri().buildUpon().scheme("https").build()
+}
+
+fun Movie.toMovieItem(): MovieItem {
+    return MovieItem(
+        id,
+        originalTitle,
+        releaseDate,
+        posterPath,
+        title,
+        overview,
+        voteAverage,
+        tagline,
+        runtime
+    )
 }
 
 enum class PosterSize(imageSize: String) {

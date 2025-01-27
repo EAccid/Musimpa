@@ -4,9 +4,10 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
 }
 
-val STRING = "String"
+val string = "String"
 val keysPropertiesFile = rootProject.file("keys.properties")
 val keysProperties = Properties()
 keysProperties.load(FileInputStream(keysPropertiesFile))
@@ -43,9 +44,9 @@ android {
 
     buildTypes.forEach {
         it.buildConfigField(
-            STRING, "THE_MOVIE_DB_API_KEY", keysProperties.getProperty("apiKeyTMDb")
+            string, "THE_MOVIE_DB_API_KEY", keysProperties.getProperty("apiKeyTMDb")
         )
-        it.buildConfigField(STRING, "YOUTUBE_API_KEY", keysProperties.getProperty("apiKeyYouTube"))
+        it.buildConfigField(string, "YOUTUBE_API_KEY", keysProperties.getProperty("apiKeyYouTube"))
     }
 
     compileOptions {
@@ -79,7 +80,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.navigation:navigation-compose:2.7.6")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 
     //koin
     implementation("io.insert-koin:koin-core:3.5.2-RC1")
@@ -90,6 +92,12 @@ dependencies {
     //api json
     implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+
+    //coil
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
+    //youtube
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
