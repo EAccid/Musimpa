@@ -2,5 +2,5 @@
 <resources>
     <color name="colorPrimary">#8BC34B</color>
     <color name="colorPrimaryDark">#4F7525</color>
-    <color name="progressViewFinishedStrokeColor">#DC2563</color>
+    <color name="UserScoreCustomViewFinishedStrokeColor">#DC2563</color>
 </resources>

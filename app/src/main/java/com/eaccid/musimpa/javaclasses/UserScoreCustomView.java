@@ -23,7 +23,7 @@ import com.eaccid.musimpa.R;
  * View shows progress (%)
  */
 
-public class ProgressView extends View {
+public class UserScoreCustomView extends View {
 
     public static int dpToPx(Context context, int dp) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -33,7 +33,7 @@ public class ProgressView extends View {
     private static final String INSTANCE_STATE = "saved_instance";
     private static final String START_ANGLE = "start_angle";
     private static final String STROKE_WIDTH = "stroke_width";
-    private static final String PROGRESS = "progress";
+    private static final String SCORE = "score";
     private static final double ANGLE_EPSILON = 1;
     private static final int DEFAULT_SHIFT_ANGLE = 200;
     private static final int DEFAULT_START_ANGLE = 0;
@@ -42,53 +42,53 @@ public class ProgressView extends View {
     private static final int DEFAULT_MAX_VALUE = 100;
     private static final int DEFAULT_TEXT_SIZE = 50;
 
-    final private RectF unfinishedProgressRect = new RectF();
-    final private RectF finishedProgressRect = new RectF();
-    final private Paint paintFinishedProgress = new Paint();
-    final private Paint paintUnfinishedProgress = new Paint();
+    final private RectF unfinishedScoreProgressRect = new RectF();
+    final private RectF scoreProgressColor = new RectF();
+    final private Paint paintScoreProgress = new Paint();
+    final private Paint paintUnfinishedScoreProgress = new Paint();
     final private Paint paintInnerCircle = new Paint();
     final private Paint textPaint = new Paint();
     private ColorStateList backgroundColorStateList;
-    private ColorStateList unfinishedStrokeColorStateList;
-    private ColorStateList finishedStrokeColorStateList;
+    private ColorStateList unfinishedProgrssStrokeColorStateList;
+    private ColorStateList scoreProgressStrokeColorStateList;
     private ColorStateList textColorStateList;
 
-    private int maxValue; //%
+    private int maxScore; //%
     private int startAngle;
     private int strokeWidth;
-    private int progress;
+    private int score;
     private int textSize;
-    private boolean showProgress;
+    private boolean displayScore;
 
-    public ProgressView(Context context) {
+    public UserScoreCustomView(Context context) {
         this(context, null);
     }
 
-    public ProgressView(Context context, @Nullable AttributeSet attrs) {
+    public UserScoreCustomView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ProgressView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public UserScoreCustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initFromObtainedStyledAttributes(context, attrs);
         initPainters();
     }
 
     private void initFromObtainedStyledAttributes(Context context, AttributeSet attrs) {
-        final TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ProgressView);
-        setStrokeWidth(array.getInt(R.styleable.ProgressView_progress_view_progress_stroke_width, DEFAULT_STROKE_WIDTH));
-        setTextSize(array.getDimensionPixelSize(R.styleable.ProgressView_progress_view_text_size, DEFAULT_TEXT_SIZE));
-        maxValue = DEFAULT_MAX_VALUE;
+        final TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.UserScoreCustomView);
+        setStrokeWidth(array.getInt(R.styleable.UserScoreCustomView_user_score_value_stroke_width, DEFAULT_STROKE_WIDTH));
+        setTextSize(array.getDimensionPixelSize(R.styleable.UserScoreCustomView_user_score_text_size, DEFAULT_TEXT_SIZE));
+        maxScore = DEFAULT_MAX_VALUE;
 
-        setProgress(array.getInt(R.styleable.ProgressView_progress_view_progress, DEFAULT_PROGRESS));
-        setStartAngle(array.getInt(R.styleable.ProgressView_progress_view_starting_angle, DEFAULT_START_ANGLE));
+        setScore(array.getInt(R.styleable.UserScoreCustomView_user_score_value, DEFAULT_PROGRESS));
+        setStartAngle(array.getInt(R.styleable.UserScoreCustomView_user_score_starting_angle, DEFAULT_START_ANGLE));
 
-        backgroundColorStateList = array.getColorStateList(R.styleable.ProgressView_progress_view_background_color);
-        finishedStrokeColorStateList = array.getColorStateList(R.styleable.ProgressView_progress_view_finished_stroke_color);
-        unfinishedStrokeColorStateList = array.getColorStateList(R.styleable.ProgressView_progress_view_unfinished_stroke_color);
-        textColorStateList = array.getColorStateList(R.styleable.ProgressView_progress_view_text_color);
+        backgroundColorStateList = array.getColorStateList(R.styleable.UserScoreCustomView_user_score_background_color);
+        scoreProgressStrokeColorStateList = array.getColorStateList(R.styleable.UserScoreCustomView_user_score_progress_color);
+        unfinishedProgrssStrokeColorStateList = array.getColorStateList(R.styleable.UserScoreCustomView_user_score_color);
+        textColorStateList = array.getColorStateList(R.styleable.UserScoreCustomView_user_score_text_color);
 
-        showProgress = (array.getInt(R.styleable.ProgressView_progress_view_show_progress, 1) == 1);
+        displayScore = (array.getInt(R.styleable.UserScoreCustomView_user_score_display_value, 1) == 1);
         array.recycle();
     }
 
@@ -96,15 +96,15 @@ public class ProgressView extends View {
         paintInnerCircle.setAntiAlias(true);
         paintInnerCircle.setColor(getColor(backgroundColorStateList, Color.WHITE));
 
-        paintFinishedProgress.setColor(getColor(finishedStrokeColorStateList, Color.BLACK));
-        paintFinishedProgress.setAntiAlias(true);
-        paintFinishedProgress.setStyle(Paint.Style.STROKE);
-        paintFinishedProgress.setStrokeWidth(strokeWidth);
+        paintScoreProgress.setColor(getColor(scoreProgressStrokeColorStateList, Color.BLACK));
+        paintScoreProgress.setAntiAlias(true);
+        paintScoreProgress.setStyle(Paint.Style.STROKE);
+        paintScoreProgress.setStrokeWidth(strokeWidth);
 
-        paintUnfinishedProgress.setAntiAlias(true);
-        paintUnfinishedProgress.setColor(getColor(unfinishedStrokeColorStateList, Color.GRAY));
-        paintUnfinishedProgress.setStyle(Paint.Style.STROKE);
-        paintUnfinishedProgress.setStrokeWidth(strokeWidth);
+        paintUnfinishedScoreProgress.setAntiAlias(true);
+        paintUnfinishedScoreProgress.setColor(getColor(unfinishedProgrssStrokeColorStateList, Color.GRAY));
+        paintUnfinishedScoreProgress.setStyle(Paint.Style.STROKE);
+        paintUnfinishedScoreProgress.setStrokeWidth(strokeWidth);
 
         textPaint.setColor(getColor(textColorStateList, Color.BLACK));
         textPaint.setTextSize(textSize);
@@ -119,31 +119,31 @@ public class ProgressView extends View {
         canvas.drawCircle(xCenterOffset, yCenterOffset, innerCircleRadius, paintInnerCircle);
 
         //noinspection SuspiciousNameCombination
-        unfinishedProgressRect.set(strokeWidth, strokeWidth, getWidth() - strokeWidth, getHeight() - strokeWidth);
-        if (showProgress) {
-            canvas.drawArc(unfinishedProgressRect, 0f, 360f, false, paintUnfinishedProgress);
+        unfinishedScoreProgressRect.set(strokeWidth, strokeWidth, getWidth() - strokeWidth, getHeight() - strokeWidth);
+        if (displayScore) {
+            canvas.drawArc(unfinishedScoreProgressRect, 0f, 360f, false, paintUnfinishedScoreProgress);
         }
 
         //noinspection SuspiciousNameCombination
-        finishedProgressRect.set(strokeWidth, strokeWidth, getWidth() - strokeWidth, getHeight() - strokeWidth);
+        scoreProgressColor.set(strokeWidth, strokeWidth, getWidth() - strokeWidth, getHeight() - strokeWidth);
 
         float startAngle = getStartAngle();
         final int sweepAngle = (int) getMeasuredAngle();
         if (sweepAngle < ANGLE_EPSILON) {
             startAngle = 0f;
         }
-        if (showProgress) {
-            canvas.drawArc(finishedProgressRect, startAngle, sweepAngle, false, paintFinishedProgress);
+        if (displayScore) {
+            canvas.drawArc(scoreProgressColor, startAngle, sweepAngle, false, paintScoreProgress);
         }
 
-        if (showProgress) {
+        if (displayScore) {
             //it's better to center text with Paint.getTextBounds(), so todo
             textPaint.setTextSize(textSize);
             textPaint.setTextAlign(Paint.Align.CENTER);
             textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             int xPos = (getWidth() / 2);
             int yPos = (int) ((getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
-            canvas.drawText(String.valueOf(progress), xPos, yPos, textPaint);
+            canvas.drawText(String.valueOf(score), xPos, yPos, textPaint);
 
             int percentageMeasure = (int) textPaint.measureText("%");
             int percentageTextSize = textSize / 2;
@@ -168,7 +168,7 @@ public class ProgressView extends View {
         bundle.putParcelable(INSTANCE_STATE, super.onSaveInstanceState());
         bundle.putInt(START_ANGLE, getStartAngle());
         bundle.putInt(STROKE_WIDTH, getStrokeWidth());
-        bundle.putInt(PROGRESS, getProgress());
+        bundle.putInt(SCORE, getScore());
         return bundle;
     }
 
@@ -179,7 +179,7 @@ public class ProgressView extends View {
             super.onRestoreInstanceState(bundle.getParcelable(INSTANCE_STATE));
             setStartAngle(bundle.getInt(START_ANGLE));
             setStrokeWidth(bundle.getInt(STROKE_WIDTH));
-            setProgress(bundle.getInt(PROGRESS));
+            setScore(bundle.getInt(SCORE));
             return;
         }
         super.onRestoreInstanceState(state);
@@ -195,18 +195,18 @@ public class ProgressView extends View {
     }
 
     public float getMeasuredAngle() {
-        return getProgress() / (float) maxValue * 360f;
+        return getScore() / (float) maxScore * 360f;
     }
 
-    public void setProgress(int progress) {
-        this.progress = progress;
-        if (progress > maxValue)
-            this.progress %= maxValue;
+    public void setScore(int score) {
+        this.score = score;
+        if (score > maxScore)
+            this.score %= maxScore;
         invalidate();
     }
 
-    public int getProgress() {
-        return this.progress;
+    public int getScore() {
+        return this.score;
     }
 
     private int getColor(@Nullable ColorStateList colorStateList, int defaultColor) {

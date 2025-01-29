@@ -2,13 +2,13 @@ package com.eaccid.musimpa.ui.customview
 
 import android.content.Context
 import android.util.AttributeSet
-import com.eaccid.musimpa.javaclasses.ProgressView
+import com.eaccid.musimpa.javaclasses.UserScoreCustomView
 
-class MusimpaProgressView @JvmOverloads constructor(
+class MusimpaUserScoreCustomView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ProgressView(context, attrs, defStyleAttr) {
+) : UserScoreCustomView(context, attrs, defStyleAttr) {
 
     init {
 

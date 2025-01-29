@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.eaccid.musimpa.javaclasses.ProgressView
+import com.eaccid.musimpa.javaclasses.UserScoreCustomView
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import com.eaccid.musimpa.ui.uientities.MovieItem
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -42,7 +42,8 @@ fun MovieDetailsScreen(movieId: String) {
 
 @Composable
 fun MoviesDetailsScreenContent(
-    viewState: MovieDetailsScreenViewState) {
+    viewState: MovieDetailsScreenViewState
+) {
     if (viewState is MovieDetailsScreenViewState.Success) {
         val dataItem: MovieItem = viewState.movie
         Column(
@@ -63,10 +64,12 @@ fun MoviesDetailsScreenContent(
                 AndroidView(modifier = Modifier
                     .width(100.dp)
                     .height(100.dp), factory = {
-                    val view = ProgressView(it).apply {
-
+                    val view = UserScoreCustomView(it).apply {
+                        /* todo refactor userscorecustomview to work with style properly
+                            for now its just temp old java that does not work correctly
+                            with object UserScoreCustomViewStyle.Attributes in Style.kt*/
                     }
-                    view.progress = dataItem.voteAverage?.times(10)?.toInt() ?: 0
+                    view.score = dataItem.voteAverage?.times(10)?.toInt() ?: 0
                     view.setTextSize(24)
                     view
                 })
