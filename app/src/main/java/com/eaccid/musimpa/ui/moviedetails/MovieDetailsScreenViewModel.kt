@@ -3,6 +3,7 @@ package com.eaccid.musimpa.ui.moviedetails
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.eaccid.musimpa.entities.Movie
 import com.eaccid.musimpa.network.ApiResponse
@@ -57,5 +58,18 @@ class MovieDetailsScreenViewModel(
     override fun onCleared() {
         super.onCleared()
         Log.i("MusimpaApp", "MovieDetailsScreenViewModel is cleared")
+    }
+}
+
+class MovieDetailsViewModelFactory(
+    private val repository: MoviesRepository,
+    private val savedStateHandle: SavedStateHandle
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MovieDetailsScreenViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return MovieDetailsScreenViewModel(savedStateHandle, repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
