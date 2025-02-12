@@ -58,8 +58,6 @@ val musimpaModule = module {
 
     viewModel { MainScreenViewModel(get()) }
     viewModel { MoviesScreenViewModel(get()) }
-
-//    This may not always follow Jetpack Navigation’s lifecycle handling, leading to unexpected behavior in recompositions
-//    viewModel { MovieDetailsScreenViewModel(get(), get()) }
+    viewModel { MovieDetailsScreenViewModel(get(), get()) }
 
 }
