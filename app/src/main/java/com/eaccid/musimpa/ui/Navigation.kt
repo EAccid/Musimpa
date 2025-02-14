@@ -21,7 +21,7 @@ fun ScreenNavigation() {
         composable(route = Screen.MovieDetailsScreen.route + "/{movieId}") { navBackStackEntry ->
             //todo try how navigation arguments work
             val movieId = navBackStackEntry.arguments?.getString("movieId")
-            movieId?.let { id -> MovieDetailsScreen(id) }
+            movieId?.let { id -> MovieDetailsScreen(id, navController) }
         }
     }
 }
