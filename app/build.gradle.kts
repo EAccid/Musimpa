@@ -46,7 +46,12 @@ android {
         it.buildConfigField(
             string, "THE_MOVIE_DB_API_KEY", keysProperties.getProperty("apiKeyTMDb")
         )
-        it.buildConfigField(string, "YOUTUBE_API_KEY", keysProperties.getProperty("apiKeyYouTube"))
+        it.buildConfigField(
+            string, "YOUTUBE_API_KEY", keysProperties.getProperty("apiKeyYouTube")
+                )
+        it.buildConfigField(
+            string, "THE_MOVIE_DB_API_READ_ACCESS_TOKEN", keysProperties.getProperty("apiReadAccessToken")
+                )
     }
 
     compileOptions {

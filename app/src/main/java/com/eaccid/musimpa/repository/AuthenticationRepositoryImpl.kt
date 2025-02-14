@@ -26,12 +26,10 @@ class AuthenticationRepositoryImpl(
     }
 
     override suspend fun createSessionId(): ApiResponse<Authentication> {
-        val params = mapOf("api_key" to BuildConfig.THE_MOVIE_DB_API_KEY)
         val result = safeApiRequest {
-            serviceAPI.createSession(
+            serviceAPI.createSession(BuildConfig.THE_MOVIE_DB_API_READ_ACCESS_TOKEN,
                 API_VERSION,
-                Authentication(request_token = getLocalDataToken()),
-                params
+                Authentication(request_token = getLocalDataToken())
             )
         }
         updateSessionID(result)

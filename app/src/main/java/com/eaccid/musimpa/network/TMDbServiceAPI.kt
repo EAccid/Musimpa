@@ -15,9 +15,9 @@ interface TMDbServiceAPI {
 
     @POST("{version}/authentication/session/new")
     suspend fun createSession(
+        @Header(value = "Authorization") bearer: String,
         @Path(value = "version") version: Int,
-        @Body authentication: Authentication,
-        @QueryMap options: Map<String, String>
+        @Body authentication: Authentication
     ): Authentication
 
     /*discover*/
