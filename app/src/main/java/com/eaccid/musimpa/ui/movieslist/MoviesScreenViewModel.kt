@@ -2,6 +2,7 @@ package com.eaccid.musimpa.ui.movieslist
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.eaccid.musimpa.entities.Discover
 import com.eaccid.musimpa.network.ApiResponse
@@ -16,6 +17,7 @@ class MoviesScreenViewModel(private val moviesRepository: MoviesRepository) : Vi
 
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(MoviesScreenViewState.Success(emptyList()))
+
     // The UI collects from this StateFlow to get its state updates
     val uiState: StateFlow<MoviesScreenViewState> = _uiState.asStateFlow()
 
@@ -46,5 +48,17 @@ class MoviesScreenViewModel(private val moviesRepository: MoviesRepository) : Vi
     override fun onCleared() {
         super.onCleared()
         Log.i("MusimpaApp", "MoviesViewModel is cleared")
+    }
+}
+
+class MoviesScreenViewModelFactory(
+    private val moviesRepository: MoviesRepository
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MoviesScreenViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return MoviesScreenViewModel(moviesRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

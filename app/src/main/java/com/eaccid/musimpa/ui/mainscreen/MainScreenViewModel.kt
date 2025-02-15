@@ -2,6 +2,7 @@ package com.eaccid.musimpa.ui.mainscreen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.eaccid.musimpa.network.ApiResponse
 import com.eaccid.musimpa.repository.AuthenticationRepository
@@ -17,7 +18,7 @@ class MainScreenViewModel(
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<MainScreenViewState> =
-        MutableStateFlow(MainScreenViewState())
+        MutableStateFlow(MainScreenViewState(state = MainScreenState.Success))
     val uiState: StateFlow<MainScreenViewState> = _uiState.asStateFlow()
 
     init {
@@ -60,5 +61,17 @@ class MainScreenViewModel(
             }
         }
         _uiState.update { it.copy(state = MainScreenState.Error) }
+    }
+}
+
+class MainScreenViewModelFactory(
+    private val authenticationRepository: AuthenticationRepository
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MainScreenViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return MainScreenViewModel(authenticationRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
