@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.ui.moviedetails
+package com.eaccid.musimpa.ui.moviedetailsscreen
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -76,9 +76,10 @@ fun MovieDetailsScreen(
         factory = factory
     )
     SideEffect {
+        Log.i("twicetest ", " --------------- ")
         Log.i(
             "twicetest @Composable//MovieDetailsScreen",
-            "@Composable//MovieDetailsScreen ->> viewModel: $viewModel"
+            "@Composable//MovieDetailsScreen ->> viewModel 3: $viewModel"
         )
     }
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -210,7 +211,7 @@ class MoviesDetailsScreenViewPreviewParameterProvider :
 
 @Preview(showBackground = true)
 @Composable
-fun MoviesScreenContentPreview(
+fun MovieDetailsScreenContentPreview(
     @PreviewParameter(MoviesDetailsScreenViewPreviewParameterProvider::class) viewState: MovieDetailsScreenViewState
 ) {
     MusimpaTheme {

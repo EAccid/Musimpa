@@ -57,7 +57,7 @@ val repositoryModule = module {
 //  I got two instances of ViewModel all the time, better use Hilt or Dagger2
 
 //    viewModel { MainScreenViewModel(get()) }
-//    viewModel { MoviesScreenViewModel(get()) }
+//    viewModel { MovieListScreenViewModel(get()) }
 //    viewModel { MovieDetailsScreenViewModel(get(), get()) }
 
 //}

@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.ui.moviedetails
+package com.eaccid.musimpa.ui.moviedetailsscreen
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
@@ -30,6 +30,7 @@ class MovieDetailsScreenViewModel(
 
     init {
         Log.i("MusimpaApp", "MovieDetailsScreenViewModel movie ${movieId} from state")
+        Log.i("MovieDetailsScreenViewModel twicetest ----------------- ", " $this is created 3")
         getMovieDetails(movieId)
     }
 
@@ -57,7 +58,7 @@ class MovieDetailsScreenViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        Log.i("MusimpaApp", "MovieDetailsScreenViewModel is cleared")
+        Log.i("MovieDetailsScreenViewModel twicetest ----------------- ", " $this is cleared 3")
     }
 }
 

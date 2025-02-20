@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,36 +32,51 @@ import androidx.navigation.NavController
 import com.eaccid.musimpa.repository.AuthenticationRepository
 import com.eaccid.musimpa.ui.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
-import org.koin.compose.rememberKoinInject
+import org.koin.compose.koinInject
 
 @Composable
 fun MainScreen(navController: NavController) {
-    val authenticationRepository = rememberKoinInject<AuthenticationRepository>()
     //would be great to have viewmodel injected by DI, but koin causes recomposition
 
-    // next is super-overhead for this project, as Jetpack Navigation does handle it with factory
-    // but good to know though
+    val authenticationRepository = koinInject<AuthenticationRepository>()
+
+    // next is just an overhead but good to know though
+
+    /** currentBackStackEntry by rememberUpdatedState:
+     * It ensures that currentRoute always holds the latest value of currentBackStackEntry?.destination?.route.
+    Does not trigger recomposition when currentRoute updates, making it useful in effects like LaunchedEffect.
+    It does not cause recomposition when currentRoute changes
+    (which might be needed if you want the UI to react).**/
+    //val currentBackStackEntry by rememberUpdatedState(newValue = navController.currentBackStackEntry)
+
+    /** remember navController.getBackStackEntry:
+     * Retrieves a specific NavBackStackEntry from the navigation stack for Screen.MainScreen.route.
+    Remembers the result across recompositions, as long as navController doesn't change.
+    If the route is not in the back stack, it throws an exception.
+    It does not reactively update when navigation changes
+    (it's tied to remember, which doesn't automatically track state changes).**/
+    val navBackStackEntry = remember(navController) {
+        navController.getBackStackEntry(Screen.MainScreen.route)
+    }
     val factory by remember { lazy { MainScreenViewModelFactory(authenticationRepository) } }
-    val currentBackStackEntry by rememberUpdatedState(newValue = navController.currentBackStackEntry)
-    // Only create the viewModel if we have a valid NavBackStackEntry
-    currentBackStackEntry?.let { navBackStackEntry ->
-        val viewModel: MainScreenViewModel =
-            viewModel(viewModelStoreOwner = navBackStackEntry, factory = factory)
-        val viewState by viewModel.uiState.collectAsStateWithLifecycle()
-        MainScreenContent(viewState, onLoginClicked = {
-            viewModel.login()
-        }, onMoviesClicked = {
-            navController.navigate(Screen.MoviesScreen.route) //todo add navOptions to clear backstack
-        }, onWebActionSucceed = { succeed: Boolean ->
-            viewModel.onWebAction(succeed)
+    val viewModel: MainScreenViewModel =
+        viewModel(viewModelStoreOwner = navBackStackEntry, factory = factory)
+    val viewState by viewModel.uiState.collectAsStateWithLifecycle()
+    MainScreenContent(viewState, onLoginClicked = {
+        viewModel.login()
+    }, onMoviesClicked = {
+        navController.navigate(Screen.MovieListScreen.route) {
         }
+    }, onWebActionSucceed = { succeed: Boolean ->
+        viewModel.onWebAction(succeed)
+    }
+    )
+    SideEffect {
+        Log.i("twicetest ", " --------------- ")
+        Log.i(
+            "twicetest @Composable//MainScreen",
+            "@Composable//MainScreen ->> viewModel 1: $viewModel"
         )
-        SideEffect {
-            Log.i(
-                "twicetest @Composable//MainScreen",
-                "@Composable//MainScreen ->> viewModel: $viewModel"
-            )
-        }
     }
 }
 
@@ -73,8 +87,6 @@ fun MainScreenContent(
     onMoviesClicked: () -> Unit,
     onWebActionSucceed: (Boolean) -> Unit
 ) {
-
-
     Box() {
         Column(
             modifier = Modifier

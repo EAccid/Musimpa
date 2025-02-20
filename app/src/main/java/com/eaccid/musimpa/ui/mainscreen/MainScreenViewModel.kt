@@ -22,6 +22,7 @@ class MainScreenViewModel(
     val uiState: StateFlow<MainScreenViewState> = _uiState.asStateFlow()
 
     init {
+        Log.i("MainScreenViewModel twicetest ----------------- ", " $this is created 1")
         if (authenticationRepository.isUserLoggedIn())
             _uiState.update { it.copy(state = MainScreenState.Success) }
         else {
@@ -46,7 +47,7 @@ class MainScreenViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        Log.i("MusimpaApp", "MainScreenViewModel is cleared")
+        Log.i("MainScreenViewModel twicetest ----------------- ", " $this is cleared 1")
     }
 
     fun onWebAction(succeed: Boolean) {

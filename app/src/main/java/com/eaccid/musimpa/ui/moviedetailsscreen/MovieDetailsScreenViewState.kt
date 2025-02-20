@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.ui.moviedetails
+package com.eaccid.musimpa.ui.moviedetailsscreen
 
 import com.eaccid.musimpa.ui.uientities.MovieItem
 

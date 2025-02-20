@@ -7,8 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.eaccid.musimpa.ui.mainscreen.MainScreen
-import com.eaccid.musimpa.ui.moviedetails.MovieDetailsScreen
-import com.eaccid.musimpa.ui.movieslist.MoviesScreen
+import com.eaccid.musimpa.ui.moviedetailsscreen.MovieDetailsScreen
+import com.eaccid.musimpa.ui.movielistscreen.MovieListScreen
 
 @Composable
 fun AppNavigation() {
@@ -20,8 +20,8 @@ fun AppNavigation() {
         composable(route = Screen.MainScreen.route) {
             MainScreen(navController = navController)
         }
-        composable(route = Screen.MoviesScreen.route) {
-            MoviesScreen(navController = navController)
+        composable(route = Screen.MovieListScreen.route) {
+            MovieListScreen(navController = navController)
         }
         composable(route = Screen.MovieDetailsScreen.route + "/{movieId}") { navBackStackEntry ->
             //todo trying how navigation arguments work

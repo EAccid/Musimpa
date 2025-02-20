@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.ui.movieslist
+package com.eaccid.musimpa.ui.movielistscreen
 
 import android.util.Log
 import androidx.compose.foundation.clickable
@@ -41,45 +41,43 @@ import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import com.eaccid.musimpa.ui.uientities.MovieItem
 import com.eaccid.musimpa.utils.PosterSize
 import com.eaccid.musimpa.utils.toImageUri
-import org.koin.compose.rememberKoinInject
+import org.koin.compose.koinInject
 
 @Composable
-fun MoviesScreen(navController: NavController) {
-    val moviesRepository = rememberKoinInject<MoviesRepository>()
-    val factory = remember {
-        MoviesScreenViewModelFactory(moviesRepository)
+fun MovieListScreen(navController: NavController) {
+    //would be great to have viewmodel injected by DI, but koin causes recomposition
+
+    val moviesRepository = koinInject<MoviesRepository>()
+
+    val navBackStackEntry = remember(navController) {
+        navController.getBackStackEntry(Screen.MainScreen.route)
     }
-
-    /** Better way with rememberedGetBackStackEntry
-     * see [com.eaccid.musimpa.ui.mainscreen.MainScreen] **/
-
-    val viewModel: MoviesScreenViewModel = viewModel(
-        viewModelStoreOwner = navController.currentBackStackEntry!!,
+    val factory by remember { lazy { MovieListScreenViewModelFactory(moviesRepository) } }
+    val viewModel: MovieListScreenViewModel = viewModel(
+        viewModelStoreOwner = navBackStackEntry,
         factory = factory
     )
     SideEffect {
+        Log.i("twicetest ", " --------------- ")
         Log.i(
-            "twicetest @Composable//MoviesScreen",
-            "@Composable//MoviesScreen list ->> viewModel: $viewModel"
+            "twicetest @Composable//MovieListScreen",
+            "@Composable//MovieListScreen list ->> viewModel 2: $viewModel"
         )
     }
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
-    MoviesScreenContent(viewState, onItemClicked = { movieItem ->
+    MovieListScreenContent(viewState, onItemClicked = { movieItem ->
         navController.navigate(Screen.MovieDetailsScreen.route + "/${movieItem.id}")
-        //todo add navOptions to clear backstack
-        Log.i("MusimpaApp", "MoviesScreen: movie ${movieItem.id} - ${movieItem.title} clicked")
-    }
-    )
+    })
 }
 
 @Composable
-fun MoviesScreenContent(
-    viewState: MoviesScreenViewState,
+fun MovieListScreenContent(
+    viewState: MovieListScreenViewState,
     onItemClicked: (movieItem: MovieItem) -> Unit,
 ) {
-    if (viewState is MoviesScreenViewState.Success) {
+    if (viewState is MovieListScreenViewState.Success) {
         MoviesList(viewState.movies, onItemClicked)
-    } else if (viewState is MoviesScreenViewState.Error) {
+    } else if (viewState is MovieListScreenViewState.Error) {
         Text(text = "todo error handling")
     }
 }
@@ -88,7 +86,7 @@ fun MoviesScreenContent(
 fun MoviesList(items: List<MovieItem>, onItemClicked: (movieItem: MovieItem) -> Unit) {
     val lazyListState = rememberLazyListState()
     LazyColumn(state = lazyListState) {
-        items(items.size) { index ->
+        items(items.size, key = { index -> items[index].id }) { index ->
             MovieItemView(dataItem = items[index], onItemClicked)
         }
     }
@@ -142,9 +140,10 @@ fun MovieItemView(dataItem: MovieItem, onItemClick: (movieItem: MovieItem) -> Un
     }
 }
 
-class MoviesScreenViewPreviewParameterProvider : PreviewParameterProvider<MoviesScreenViewState> {
+class MovieListScreenViewPreviewParameterProvider :
+    PreviewParameterProvider<MovieListScreenViewState> {
     override val values = sequenceOf(
-        MoviesScreenViewState.Success(
+        MovieListScreenViewState.Success(
             mutableListOf(
                 MovieItem(id = 1, title = "title 1"),
                 MovieItem(id = 2, title = "title 2"),
@@ -156,8 +155,8 @@ class MoviesScreenViewPreviewParameterProvider : PreviewParameterProvider<Movies
 
 @Preview(showBackground = true)
 @Composable
-fun MoviesScreenContentPreview(@PreviewParameter(MoviesScreenViewPreviewParameterProvider::class) viewState: MoviesScreenViewState) {
+fun MovieListScreenContentPreview(@PreviewParameter(MovieListScreenViewPreviewParameterProvider::class) viewState: MovieListScreenViewState) {
     MusimpaTheme {
-        MoviesScreenContent(viewState, {})
+        MovieListScreenContent(viewState, {})
     }
 }
