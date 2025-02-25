@@ -37,7 +37,6 @@ import org.koin.compose.koinInject
 @Composable
 fun MainScreen(navController: NavController) {
     //would be great to have viewmodel injected by DI, but koin causes recomposition
-
     val authenticationRepository = koinInject<AuthenticationRepository>()
 
     // next is just an overhead but good to know though
@@ -66,13 +65,19 @@ fun MainScreen(navController: NavController) {
         viewModel.login()
     }, onMoviesClicked = {
         navController.navigate(Screen.MovieListScreen.route) {
+            // TODO still got two screen recomposes
+            // Avoid multiple copies of the same destination when
+            // reselecting the same item
+            launchSingleTop = true
+            // Restore state when reselecting a previously selected item
+            restoreState = true
         }
     }, onWebActionSucceed = { succeed: Boolean ->
         viewModel.onWebAction(succeed)
     }
     )
     SideEffect {
-        Log.i("twicetest ", " --------------- ")
+        Log.i("twicetest ", " ---------------")
         Log.i(
             "twicetest @Composable//MainScreen",
             "@Composable//MainScreen ->> viewModel 1: $viewModel"

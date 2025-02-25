@@ -65,7 +65,8 @@ fun MovieListScreen(navController: NavController) {
         )
     }
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
-    MovieListScreenContent(viewState, onItemClicked = { movieItem ->
+    val movies by viewModel.movies.collectAsStateWithLifecycle()
+    MovieListScreenContent(viewState, movies, onItemClicked = { movieItem ->
         navController.navigate(Screen.MovieDetailsScreen.route + "/${movieItem.id}")
     })
 }
@@ -73,10 +74,11 @@ fun MovieListScreen(navController: NavController) {
 @Composable
 fun MovieListScreenContent(
     viewState: MovieListScreenViewState,
+    movies: List<MovieItem>,
     onItemClicked: (movieItem: MovieItem) -> Unit,
 ) {
     if (viewState is MovieListScreenViewState.Success) {
-        MoviesList(viewState.movies, onItemClicked)
+        MoviesList(movies, onItemClicked)
     } else if (viewState is MovieListScreenViewState.Error) {
         Text(text = "todo error handling")
     }
@@ -143,13 +145,7 @@ fun MovieItemView(dataItem: MovieItem, onItemClick: (movieItem: MovieItem) -> Un
 class MovieListScreenViewPreviewParameterProvider :
     PreviewParameterProvider<MovieListScreenViewState> {
     override val values = sequenceOf(
-        MovieListScreenViewState.Success(
-            mutableListOf(
-                MovieItem(id = 1, title = "title 1"),
-                MovieItem(id = 2, title = "title 2"),
-                MovieItem(id = 3, title = "title 3")
-            )
-        )
+        MovieListScreenViewState.Success, MovieListScreenViewState.Error(Throwable("error"))
     )
 }
 
@@ -157,6 +153,10 @@ class MovieListScreenViewPreviewParameterProvider :
 @Composable
 fun MovieListScreenContentPreview(@PreviewParameter(MovieListScreenViewPreviewParameterProvider::class) viewState: MovieListScreenViewState) {
     MusimpaTheme {
-        MovieListScreenContent(viewState, {})
+        MovieListScreenContent(viewState, mutableListOf(
+            MovieItem(id = 1, title = "title 1"),
+            MovieItem(id = 2, title = "title 2"),
+            MovieItem(id = 3, title = "title 3")
+        ), onItemClicked = {})
     }
 }

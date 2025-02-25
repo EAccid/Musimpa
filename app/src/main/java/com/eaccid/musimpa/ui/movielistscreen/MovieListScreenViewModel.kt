@@ -16,10 +16,14 @@ import kotlinx.coroutines.launch
 class MovieListScreenViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
 
     // Backing property to avoid state updates from other classes
-    private val _uiState = MutableStateFlow(MovieListScreenViewState.Success(emptyList()))
+    private val _uiState = MutableStateFlow(MovieListScreenViewState.Success)
 
     // The UI collects from this StateFlow to get its state updates
     val uiState: StateFlow<MovieListScreenViewState> = _uiState.asStateFlow()
+
+    private val _movies = MutableStateFlow(listOf<MovieItem>())
+    val movies: StateFlow<List<MovieItem>>
+        get() = _movies.asStateFlow()
 
     init {
         Log.i("MoviesViewModel twicetest ----------------- ", "$this is created 2")
@@ -29,8 +33,9 @@ class MovieListScreenViewModel(private val moviesRepository: MoviesRepository) :
     private fun getDiscoverMovies() {
         viewModelScope.launch {
             val discover: ApiResponse<Discover> = moviesRepository.discoverAll()
-            if (discover is ApiResponse.Success)
-                _uiState.value = MovieListScreenViewState.Success(movies = discover.data.movies.map {
+            if (discover is ApiResponse.Success) {
+                _uiState.value = MovieListScreenViewState.Success
+                _movies.value = discover.data.movies.map {
                     MovieItem(
                         it.id,
                         it.originalTitle,
@@ -42,7 +47,8 @@ class MovieListScreenViewModel(private val moviesRepository: MoviesRepository) :
                         it.tagline,
                         it.runtime
                     )
-                })
+                }
+            }
         }
     }
 
