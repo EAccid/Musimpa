@@ -1,7 +1,7 @@
 package com.eaccid.musimpa.dikoin
 
 import com.eaccid.musimpa.LocalData
-import com.eaccid.musimpa.LocalSharedPreferences
+import com.eaccid.musimpa.LocalEncryptedSharedPreferences
 import com.eaccid.musimpa.network.TMDbServiceAPI
 import com.eaccid.musimpa.repository.AuthenticationRepository
 import com.eaccid.musimpa.repository.AuthenticationRepositoryImpl
@@ -47,7 +47,7 @@ val repositoryModule = module {
         return retrofit.create(TMDbServiceAPI::class.java)
     }
     single { provideTMDbServiceAPI(get()) }
-    single<LocalData> { LocalSharedPreferences(androidContext()) }
+    single<LocalData> { LocalEncryptedSharedPreferences(androidContext()) }
 }
 
 //val musimpaModule = module {

@@ -2,13 +2,29 @@ package com.eaccid.musimpa
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
 import android.util.Log
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 
 private const val APP_PREF = "musimpaPrefs"
 
-class LocalSharedPreferences(private val context: Context) : LocalData, LocalPreferences {
+class LocalEncryptedSharedPreferences(context: Context) : LocalData, LocalPreferences {
+    private val masterKey = MasterKey.Builder(context)
+        .setKeyGenParameterSpec(KeyGenParameterSpec.Builder(MasterKey.DEFAULT_MASTER_KEY_ALIAS, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
+            .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+            .setKeySize(256).build()).build()
+
     private val preferences: SharedPreferences =
-        context.getSharedPreferences(APP_PREF, Context.MODE_PRIVATE)
+        EncryptedSharedPreferences.create(
+            context,
+            APP_PREF,
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
 
     override fun saveString(key: String, value: String) {
         Log.i("MusimpaApp", "set key = $key, value = $value")
@@ -36,6 +52,5 @@ class LocalSharedPreferences(private val context: Context) : LocalData, LocalPre
     override fun getSessionId(): String {
         return getString(LocalPreferences.SharedKeys.SESSION_ID.key)
     }
-
 
 }
