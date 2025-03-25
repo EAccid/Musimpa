@@ -1,6 +1,7 @@
 package com.eaccid.musimpa.ui.movielistscreen
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,6 +37,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.eaccid.musimpa.repository.MoviesRepository
+import com.eaccid.musimpa.ui.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import com.eaccid.musimpa.ui.uientities.MovieItem
@@ -50,7 +52,7 @@ fun MovieListScreen(navController: NavController) {
     val moviesRepository = koinInject<MoviesRepository>()
 
     val navBackStackEntry = remember(navController) {
-        navController.getBackStackEntry(Screen.MainScreen.route)
+        navController.getBackStackEntry(Screen.MovieListScreen.route)
     }
     val factory by remember { lazy { MovieListScreenViewModelFactory(moviesRepository) } }
     val viewModel: MovieListScreenViewModel = viewModel(
@@ -69,6 +71,10 @@ fun MovieListScreen(navController: NavController) {
     MovieListScreenContent(viewState, movies, onItemClicked = { movieItem ->
         navController.navigate(Screen.MovieDetailsScreen.route + "/${movieItem.id}")
     })
+//    BackHandler {
+//        navController.navigate(Screen.MainScreen.route) { popUpTo(0) }
+//    }
+    SaveLastScreenEffect(Screen.MovieListScreen.route)
 }
 
 @Composable

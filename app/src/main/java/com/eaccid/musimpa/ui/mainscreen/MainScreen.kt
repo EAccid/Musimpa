@@ -30,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.eaccid.musimpa.repository.AuthenticationRepository
+import com.eaccid.musimpa.ui.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import org.koin.compose.koinInject
@@ -83,6 +84,7 @@ fun MainScreen(navController: NavController) {
             "@Composable//MainScreen ->> viewModel 1: $viewModel"
         )
     }
+    SaveLastScreenEffect(Screen.MainScreen.route)
 }
 
 @Composable
@@ -154,7 +156,7 @@ fun WebView(url: String, webViewClient: WebViewClient) {
 
 class TMDBWebViewClient(val succeed: (Boolean) -> Unit) : WebViewClient() {
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-        val url: String = request?.url.toString() ?: ""
+        val url = request?.url.toString()
         if (url.contains("/allow")) {
             succeed(true)
             return false

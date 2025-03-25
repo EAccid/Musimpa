@@ -51,8 +51,8 @@ class MovieListScreenViewModel(private val moviesRepository: MoviesRepository) :
                     }
                 }
 
-                is ApiResponse.Error -> {}
-                ApiResponse.NetworkError -> {}
+                is ApiResponse.Error -> TODO()
+                ApiResponse.NetworkError -> TODO()
             }
         }
     }

@@ -2,6 +2,7 @@ package com.eaccid.musimpa.ui.moviedetailsscreen
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -34,6 +35,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.eaccid.musimpa.javaclasses.UserScoreCustomView
 import com.eaccid.musimpa.repository.MoviesRepository
+import com.eaccid.musimpa.ui.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import com.eaccid.musimpa.ui.uientities.MovieItem
@@ -87,6 +89,10 @@ fun MovieDetailsScreen(
     SideEffect {
         Log.i("MusimpaApp", "MovieDetailsScreen: movie ${movieId} screen open")
     }
+    BackHandler {
+        navController.popBackStack()
+    }
+    SaveLastScreenEffect(Screen.MovieDetailsScreen.route + "/${movieId}")
 }
 
 @Composable
