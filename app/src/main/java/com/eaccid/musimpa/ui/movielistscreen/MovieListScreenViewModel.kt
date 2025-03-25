@@ -33,21 +33,26 @@ class MovieListScreenViewModel(private val moviesRepository: MoviesRepository) :
     private fun getDiscoverMovies() {
         viewModelScope.launch {
             val discover: ApiResponse<Discover> = moviesRepository.discoverAll()
-            if (discover is ApiResponse.Success) {
-                _uiState.value = MovieListScreenViewState.Success
-                _movies.value = discover.data.movies.map {
-                    MovieItem(
-                        it.id,
-                        it.originalTitle,
-                        it.releaseDate,
-                        it.posterPath,
-                        it.title,
-                        it.overview,
-                        it.voteAverage,
-                        it.tagline,
-                        it.runtime
-                    )
+            when (discover) {
+                is ApiResponse.Success -> {
+                    _uiState.value = MovieListScreenViewState.Success
+                    _movies.value = discover.data.movies.map {
+                        MovieItem(
+                            it.id,
+                            it.originalTitle,
+                            it.releaseDate,
+                            it.posterPath,
+                            it.title,
+                            it.overview,
+                            it.voteAverage,
+                            it.tagline,
+                            it.runtime
+                        )
+                    }
                 }
+
+                is ApiResponse.Error -> {}
+                ApiResponse.NetworkError -> {}
             }
         }
     }
