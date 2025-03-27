@@ -15,11 +15,11 @@ import com.eaccid.musimpa.ui.theme.MusimpaTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.i("twicetest MainActivity", "MainActivity onCreate called")
+        Log.i("temptest MainActivity", "MainActivity ${this@MainActivity} - onCreate")
         setContent {
             SideEffect {
-                Log.i("twicetest ", " --------------- ")
-                Log.i("twicetest MainActivity", "MainActivity: ${this@MainActivity}, ")
+                Log.i("temptest ", " --------------- ")
+                Log.i("temptest MainActivity", "MainActivity")
             }
             MusimpaTheme {
                 // A surface container using the 'background' color from the theme
@@ -31,6 +31,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("temptest MainActivity", "MainActivity ${this@MainActivity} - onDestroy")
     }
 }
 

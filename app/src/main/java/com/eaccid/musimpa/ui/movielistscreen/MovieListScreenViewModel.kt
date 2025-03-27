@@ -2,12 +2,12 @@ package com.eaccid.musimpa.ui.movielistscreen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.eaccid.musimpa.entities.Discover
 import com.eaccid.musimpa.network.ApiResponse
 import com.eaccid.musimpa.repository.MoviesRepository
 import com.eaccid.musimpa.ui.uientities.MovieItem
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,7 +26,7 @@ class MovieListScreenViewModel(private val moviesRepository: MoviesRepository) :
         get() = _movies.asStateFlow()
 
     init {
-        Log.i("MoviesViewModel twicetest ----------------- ", "$this is created 2")
+        Log.i("MoviesViewModel temptest ----------------- ", "$this is created 2")
         getDiscoverMovies()
     }
 
@@ -59,18 +59,7 @@ class MovieListScreenViewModel(private val moviesRepository: MoviesRepository) :
 
     override fun onCleared() {
         super.onCleared()
-        Log.i("MoviesViewModel twicetest ----------------- ", "$this is cleared 2")
-    }
-}
-
-class MovieListScreenViewModelFactory(
-    private val moviesRepository: MoviesRepository
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MovieListScreenViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return MovieListScreenViewModel(moviesRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
+        viewModelScope.cancel()
+        Log.i("MoviesViewModel temptest ----------------- ", "$this is cleared 2")
     }
 }

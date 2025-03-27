@@ -2,11 +2,11 @@ package com.eaccid.musimpa.ui.mainscreen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.eaccid.musimpa.network.ApiResponse
 import com.eaccid.musimpa.repository.AuthenticationRepository
 import com.eaccid.musimpa.utils.AUTHENTICATE_REQUEST_TOKEN_URL
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,7 +22,7 @@ class MainScreenViewModel(
     val uiState: StateFlow<MainScreenViewState> = _uiState.asStateFlow()
 
     init {
-        Log.i("MainScreenViewModel twicetest ----------------- ", " $this is created 1")
+        Log.i("MainScreenViewModel temptest ----------------- ", " $this is created 1")
         if (authenticationRepository.isUserLoggedIn())
             _uiState.update { it.copy(state = MainScreenState.Success) }
         else {
@@ -47,7 +47,8 @@ class MainScreenViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        Log.i("MainScreenViewModel twicetest ----------------- ", " $this is cleared 1")
+        viewModelScope.cancel()
+        Log.i("MainScreenViewModel temptest ----------------- ", " $this is cleared 1")
     }
 
     fun onWebAction(succeed: Boolean) {
@@ -62,17 +63,5 @@ class MainScreenViewModel(
             }
         }
         _uiState.update { it.copy(state = MainScreenState.Error) }
-    }
-}
-
-class MainScreenViewModelFactory(
-    private val authenticationRepository: AuthenticationRepository
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MainScreenViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return MainScreenViewModel(authenticationRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

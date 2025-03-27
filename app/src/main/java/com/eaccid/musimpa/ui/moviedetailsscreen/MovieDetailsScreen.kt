@@ -1,8 +1,6 @@
 package com.eaccid.musimpa.ui.moviedetailsscreen
 
-import android.annotation.SuppressLint
 import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -14,12 +12,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,69 +27,42 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.eaccid.musimpa.javaclasses.UserScoreCustomView
-import com.eaccid.musimpa.repository.MoviesRepository
-import com.eaccid.musimpa.ui.SaveLastScreenEffect
-import com.eaccid.musimpa.ui.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import com.eaccid.musimpa.ui.uientities.MovieItem
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-import org.koin.compose.rememberKoinInject
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun MovieDetailsScreen(
     movieId: String,
     navController: NavController,
-    repository: MoviesRepository = rememberKoinInject<MoviesRepository>() //with Hilt its better to inject right into the ViewModel's constructor
 ) {
+    val viewModel = koinViewModel<MovieDetailsScreenViewModel>()
 
-    // 1. This may not always follow Jetpack Navigation’s lifecycle handling,
-    // leading to unexpected behavior in recompositions due to state loss
-    // val viewModel: MovieDetailsScreenViewModel = koinViewModel<MovieDetailsScreenViewModel>()
-
-    // 3. Hilt would be the best
-
-    /** 4. Better way to get sate for now
-     * for more details with rememberedGetBackStackEntry
-     * see [com.eaccid.musimpa.ui.mainscreen.MainScreen] **/
-
-    @SuppressLint("UnrememberedGetBackStackEntry")
-    val navBackStackEntry: NavBackStackEntry = remember {
-        navController.getBackStackEntry(Screen.MovieDetailsScreen.route + "/{movieId}")
-    }
-    navBackStackEntry.savedStateHandle["movieId"] = movieId //set manually if not using DI
-    val factory = remember {
-        MovieDetailsViewModelFactory(
-            repository,
-            navBackStackEntry.savedStateHandle
-        )
-    }
-    val viewModel: MovieDetailsScreenViewModel = viewModel(
-        viewModelStoreOwner = navBackStackEntry,
-        factory = factory
-    )
-    SideEffect {
-        Log.i("twicetest ", " --------------- ")
-        Log.i(
-            "twicetest @Composable//MovieDetailsScreen",
-            "@Composable//MovieDetailsScreen ->> viewModel 3: $viewModel"
-        )
-    }
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
     MoviesDetailsScreenContent(viewState)
     SideEffect {
         Log.i("MusimpaApp", "MovieDetailsScreen: movie ${movieId} screen open")
+        Log.i(
+            "temptest @Composable//MovieDetailsScreen",
+            "@Composable//MovieDetailsScreen ->> viewModel 3: $viewModel"
+        )
     }
-    BackHandler {
-        navController.popBackStack()
+//    BackHandler {
+//        navController.popBackStack()
+//    }
+//    SaveLastScreenEffect(Screen.MovieDetailsScreen.route + "/${movieId}")
+
+    DisposableEffect(Unit) {
+        println("DisposableEffect MovieDetailsScreen Entered")
+        onDispose { println("DisposableEffect MovieDetailsScreen Disposed") }
     }
-    SaveLastScreenEffect(Screen.MovieDetailsScreen.route + "/${movieId}")
+
 }
 
 @Composable
@@ -192,10 +162,9 @@ fun YoutubeScreen(
     SideEffect {
         Log.i("MusimpaApp", "MovieDetailsScreen: videoKey ${videoKey} youtube load")
     }
-    val context = LocalContext.current
     AndroidView(factory = {
-        val view = YouTubePlayerView(it)
-        val fragment = view.addYouTubePlayerListener(
+        val youTubePlayerView = YouTubePlayerView(it)
+        youTubePlayerView.addYouTubePlayerListener(
             object : AbstractYouTubePlayerListener() {
                 override fun onReady(youTubePlayer: YouTubePlayer) {
                     super.onReady(youTubePlayer)
@@ -203,8 +172,20 @@ fun YoutubeScreen(
                 }
             }
         )
-        view
+        youTubePlayerView
+    }, modifier = modifier, onRelease = { youTubePlayerView ->
+        // Dispose the player when the Composable leaves Composition to prevent a memory leak
+        youTubePlayerView.release()
     })
+
+    // no need anymore as onReleased was introduced
+//    DisposableEffect(Unit) {
+//        onDispose {
+//            Log.i("MusimpaApp", "Releasing YouTubePlayerView")
+//            youTubePlayerView.release()
+//        }
+//    }
+
 }
 
 class MoviesDetailsScreenViewPreviewParameterProvider :

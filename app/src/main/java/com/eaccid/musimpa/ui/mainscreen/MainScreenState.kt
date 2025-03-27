@@ -6,10 +6,10 @@ typealias GreetingText = String
 sealed class MainScreenState(
     val text: GreetingText = ""
 ) {
-    object Success : MainScreenState("Let's start!") //todo get text from resources in ui
-    object Error : MainScreenState("Try again.")
-    object NoData : MainScreenState("Hello!")
-    object OnSiteLogin : MainScreenState()
+    data object Success : MainScreenState("Let's start!") //todo get text from resources in ui
+    data object Error : MainScreenState("Try again.")
+    data object NoData : MainScreenState("Hello!")
+    data object OnSiteLogin : MainScreenState()
 }
 
 //todo refactor state handling

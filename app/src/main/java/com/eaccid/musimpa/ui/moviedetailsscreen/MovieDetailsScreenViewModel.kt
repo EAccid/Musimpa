@@ -3,12 +3,12 @@ package com.eaccid.musimpa.ui.moviedetailsscreen
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.eaccid.musimpa.entities.Movie
 import com.eaccid.musimpa.network.ApiResponse
 import com.eaccid.musimpa.repository.MoviesRepository
 import com.eaccid.musimpa.utils.toMovieItem
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,7 +30,7 @@ class MovieDetailsScreenViewModel(
 
     init {
         Log.i("MusimpaApp", "MovieDetailsScreenViewModel movie ${movieId} from state")
-        Log.i("MovieDetailsScreenViewModel twicetest ----------------- ", " $this is created 3")
+        Log.i("MovieDetailsScreenViewModel temptest ----------------- ", " $this is created 3")
         getMovieDetails(movieId)
     }
 
@@ -58,19 +58,7 @@ class MovieDetailsScreenViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        Log.i("MovieDetailsScreenViewModel twicetest ----------------- ", " $this is cleared 3")
-    }
-}
-
-class MovieDetailsViewModelFactory(
-    private val repository: MoviesRepository,
-    private val savedStateHandle: SavedStateHandle
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MovieDetailsScreenViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return MovieDetailsScreenViewModel(savedStateHandle, repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
+        viewModelScope.cancel()
+        Log.i("MovieDetailsScreenViewModel temptest ----------------- ", " $this is cleared 3")
     }
 }

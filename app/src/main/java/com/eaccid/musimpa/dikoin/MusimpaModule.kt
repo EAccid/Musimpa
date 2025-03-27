@@ -8,10 +8,14 @@ import com.eaccid.musimpa.repository.AuthenticationRepositoryImpl
 import com.eaccid.musimpa.repository.MoviesRepository
 import com.eaccid.musimpa.repository.MoviesRepositoryImpl
 import com.eaccid.musimpa.ui.PreferencesDataStoreManager
+import com.eaccid.musimpa.ui.mainscreen.MainScreenViewModel
+import com.eaccid.musimpa.ui.moviedetailsscreen.MovieDetailsScreenViewModel
+import com.eaccid.musimpa.ui.movielistscreen.MovieListScreenViewModel
 import com.eaccid.musimpa.utils.BASE_URL
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -60,14 +64,10 @@ val navigationModule = module {
 //    single<Navigator> { DefaultNavigator(get()) }
 }
 
-//val musimpaModule = module {
+val viewModelsModule = module {
 
-//  In case of Koin this may not always follow Jetpack Navigation’s lifecycle handling,
-//  leading to unexpected behavior in recompositions
-//  I got two instances of ViewModel all the time, better use Hilt or Dagger2
+    viewModel { MainScreenViewModel(get()) }
+    viewModel { MovieListScreenViewModel(get()) }
+    viewModel { MovieDetailsScreenViewModel(get(), get()) }
 
-//    viewModel { MainScreenViewModel(get()) }
-//    viewModel { MovieListScreenViewModel(get()) }
-//    viewModel { MovieDetailsScreenViewModel(get(), get()) }
-
-//}
+}

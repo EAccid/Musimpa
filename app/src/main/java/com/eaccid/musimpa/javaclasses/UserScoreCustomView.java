@@ -232,7 +232,19 @@ public class UserScoreCustomView extends View {
         invalidate();
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        paintInnerCircle.reset();
+        paintScoreProgress.reset();
+        paintUnfinishedScoreProgress.reset();
+        textPaint.reset();
+        unfinishedScoreProgressRect.setEmpty();
+        scoreProgressColor.setEmpty();
+        backgroundColorStateList = null;
+        unfinishedProgrssStrokeColorStateList = null;
+        scoreProgressStrokeColorStateList = null;
+        textColorStateList = null;
+    }
 }
-
-
 

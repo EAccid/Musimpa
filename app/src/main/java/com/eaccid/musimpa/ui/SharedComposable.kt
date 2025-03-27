@@ -19,7 +19,7 @@ fun SaveLastScreenEffect(route: String) {
     val context = LocalContext.current
     val preferencesManager = rememberUpdatedState(PreferencesDataStoreManager(context))
     SideEffect {
-        Log.i("twicetest AppNavigation", "saved lastScreen: $route ")
+        Log.i("temptest AppNavigation", "saved lastScreen: $route ")
     }
     LaunchedEffect(route) {
         saveLastScreenPreference(preferencesManager.value, route)

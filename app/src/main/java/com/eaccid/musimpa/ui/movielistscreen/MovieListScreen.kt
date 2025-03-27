@@ -1,7 +1,6 @@
 package com.eaccid.musimpa.ui.movielistscreen
 
 import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,9 +15,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
@@ -32,37 +31,23 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.eaccid.musimpa.repository.MoviesRepository
-import com.eaccid.musimpa.ui.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import com.eaccid.musimpa.ui.uientities.MovieItem
 import com.eaccid.musimpa.utils.PosterSize
 import com.eaccid.musimpa.utils.toImageUri
-import org.koin.compose.koinInject
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MovieListScreen(navController: NavController) {
-    //would be great to have viewmodel injected by DI, but koin causes recomposition
-
-    val moviesRepository = koinInject<MoviesRepository>()
-
-    val navBackStackEntry = remember(navController) {
-        navController.getBackStackEntry(Screen.MovieListScreen.route)
-    }
-    val factory by remember { lazy { MovieListScreenViewModelFactory(moviesRepository) } }
-    val viewModel: MovieListScreenViewModel = viewModel(
-        viewModelStoreOwner = navBackStackEntry,
-        factory = factory
-    )
+    val viewModel = koinViewModel<MovieListScreenViewModel>()
     SideEffect {
-        Log.i("twicetest ", " --------------- ")
+        Log.i("temptest ", " --------------- ")
         Log.i(
-            "twicetest @Composable//MovieListScreen",
+            "temptest @Composable//MovieListScreen",
             "@Composable//MovieListScreen list ->> viewModel 2: $viewModel"
         )
     }
@@ -74,7 +59,14 @@ fun MovieListScreen(navController: NavController) {
 //    BackHandler {
 //        navController.navigate(Screen.MainScreen.route) { popUpTo(0) }
 //    }
-    SaveLastScreenEffect(Screen.MovieListScreen.route)
+//    SaveLastScreenEffect(Screen.MovieListScreen.route)
+
+
+    DisposableEffect(Unit) {
+        println("DisposableEffect MovieListScreen Entered")
+        onDispose { println("DisposableEffect MovieListScreen Disposed") }
+    }
+
 }
 
 @Composable
