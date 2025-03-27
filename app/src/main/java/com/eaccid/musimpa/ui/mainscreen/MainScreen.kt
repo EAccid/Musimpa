@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.eaccid.musimpa.ui.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import org.koin.androidx.compose.koinViewModel
@@ -52,11 +53,10 @@ fun MainScreen(navController: NavController) {
             "@Composable//MainScreen ->> viewModel 1: $viewModel"
         )
     }
-//    SaveLastScreenEffect(Screen.MainScreen.route)
-
+    SaveLastScreenEffect(Screen.MainScreen.route)
     DisposableEffect(Unit) {
-        println("DisposableEffect MainScreen Entered")
-        onDispose { println("DisposableEffect MainScreen Disposed") }
+        println("temptest DisposableEffect MainScreen Entered")
+        onDispose { println("temptest DisposableEffect MainScreen Disposed") }
     }
 }
 

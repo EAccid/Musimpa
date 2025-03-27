@@ -29,6 +29,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.eaccid.musimpa.javaclasses.UserScoreCustomView
+import com.eaccid.musimpa.ui.SaveLastScreenEffect
+import com.eaccid.musimpa.ui.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import com.eaccid.musimpa.ui.uientities.MovieItem
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -56,11 +58,12 @@ fun MovieDetailsScreen(
 //    BackHandler {
 //        navController.popBackStack()
 //    }
-//    SaveLastScreenEffect(Screen.MovieDetailsScreen.route + "/${movieId}")
+
+    SaveLastScreenEffect(Screen.MovieDetailsScreen.route + "/${movieId}")
 
     DisposableEffect(Unit) {
-        println("DisposableEffect MovieDetailsScreen Entered")
-        onDispose { println("DisposableEffect MovieDetailsScreen Disposed") }
+        println("temptest DisposableEffect MovieDetailsScreen Entered")
+        onDispose { println("temptest DisposableEffect MovieDetailsScreen Disposed") }
     }
 
 }

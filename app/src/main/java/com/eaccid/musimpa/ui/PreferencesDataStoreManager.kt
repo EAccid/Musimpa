@@ -7,9 +7,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-//try then put to koin
 private const val USER_SETTINGS = "user_settings"
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     name = USER_SETTINGS
@@ -23,7 +23,14 @@ private object PreferencesKeys {
 class PreferencesDataStoreManager(private val context: Context) {
 
     val lastScreen: Flow<String> = context.dataStore.data
-        .map { preferences -> preferences[PreferencesKeys.LAST_VISITED_SCREEN] ?: Screen.MainScreen.route }
+        .map { preferences ->
+            preferences[PreferencesKeys.LAST_VISITED_SCREEN] ?: Screen.MainScreen.route
+        }
+
+    suspend fun getLastScreen(): String {
+        val preferences = context.dataStore.data.first()
+        return preferences[PreferencesKeys.LAST_VISITED_SCREEN] ?: Screen.MainScreen.route
+    }
 
     suspend fun saveLastScreen(screen: String) {
         context.dataStore.edit { preferences ->

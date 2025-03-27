@@ -34,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.eaccid.musimpa.ui.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import com.eaccid.musimpa.ui.uientities.MovieItem
@@ -59,12 +60,11 @@ fun MovieListScreen(navController: NavController) {
 //    BackHandler {
 //        navController.navigate(Screen.MainScreen.route) { popUpTo(0) }
 //    }
-//    SaveLastScreenEffect(Screen.MovieListScreen.route)
-
+    SaveLastScreenEffect(Screen.MovieListScreen.route)
 
     DisposableEffect(Unit) {
-        println("DisposableEffect MovieListScreen Entered")
-        onDispose { println("DisposableEffect MovieListScreen Disposed") }
+        println("temptest DisposableEffect MovieListScreen Entered")
+        onDispose { println("temptest DisposableEffect MovieListScreen Disposed") }
     }
 
 }

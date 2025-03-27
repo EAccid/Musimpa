@@ -1,6 +1,8 @@
 package com.eaccid.musimpa.ui
 
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -9,19 +11,16 @@ import com.eaccid.musimpa.ui.moviedetailsscreen.MovieDetailsScreen
 import com.eaccid.musimpa.ui.movielistscreen.MovieListScreen
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(lastScreen: String) {
     val navController = rememberNavController()
 
-//    //todo get from datastore
-//    val lastScreen = Screen.MainScreen.route //Screen.MovieListScreen.route
-//    SideEffect {
-//        Log.i("temptest AppNavigation", "lastScreen: ${lastScreen} ")
-//        Log.i("temptest AppNavigation", "navC ontroller: $navController, ")
-//    }
-//
+    SideEffect {
+        Log.i("temptest AppNavigation", "lastScreen: ${lastScreen} ")
+        Log.i("temptest AppNavigation", "navC ontroller: $navController, ")
+    }
+
 //    //todo try graphs with extraction of auth and movies screens to separate logic
-//    NavHost(navController = navController, startDestination = lastScreen) {
-    NavHost(navController = navController, startDestination = Screen.MainScreen.route) {
+    NavHost(navController = navController, startDestination = lastScreen) {
         composable(route = Screen.MainScreen.route) {
             MainScreen(navController = navController)
         }

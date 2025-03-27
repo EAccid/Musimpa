@@ -4,25 +4,23 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import org.koin.compose.koinInject
 
 
 @Composable
 fun SaveLastScreenEffect(route: String) {
-    val context = LocalContext.current
-    val preferencesManager = rememberUpdatedState(PreferencesDataStoreManager(context))
+    val preferencesDataStoreManager = koinInject<PreferencesDataStoreManager>()
     SideEffect {
         Log.i("temptest AppNavigation", "saved lastScreen: $route ")
     }
     LaunchedEffect(route) {
-        saveLastScreenPreference(preferencesManager.value, route)
+        saveLastScreenPreference(preferencesDataStoreManager, route)
     }
 }
 
