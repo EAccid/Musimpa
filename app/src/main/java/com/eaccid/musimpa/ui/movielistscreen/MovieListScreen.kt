@@ -1,6 +1,7 @@
 package com.eaccid.musimpa.ui.movielistscreen
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -57,9 +58,17 @@ fun MovieListScreen(navController: NavController) {
     MovieListScreenContent(viewState, movies, onItemClicked = { movieItem ->
         navController.navigate(Screen.MovieDetailsScreen.route + "/${movieItem.id}")
     })
-//    BackHandler {
-//        navController.navigate(Screen.MainScreen.route) { popUpTo(0) }
-//    }
+    BackHandler {
+        if (navController.previousBackStackEntry != null) {
+            navController.popBackStack()
+        } else {
+            navController.navigate(Screen.MainScreen.route) {
+                popUpTo(0)
+                launchSingleTop = true
+                restoreState = true
+            }
+        }
+    }
     SaveLastScreenEffect(Screen.MovieListScreen.route)
 
     DisposableEffect(Unit) {

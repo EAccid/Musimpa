@@ -15,12 +15,15 @@ fun AppNavigation(lastScreen: String) {
     val navController = rememberNavController()
 
     SideEffect {
-        Log.i("temptest AppNavigation", "lastScreen: ${lastScreen} ")
+        Log.i("temptest AppNavigation", "lastScreen: $lastScreen ")
         Log.i("temptest AppNavigation", "navC ontroller: $navController, ")
     }
 
 //    //todo try graphs with extraction of auth and movies screens to separate logic
-    NavHost(navController = navController, startDestination = lastScreen) {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.MainScreen.route //lastScreen
+    ) {
         composable(route = Screen.MainScreen.route) {
             MainScreen(navController = navController)
         }

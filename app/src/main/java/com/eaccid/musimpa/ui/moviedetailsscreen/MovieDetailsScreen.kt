@@ -1,6 +1,7 @@
 package com.eaccid.musimpa.ui.moviedetailsscreen
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -55,10 +56,19 @@ fun MovieDetailsScreen(
             "@Composable//MovieDetailsScreen ->> viewModel 3: $viewModel"
         )
     }
-//    BackHandler {
-//        navController.popBackStack()
-//    }
 
+    BackHandler {
+        if (navController.previousBackStackEntry != null) {
+            navController.popBackStack()
+        } else {
+            navController.navigate(Screen.MovieListScreen.route) {
+                popUpTo(0)
+                launchSingleTop = true
+                restoreState = true
+            }
+        }
+    }
+    //just to see how it works with parameter and navigation
     SaveLastScreenEffect(Screen.MovieDetailsScreen.route + "/${movieId}")
 
     DisposableEffect(Unit) {
@@ -100,7 +110,7 @@ fun MoviesDetailsScreenContent(
                             for now its just temp old java that does not work correctly
                             with object UserScoreCustomViewStyle.Attributes in Style.kt*/
                         }
-                        view.score = dataItem.voteAverage?.times(10)?.toInt() ?: 0
+                        view.score = dataItem.voteAverage
                         view.setTextSize(24)
                         view
                     })
@@ -152,7 +162,7 @@ fun MoviesDetailsScreenContent(
         }
 
         else -> {
-            Text(text = "todo 'no data' / 'error' handling")
+            Text(text = "todo 'no data' / 'loading' / 'error' handling")
         }
     }
 }

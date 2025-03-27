@@ -12,7 +12,7 @@ data class MovieItem(
     val posterPath: String? = "posterPath",
     val title: String? = "title",
     val overview: String? = "overview",
-    val voteAverage: Double? = 0.0,
+    val voteAverage: Int = 0, //percentage
     val tagline: String? = "tagline",
 //    val genres: List<Genre>?,
     val runtime: Int? = 0,

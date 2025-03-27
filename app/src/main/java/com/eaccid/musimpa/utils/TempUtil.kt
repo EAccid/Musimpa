@@ -33,7 +33,7 @@ fun Movie.toMovieItem(): MovieItem {
         posterPath,
         title,
         overview,
-        voteAverage,
+        voteAverage?.times(10)?.toInt() ?: 0,
         tagline,
         runtime
     )
