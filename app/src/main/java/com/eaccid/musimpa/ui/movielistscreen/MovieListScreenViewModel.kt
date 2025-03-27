@@ -7,6 +7,7 @@ import com.eaccid.musimpa.entities.Discover
 import com.eaccid.musimpa.network.ApiResponse
 import com.eaccid.musimpa.repository.MoviesRepository
 import com.eaccid.musimpa.ui.uientities.MovieItem
+import com.eaccid.musimpa.utils.toMovieItem
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,17 +38,7 @@ class MovieListScreenViewModel(private val moviesRepository: MoviesRepository) :
                 is ApiResponse.Success -> {
                     _uiState.value = MovieListScreenViewState.Success
                     _movies.value = discover.data.movies.map {
-                        MovieItem(
-                            it.id,
-                            it.originalTitle,
-                            it.releaseDate,
-                            it.posterPath,
-                            it.title,
-                            it.overview,
-                            it.voteAverage,
-                            it.tagline,
-                            it.runtime
-                        )
+                        it.toMovieItem()
                     }
                 }
 

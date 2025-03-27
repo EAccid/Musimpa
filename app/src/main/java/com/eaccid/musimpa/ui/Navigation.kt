@@ -22,7 +22,7 @@ fun AppNavigation(lastScreen: String) {
 //    //todo try graphs with extraction of auth and movies screens to separate logic
     NavHost(
         navController = navController,
-        startDestination = Screen.MainScreen.route //lastScreen
+        startDestination = lastScreen // Screen.MainScreen.route
     ) {
         composable(route = Screen.MainScreen.route) {
             MainScreen(navController = navController)
