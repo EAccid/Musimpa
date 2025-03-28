@@ -3,49 +3,27 @@ package com.eaccid.musimpa.ui.movielistscreen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eaccid.musimpa.entities.Discover
-import com.eaccid.musimpa.network.ApiResponse
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.eaccid.musimpa.repository.DiscoverPagingSource
 import com.eaccid.musimpa.repository.MoviesRepository
 import com.eaccid.musimpa.ui.uientities.MovieItem
-import com.eaccid.musimpa.utils.toMovieItem
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 
 class MovieListScreenViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
+    private var currentPagingMoviesFlow: Flow<PagingData<MovieItem>>? = null
 
-    // Backing property to avoid state updates from other classes
-    private val _uiState = MutableStateFlow(MovieListScreenViewState.Success)
+    fun getDiscoverMovies(): Flow<PagingData<MovieItem>> {
+        val newFlow = Pager(
+            config = PagingConfig(pageSize = 20, enablePlaceholders = false),
+            pagingSourceFactory = { DiscoverPagingSource(moviesRepository) }
+        ).flow.cachedIn(viewModelScope)
 
-    // The UI collects from this StateFlow to get its state updates
-    val uiState: StateFlow<MovieListScreenViewState> = _uiState.asStateFlow()
-
-    private val _movies = MutableStateFlow(listOf<MovieItem>())
-    val movies: StateFlow<List<MovieItem>>
-        get() = _movies.asStateFlow()
-
-    init {
-        Log.i("MoviesViewModel temptest ----------------- ", "$this is created 2")
-        getDiscoverMovies()
-    }
-
-    private fun getDiscoverMovies() {
-        viewModelScope.launch {
-            val discover: ApiResponse<Discover> = moviesRepository.discoverAll()
-            when (discover) {
-                is ApiResponse.Success -> {
-                    _uiState.value = MovieListScreenViewState.Success
-                    _movies.value = discover.data.movies.map {
-                        it.toMovieItem()
-                    }
-                }
-
-                is ApiResponse.Error -> TODO()
-                ApiResponse.NetworkError -> TODO()
-            }
-        }
+        currentPagingMoviesFlow = newFlow
+        return newFlow
     }
 
     override fun onCleared() {

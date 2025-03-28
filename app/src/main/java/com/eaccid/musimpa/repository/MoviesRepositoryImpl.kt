@@ -14,9 +14,11 @@ class MoviesRepositoryImpl(
     private val serviceAPI: TMDbServiceAPI,
     private val localData: LocalData
 ) : MoviesRepository {
-    override suspend fun discoverAll(): ApiResponse<Discover> {
+
+    override suspend fun discoverAll(page: Int): ApiResponse<Discover> {
         val params = mapOf(
             "api_key" to BuildConfig.THE_MOVIE_DB_API_KEY,
+            "page" to page.toString(),
             "language" to "en-US",
             "sort_by" to "popularity.desc",
             "include_adult" to "false",
