@@ -87,7 +87,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
     implementation("androidx.activity:activity-compose:1.10.1")
-    implementation(platform("androidx.compose:compose-bom:2025.03.00"))
+    implementation(platform("androidx.compose:compose-bom:2025.03.01"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -95,13 +95,16 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.9")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
-    implementation("androidx.datastore:datastore-preferences:1.1.3")
+    implementation("androidx.datastore:datastore-preferences:1.1.4")
+    implementation("androidx.paging:paging-runtime-ktx:3.3.6")
+    implementation("androidx.paging:paging-compose-android:3.3.6")
+    implementation("androidx.paging:paging-compose:3.3.6")
 
     //koin
     implementation("io.insert-koin:koin-core:3.5.2-RC1")
     implementation("io.insert-koin:koin-android:3.5.2-RC1")
     implementation("io.insert-koin:koin-androidx-compose:3.5.2-RC1")
-    implementation(platform("androidx.compose:compose-bom:2025.03.00"))
+    implementation(platform("androidx.compose:compose-bom:2025.03.01"))
 
     //api json
     implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
