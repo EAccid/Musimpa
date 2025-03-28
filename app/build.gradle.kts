@@ -99,6 +99,8 @@ dependencies {
     implementation("androidx.paging:paging-runtime-ktx:3.3.6")
     implementation("androidx.paging:paging-compose-android:3.3.6")
     implementation("androidx.paging:paging-compose:3.3.6")
+    implementation("androidx.compose.material:material-icons-core:1.7.8")
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
     //koin
     implementation("io.insert-koin:koin-core:3.5.2-RC1")

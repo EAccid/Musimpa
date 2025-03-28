@@ -3,6 +3,7 @@ package com.eaccid.musimpa.ui.movielistscreen
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -15,12 +16,20 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,6 +51,7 @@ import com.eaccid.musimpa.ui.Screen
 import com.eaccid.musimpa.ui.uientities.MovieItem
 import com.eaccid.musimpa.utils.PosterSize
 import com.eaccid.musimpa.utils.toImageUri
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -55,9 +65,11 @@ fun MovieListScreen(navController: NavController) {
         )
     }
     val currentPagingMoviesFlow: LazyPagingItems<MovieItem> =
-        viewModel.getDiscoverMovies().collectAsLazyPagingItems()
+        viewModel.pagingMoviesFlow.collectAsLazyPagingItems()
     MovieListScreenContent(currentPagingMoviesFlow, onItemClicked = { movieItem ->
-        navController.navigate(Screen.MovieDetailsScreen.route + "/${movieItem.id}")
+        navController.navigate(Screen.MovieDetailsScreen.route + "/${movieItem.id}") {
+            restoreState = true
+        }
     })
     BackHandler {
         if (navController.previousBackStackEntry != null) {
@@ -84,34 +96,65 @@ fun MovieListScreenContent(
     lazyPagingItems: LazyPagingItems<MovieItem>,
     onItemClicked: (movieItem: MovieItem) -> Unit
 ) {
+    PagedMovieList(lazyPagingItems, onItemClicked)
+}
+
+@Composable
+private fun PagedMovieList(
+    lazyPagingItems: LazyPagingItems<MovieItem>,
+    onItemClicked: (movieItem: MovieItem) -> Unit
+) {
     val lazyListState = rememberLazyListState()
-    LazyColumn(
-        state = lazyListState,
-        modifier = Modifier
-            .fillMaxSize(1.0f)
-            .windowInsetsPadding(WindowInsets.statusBars)
-    ) {
-        if (lazyPagingItems.loadState.refresh == LoadState.Loading) {
-            item {
-                Text(
-                    text = "Waiting for items to load from the backend",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentWidth(Alignment.CenterHorizontally)
-                )
+    val coroutineScope = rememberCoroutineScope()
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            state = lazyListState,
+            modifier = Modifier
+                .fillMaxSize(1.0f)
+                .windowInsetsPadding(WindowInsets.statusBars)
+        ) {
+            if (lazyPagingItems.loadState.refresh == LoadState.Loading) {
+                item {
+                    Text(
+                        text = "Waiting for items to load",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth(Alignment.CenterHorizontally)
+                    )
+                }
+            }
+            items(count = lazyPagingItems.itemCount) { index ->
+                val item = lazyPagingItems[index]
+                MovieItemView(dataItem = item!!, onItemClicked)
+            }
+            if (lazyPagingItems.loadState.append == LoadState.Loading) {
+                item {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth(Alignment.CenterHorizontally)
+                    )
+                }
             }
         }
-        items(count = lazyPagingItems.itemCount) { index ->
-            val item = lazyPagingItems[index]
-            MovieItemView(dataItem = item!!, onItemClicked)
+
+        val showScrollToTop by remember {
+            derivedStateOf { lazyListState.firstVisibleItemIndex > 5 }
         }
-        if (lazyPagingItems.loadState.append == LoadState.Loading) {
-            item {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentWidth(Alignment.CenterHorizontally)
-                )
+
+        if (showScrollToTop) {
+            FloatingActionButton(
+                onClick = {
+                    coroutineScope.launch {
+                        lazyListState.animateScrollToItem(0)
+                    }
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp)
+            ) {
+                Icon(imageVector = Icons.Default.ArrowUpward, contentDescription = "Scroll to top")
             }
         }
     }
@@ -164,24 +207,3 @@ fun MovieItemView(dataItem: MovieItem, onItemClick: (movieItem: MovieItem) -> Un
         }
     }
 }
-
-//todo seems like we need MockMoviePagingSource to have a nice preview with LazyPagingItems<MovieItem>
-
-//class MovieListScreenViewPreviewParameterProvider :
-//    PreviewParameterProvider<MovieListScreenViewState> {
-//    override val values = sequenceOf(
-//        MovieListScreenViewState.Success, MovieListScreenViewState.Error(Throwable("error"))
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun MovieListScreenContentPreview(@PreviewParameter(MovieListScreenViewPreviewParameterProvider::class) viewState: MovieListScreenViewState) {
-//    MusimpaTheme {
-//        MovieListScreenContent(mutableListOf(
-//            MovieItem(id = 1, title = "title 1"),
-//            MovieItem(id = 2, title = "title 2"),
-//            MovieItem(id = 3, title = "title 3")
-//        ), onItemClicked = {})
-//    }
-//}

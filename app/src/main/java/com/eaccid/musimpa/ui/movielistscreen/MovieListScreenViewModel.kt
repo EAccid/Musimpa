@@ -11,19 +11,36 @@ import com.eaccid.musimpa.repository.DiscoverPagingSource
 import com.eaccid.musimpa.repository.MoviesRepository
 import com.eaccid.musimpa.ui.uientities.MovieItem
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class MovieListScreenViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
-    private var currentPagingMoviesFlow: Flow<PagingData<MovieItem>>? = null
 
-    fun getDiscoverMovies(): Flow<PagingData<MovieItem>> {
-        val newFlow = Pager(
-            config = PagingConfig(pageSize = 20, enablePlaceholders = false),
-            pagingSourceFactory = { DiscoverPagingSource(moviesRepository) }
-        ).flow.cachedIn(viewModelScope)
+    private val _pagingMoviesFlow = MutableStateFlow<PagingData<MovieItem>>(PagingData.empty())
+    val pagingMoviesFlow: StateFlow<PagingData<MovieItem>> = _pagingMoviesFlow
 
-        currentPagingMoviesFlow = newFlow
-        return newFlow
+    private val pager = Pager(
+        config = PagingConfig(pageSize = 20, enablePlaceholders = false),
+        pagingSourceFactory = { DiscoverPagingSource(moviesRepository) }
+    ).flow.cachedIn(viewModelScope)
+
+    init {
+        collectPagingData()
+    }
+
+    private fun collectPagingData() {
+        Log.i("MoviesViewModel temptest ----------------- ", "$this collectPagingData")
+        viewModelScope.launch {
+            pager.collectLatest { pagingData ->
+                _pagingMoviesFlow.value = pagingData
+            }
+        }
+    }
+
+    fun refreshMovies() {
+        collectPagingData()
     }
 
     override fun onCleared() {
