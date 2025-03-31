@@ -39,10 +39,6 @@ class MovieListScreenViewModel(private val moviesRepository: MoviesRepository) :
         }
     }
 
-    fun refreshMovies() {
-        collectPagingData()
-    }
-
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()

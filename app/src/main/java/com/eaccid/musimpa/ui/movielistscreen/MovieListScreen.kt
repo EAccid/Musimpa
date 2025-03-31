@@ -3,7 +3,6 @@ package com.eaccid.musimpa.ui.movielistscreen
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -20,16 +19,23 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -66,11 +72,12 @@ fun MovieListScreen(navController: NavController) {
     }
     val currentPagingMoviesFlow: LazyPagingItems<MovieItem> =
         viewModel.pagingMoviesFlow.collectAsLazyPagingItems()
-    MovieListScreenContent(currentPagingMoviesFlow, onItemClicked = { movieItem ->
+    val onItemClicked = { movieItem: MovieItem ->
         navController.navigate(Screen.MovieDetailsScreen.route + "/${movieItem.id}") {
             restoreState = true
         }
-    })
+    }
+    MovieListScreenContent(currentPagingMoviesFlow, onItemClicked)
     BackHandler {
         if (navController.previousBackStackEntry != null) {
             navController.popBackStack()
@@ -96,18 +103,32 @@ fun MovieListScreenContent(
     lazyPagingItems: LazyPagingItems<MovieItem>,
     onItemClicked: (movieItem: MovieItem) -> Unit
 ) {
-    PagedMovieList(lazyPagingItems, onItemClicked)
+    PullToRefreshMovieLazyColumn(lazyPagingItems, onItemClicked)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PagedMovieList(
+fun PullToRefreshMovieLazyColumn(
     lazyPagingItems: LazyPagingItems<MovieItem>,
     onItemClicked: (movieItem: MovieItem) -> Unit
 ) {
     val lazyListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+    var isRefreshing by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(isRefreshing) {
+        if (isRefreshing) {
+            lazyPagingItems.refresh()
+            isRefreshing = false
+        }
+    }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    val pullToRefreshState = rememberPullToRefreshState()
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        state = pullToRefreshState,
+        onRefresh = { isRefreshing = true },
+        modifier = Modifier
+    ) {
         LazyColumn(
             state = lazyListState,
             modifier = Modifier

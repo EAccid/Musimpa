@@ -101,12 +101,12 @@ dependencies {
     implementation("androidx.paging:paging-compose:3.3.6")
     implementation("androidx.compose.material:material-icons-core:1.7.8")
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    implementation(platform("androidx.compose:compose-bom:2025.03.01"))
 
     //koin
     implementation("io.insert-koin:koin-core:3.5.2-RC1")
     implementation("io.insert-koin:koin-android:3.5.2-RC1")
     implementation("io.insert-koin:koin-androidx-compose:3.5.2-RC1")
-    implementation(platform("androidx.compose:compose-bom:2025.03.01"))
 
     //api json
     implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
@@ -121,12 +121,12 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2025.03.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2025.03.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 
     //koin test
     testImplementation("io.insert-koin:koin-test-junit4:3.5.2-RC1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2025.03.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2025.03.01"))
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")

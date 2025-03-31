@@ -20,6 +20,7 @@ class DiscoverPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieItem> {
         return try {
             val currentPage = params.key ?: 1
+            println("temptest DiscoverPagingSource load page: currentPage $currentPage")
             when (val response = moviesRepository.discoverAll(currentPage)) {
                 is ApiResponse.Success -> {
                     LoadResult.Page(
