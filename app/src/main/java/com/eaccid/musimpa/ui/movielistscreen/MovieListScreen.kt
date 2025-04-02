@@ -222,7 +222,7 @@ fun MovieItemView(dataItem: MovieItem, onItemClick: (movieItem: MovieItem) -> Un
                         .padding(0.dp, 8.dp, 0.dp, 0.dp)
                 )
                 Text(
-                    text = dataItem.voteAverage.toString() ?: "Non"
+                    text = dataItem.voteAverage.toString()
                 )
             }
         }
