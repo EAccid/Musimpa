@@ -38,6 +38,7 @@ class MovieRemoteMediator(
                     }
                 }
             }
+            //TODO refator, its just temp to try new room + paging
             when (val response = moviesRepository.discoverAll(loadKey)) {
                 is ApiResponse.Success -> {
                     val movies = response.data.movies
