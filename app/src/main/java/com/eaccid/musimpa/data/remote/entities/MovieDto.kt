@@ -1,8 +1,8 @@
-package com.eaccid.musimpa.entities
+package com.eaccid.musimpa.data.remote.entities
 
 import com.squareup.moshi.Json
 
-data class Movie(
+data class MovieDto(
     val id: Int,
     @Json(name = "original_title")
     val originalTitle: String?,

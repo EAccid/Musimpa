@@ -1,7 +1,7 @@
 package com.eaccid.musimpa.repository
 
-import com.eaccid.musimpa.entities.Authentication
-import com.eaccid.musimpa.network.ApiResponse
+import com.eaccid.musimpa.data.remote.entities.Authentication
+import com.eaccid.musimpa.data.remote.ApiResponse
 
 interface AuthenticationRepository {
     suspend fun getToken(): ApiResponse<Authentication>

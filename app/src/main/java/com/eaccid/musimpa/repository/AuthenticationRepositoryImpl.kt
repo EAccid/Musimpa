@@ -2,14 +2,14 @@ package com.eaccid.musimpa.repository
 
 import com.eaccid.musimpa.BuildConfig
 import com.eaccid.musimpa.LocalData
-import com.eaccid.musimpa.entities.Authentication
-import com.eaccid.musimpa.network.ApiResponse
-import com.eaccid.musimpa.network.TMDbServiceAPI
-import com.eaccid.musimpa.network.safeApiRequest
+import com.eaccid.musimpa.data.remote.entities.Authentication
+import com.eaccid.musimpa.data.remote.ApiResponse
+import com.eaccid.musimpa.data.remote.TmdbServiceAPI
+import com.eaccid.musimpa.data.remote.safeApiRequest
 import com.eaccid.musimpa.utils.API_VERSION
 
 class AuthenticationRepositoryImpl(
-    private val serviceAPI: TMDbServiceAPI, private val localData: LocalData
+    private val serviceAPI: TmdbServiceAPI, private val localData: LocalData
 ) :
     AuthenticationRepository {
     override suspend fun getToken(): ApiResponse<Authentication> {

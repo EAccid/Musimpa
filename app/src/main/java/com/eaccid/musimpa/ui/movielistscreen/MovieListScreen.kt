@@ -54,7 +54,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.eaccid.musimpa.ui.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.Screen
-import com.eaccid.musimpa.ui.uientities.MovieItem
+import com.eaccid.musimpa.data.domain.Movie
 import com.eaccid.musimpa.utils.PosterSize
 import com.eaccid.musimpa.utils.toImageUri
 import kotlinx.coroutines.launch
@@ -70,10 +70,10 @@ fun MovieListScreen(navController: NavController) {
             "@Composable//MovieListScreen list ->> viewModel 2: $viewModel"
         )
     }
-    val currentPagingMoviesFlow: LazyPagingItems<MovieItem> =
+    val currentPagingMoviesFlow: LazyPagingItems<Movie> =
         viewModel.pagingMoviesFlow.collectAsLazyPagingItems()
-    val onItemClicked = { movieItem: MovieItem ->
-        navController.navigate(Screen.MovieDetailsScreen.route + "/${movieItem.id}") {
+    val onItemClicked = { movie: Movie ->
+        navController.navigate(Screen.MovieDetailsScreen.route + "/${movie.id}") {
             restoreState = true
         }
     }
@@ -100,8 +100,8 @@ fun MovieListScreen(navController: NavController) {
 
 @Composable
 fun MovieListScreenContent(
-    lazyPagingItems: LazyPagingItems<MovieItem>,
-    onItemClicked: (movieItem: MovieItem) -> Unit
+    lazyPagingItems: LazyPagingItems<Movie>,
+    onItemClicked: (movie: Movie) -> Unit
 ) {
     PullToRefreshMovieLazyColumn(lazyPagingItems, onItemClicked)
 }
@@ -109,8 +109,8 @@ fun MovieListScreenContent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PullToRefreshMovieLazyColumn(
-    lazyPagingItems: LazyPagingItems<MovieItem>,
-    onItemClicked: (movieItem: MovieItem) -> Unit
+    lazyPagingItems: LazyPagingItems<Movie>,
+    onItemClicked: (movie: Movie) -> Unit
 ) {
     val lazyListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -182,7 +182,7 @@ fun PullToRefreshMovieLazyColumn(
 }
 
 @Composable
-fun MovieItemView(dataItem: MovieItem, onItemClick: (movieItem: MovieItem) -> Unit) {
+fun MovieItemView(dataItem: Movie, onItemClick: (movie: Movie) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

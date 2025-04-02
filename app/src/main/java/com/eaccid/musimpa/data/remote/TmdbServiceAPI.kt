@@ -1,11 +1,17 @@
-package com.eaccid.musimpa.network
+package com.eaccid.musimpa.data.remote
 
-import com.eaccid.musimpa.entities.*
+import com.eaccid.musimpa.data.remote.entities.Authentication
+import com.eaccid.musimpa.data.remote.entities.DiscoverDto
+import com.eaccid.musimpa.data.remote.entities.MovieDto
+import com.eaccid.musimpa.data.remote.entities.MovieListDto
+import com.eaccid.musimpa.data.remote.entities.RequestMediaObject
+import com.eaccid.musimpa.data.remote.entities.UserAccount
+import com.eaccid.musimpa.data.remote.entities.VideosResult
 import retrofit2.Response
 import retrofit2.http.*
 
 
-interface TMDbServiceAPI {
+interface TmdbServiceAPI {
 
     @GET("{version}/authentication/token/new")
     suspend fun requestToken(
@@ -26,7 +32,7 @@ interface TMDbServiceAPI {
     suspend fun discoverAll(
         @Path(value = "version") version: Int,
         @QueryMap options: Map<String, String>
-    ): Discover
+    ): DiscoverDto
 
     /*movies*/
 
@@ -42,14 +48,14 @@ interface TMDbServiceAPI {
         @Path(value = "version") version: Int,
         @Path(value = "movie_id") movieItemId: Int,
         @QueryMap options: Map<String, String>
-    ): Movie
+    ): MovieDto
 
     /*movie lists*/
 
     @POST("{version}/list")
     fun createList(
         @Path(value = "version") version: Int,
-        @Body list: MovieList,
+        @Body list: MovieListDto,
         @QueryMap options: Map<String, String>
     ): Response<String>
 
@@ -65,7 +71,7 @@ interface TMDbServiceAPI {
         @Path(value = "version") version: Int,
         @Path(value = "list_id") listId: Int,
         @QueryMap options: Map<String, String>
-    ): MovieList
+    ): MovieListDto
 
     @POST("{version}/list/{list_id}/add_item")
     fun addMovieToList(
@@ -99,7 +105,7 @@ interface TMDbServiceAPI {
         @Path(value = "account_id") listId: Int,
         @Query("account_id") username: String,
         @QueryMap options: Map<String, String>
-    ): List<MovieList>
+    ): List<MovieListDto>
 
 
 }

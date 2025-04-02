@@ -4,8 +4,9 @@ import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import androidx.core.net.toUri
-import com.eaccid.musimpa.entities.Movie
-import com.eaccid.musimpa.ui.uientities.MovieItem
+import com.eaccid.musimpa.data.domain.Movie
+import com.eaccid.musimpa.data.local.MovieEntity
+import com.eaccid.musimpa.data.remote.entities.MovieDto
 
 const val BASE_URL = "https://api.themoviedb.org/"
 const val MOVIE_IMAGE_URL_PATH = "image.tmdb.org/t/p/"
@@ -25,19 +26,48 @@ fun String.toImageUri(posterSize: PosterSize): Uri {
     return (posterSize.imagePath + this).toUri().buildUpon().scheme("https").build()
 }
 
-fun Movie.toMovieItem(): MovieItem {
-    return MovieItem(
-        id,
-        originalTitle,
-        releaseDate,
-        posterPath,
-        title,
-        overview,
-        voteAverage?.times(10)?.toInt() ?: 0,
-        tagline,
-        runtime
+fun MovieDto.toMovie(): Movie { //todo do we need this?
+    return Movie(
+        id = id,
+        originalTitle = originalTitle,
+        releaseDate = releaseDate,
+        posterPath = posterPath,
+        title = title,
+        overview = overview,
+        voteAverage = voteAverage?.times(10)?.toInt() ?: 0,
+        tagline = tagline,
+        runtime = runtime
     )
 }
+
+fun MovieDto.toMovieEntity(): MovieEntity {
+    return MovieEntity(
+        id = id,
+        originalTitle = originalTitle,
+        releaseDate = releaseDate,
+        posterPath = posterPath,
+        title = title,
+        overview = overview,
+        voteAverage = voteAverage?.times(10)?.toInt() ?: 0,
+        tagline = tagline,
+        runtime = runtime
+    )
+}
+
+fun MovieEntity.toMovie(): Movie {
+    return Movie(
+        id = id,
+        originalTitle = originalTitle,
+        releaseDate = releaseDate,
+        posterPath = posterPath,
+        title = title,
+        overview = overview,
+        voteAverage = voteAverage,
+        tagline = tagline,
+        runtime = runtime
+    )
+}
+
 
 enum class PosterSize(imageSize: String) {
     W92("w92"),

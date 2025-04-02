@@ -9,7 +9,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.eaccid.musimpa.repository.DiscoverPagingSource
 import com.eaccid.musimpa.repository.MoviesRepository
-import com.eaccid.musimpa.ui.uientities.MovieItem
+import com.eaccid.musimpa.data.domain.Movie
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,8 +18,8 @@ import kotlinx.coroutines.launch
 
 class MovieListScreenViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
 
-    private val _pagingMoviesFlow = MutableStateFlow<PagingData<MovieItem>>(PagingData.empty())
-    val pagingMoviesFlow: StateFlow<PagingData<MovieItem>> = _pagingMoviesFlow
+    private val _pagingMoviesFlow = MutableStateFlow<PagingData<Movie>>(PagingData.empty())
+    val pagingMoviesFlow: StateFlow<PagingData<Movie>> = _pagingMoviesFlow
 
     private val pager = Pager(
         config = PagingConfig(pageSize = 20, enablePlaceholders = false),

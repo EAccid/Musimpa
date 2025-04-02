@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.network
+package com.eaccid.musimpa.data.remote
 
 import retrofit2.HttpException
 import java.io.IOException

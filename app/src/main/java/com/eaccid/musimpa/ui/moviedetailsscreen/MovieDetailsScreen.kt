@@ -33,7 +33,7 @@ import com.eaccid.musimpa.javaclasses.UserScoreCustomView
 import com.eaccid.musimpa.ui.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
-import com.eaccid.musimpa.ui.uientities.MovieItem
+import com.eaccid.musimpa.data.domain.Movie
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -84,7 +84,7 @@ fun MoviesDetailsScreenContent(
 ) {
     when (viewState) {
         is MovieDetailsScreenViewState.Success -> {
-            val dataItem: MovieItem = viewState.movie
+            val dataItem: Movie = viewState.movie
             Column(
                 modifier = Modifier
                     .padding(16.dp)
@@ -204,7 +204,18 @@ fun YoutubeScreen(
 class MoviesDetailsScreenViewPreviewParameterProvider :
     PreviewParameterProvider<MovieDetailsScreenViewState> {
     override val values = sequenceOf(
-        MovieDetailsScreenViewState.Success(MovieItem(id = 0)),
+        MovieDetailsScreenViewState.Success(Movie(
+            id = 0,
+            originalTitle = TODO(),
+            releaseDate = TODO(),
+            posterPath = TODO(),
+            title = TODO(),
+            overview = TODO(),
+            voteAverage = TODO(),
+            tagline = TODO(),
+            runtime = TODO(),
+            videoKey = TODO()
+        )),
         MovieDetailsScreenViewState.NoData
     )
 }

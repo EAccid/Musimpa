@@ -2,20 +2,20 @@ package com.eaccid.musimpa.repository
 
 import com.eaccid.musimpa.BuildConfig
 import com.eaccid.musimpa.LocalData
-import com.eaccid.musimpa.entities.Discover
-import com.eaccid.musimpa.entities.Movie
-import com.eaccid.musimpa.entities.VideosResult
-import com.eaccid.musimpa.network.ApiResponse
-import com.eaccid.musimpa.network.TMDbServiceAPI
-import com.eaccid.musimpa.network.safeApiRequest
+import com.eaccid.musimpa.data.remote.entities.DiscoverDto
+import com.eaccid.musimpa.data.remote.entities.MovieDto
+import com.eaccid.musimpa.data.remote.entities.VideosResult
+import com.eaccid.musimpa.data.remote.ApiResponse
+import com.eaccid.musimpa.data.remote.TmdbServiceAPI
+import com.eaccid.musimpa.data.remote.safeApiRequest
 import com.eaccid.musimpa.utils.API_VERSION
 
 class MoviesRepositoryImpl(
-    private val serviceAPI: TMDbServiceAPI,
+    private val serviceAPI: TmdbServiceAPI,
     private val localData: LocalData
 ) : MoviesRepository {
 
-    override suspend fun discoverAll(page: Int): ApiResponse<Discover> {
+    override suspend fun discoverAll(page: Int): ApiResponse<DiscoverDto> {
         val params = mapOf(
             "api_key" to BuildConfig.THE_MOVIE_DB_API_KEY,
             "page" to page.toString(),
@@ -27,7 +27,7 @@ class MoviesRepositoryImpl(
         return safeApiRequest { serviceAPI.discoverAll(API_VERSION, params) }
     }
 
-    override suspend fun getMovie(movieId: Int): ApiResponse<Movie> {
+    override suspend fun getMovie(movieId: Int): ApiResponse<MovieDto> {
         val params = mapOf(
             "api_key" to BuildConfig.THE_MOVIE_DB_API_KEY,
             "language" to "en-US"

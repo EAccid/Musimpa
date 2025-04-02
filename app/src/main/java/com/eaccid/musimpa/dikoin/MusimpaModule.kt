@@ -2,7 +2,7 @@ package com.eaccid.musimpa.dikoin
 
 import com.eaccid.musimpa.LocalData
 import com.eaccid.musimpa.LocalEncryptedSharedPreferences
-import com.eaccid.musimpa.network.TMDbServiceAPI
+import com.eaccid.musimpa.data.remote.TmdbServiceAPI
 import com.eaccid.musimpa.repository.AuthenticationRepository
 import com.eaccid.musimpa.repository.AuthenticationRepositoryImpl
 import com.eaccid.musimpa.repository.MoviesRepository
@@ -33,13 +33,13 @@ val repositoryModule = module {
             .build()
     }
 
-    fun provideTMDbServiceAPI(retrofit: Retrofit): TMDbServiceAPI {
-        return retrofit.create(TMDbServiceAPI::class.java)
+    fun provideTMDbServiceAPI(retrofit: Retrofit): TmdbServiceAPI {
+        return retrofit.create(TmdbServiceAPI::class.java)
     }
     single { provideTMDbServiceAPI(get()) }
 
     fun provideAuthenticationRepository(
-        api: TMDbServiceAPI,
+        api: TmdbServiceAPI,
         pref: LocalData
     ): AuthenticationRepository {
         return AuthenticationRepositoryImpl(api, pref)
@@ -47,7 +47,7 @@ val repositoryModule = module {
     single { provideAuthenticationRepository(get(), get()) }
 
     fun provideMoviesRepository(
-        api: TMDbServiceAPI,
+        api: TmdbServiceAPI,
         pref: LocalData
     ): MoviesRepository {
         return MoviesRepositoryImpl(api, pref)

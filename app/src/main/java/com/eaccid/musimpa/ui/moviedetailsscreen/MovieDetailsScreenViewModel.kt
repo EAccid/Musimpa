@@ -4,10 +4,10 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eaccid.musimpa.entities.Movie
-import com.eaccid.musimpa.network.ApiResponse
+import com.eaccid.musimpa.data.remote.entities.MovieDto
+import com.eaccid.musimpa.data.remote.ApiResponse
 import com.eaccid.musimpa.repository.MoviesRepository
-import com.eaccid.musimpa.utils.toMovieItem
+import com.eaccid.musimpa.utils.toMovie
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,11 +36,14 @@ class MovieDetailsScreenViewModel(
 
     private fun getMovieDetails(movieId: String) {
         viewModelScope.launch {
-            val movieResponse: ApiResponse<Movie> =
+
+            //refactor and todo! make deferred and await all responses to load simultaneously
+
+            val movieDtoResponse: ApiResponse<MovieDto> =
                 moviesRepository.getMovie(movieId = Integer.parseInt(movieId))
-            if (movieResponse is ApiResponse.Success) {
-                val movie = movieResponse.data
-                val movieItem = movie.toMovieItem()
+            if (movieDtoResponse is ApiResponse.Success) {
+                val movie = movieDtoResponse.data
+                val movieItem = movie.toMovie()
                 val videosResponse =
                     moviesRepository.getMovieVideos(movieId = Integer.parseInt(movieId))
                 if (videosResponse is ApiResponse.Success && videosResponse.data.results != null) {

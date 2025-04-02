@@ -1,11 +1,11 @@
-package com.eaccid.musimpa.entities
+package com.eaccid.musimpa.data.remote.entities
 
 import com.squareup.moshi.Json
 
-data class Discover(
+data class DiscoverDto(
     val page: Int,
     @Json(name = "results")
-    val movies: List<Movie>,
+    val movies: List<MovieDto>,
     @Json(name = "total_results")
     val totalResults: Int,
     @Json(name = "total_pages")
