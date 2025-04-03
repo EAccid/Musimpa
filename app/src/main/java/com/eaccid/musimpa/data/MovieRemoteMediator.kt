@@ -28,17 +28,20 @@ class MovieRemoteMediator(
                 LoadType.PREPEND -> return MediatorResult.Success(//not using, adding only to the end of the list
                     endOfPaginationReached = true
                 )
-
                 LoadType.APPEND -> {
-                    val lastItem = state.lastItemOrNull()
+                    /** better practice in bigger projects would be to store
+                     * the pagination information in a separate table.
+                     *  But, for my small test-project this complexity is not necessary.*/
+                      val lastItem = state.lastItemOrNull()
                     if (lastItem == null) {
                         1
                     } else {
-                        (lastItem.id / state.config.pageSize) + 1 //rethink TODO!!!!
+                        println("------------mediator test lastItem.id = $lastItem.id ---------------------")
+                        lastItem.page + 1
                     }
                 }
             }
-            //TODO refator, its just temp to try new room + paging
+            println("$loadType mediator test loadKey = $loadKey")
             when (val response = moviesRepository.discoverAll(loadKey)) {
                 is ApiResponse.Success -> {
                     val movies = response.data.movies
@@ -46,11 +49,12 @@ class MovieRemoteMediator(
                         if (loadType == LoadType.REFRESH) {
                             movieDatabase.movieDao.clearAll()
                         }
-                        val movieEntities = movies.map { it.toMovieEntity() }
+                        val movieEntities =
+                            movies.map { it.toMovieEntity(page = loadKey) }
                         movieDatabase.movieDao.insertAll(movieEntities)
                     }
                     MediatorResult.Success(
-                        endOfPaginationReached = movies.isEmpty()
+                        endOfPaginationReached = movies.isEmpty()//loadKey == response.data.totalPages,
                     )
                 }
 

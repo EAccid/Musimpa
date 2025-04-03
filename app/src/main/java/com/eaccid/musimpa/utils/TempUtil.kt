@@ -40,9 +40,9 @@ fun MovieDto.toMovie(): Movie { //todo do we need this?
     )
 }
 
-fun MovieDto.toMovieEntity(): MovieEntity {
+fun MovieDto.toMovieEntity(page: Int = 0): MovieEntity {
     return MovieEntity(
-        id = id,
+        apiId = id,
         originalTitle = originalTitle,
         releaseDate = releaseDate,
         posterPath = posterPath,
@@ -50,13 +50,14 @@ fun MovieDto.toMovieEntity(): MovieEntity {
         overview = overview,
         voteAverage = voteAverage?.times(10)?.toInt() ?: 0,
         tagline = tagline,
-        runtime = runtime
+        runtime = runtime,
+        page = page
     )
 }
 
 fun MovieEntity.toMovie(): Movie {
     return Movie(
-        id = id,
+        id = apiId,
         originalTitle = originalTitle,
         releaseDate = releaseDate,
         posterPath = posterPath,

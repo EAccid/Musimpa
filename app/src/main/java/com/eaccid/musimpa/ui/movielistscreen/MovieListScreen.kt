@@ -1,6 +1,7 @@
 package com.eaccid.musimpa.ui.movielistscreen
 
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -52,9 +53,9 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.eaccid.musimpa.data.domain.Movie
 import com.eaccid.musimpa.ui.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.Screen
-import com.eaccid.musimpa.data.domain.Movie
 import com.eaccid.musimpa.utils.PosterSize
 import com.eaccid.musimpa.utils.toImageUri
 import kotlinx.coroutines.launch
@@ -70,8 +71,9 @@ fun MovieListScreen(navController: NavController) {
             "@Composable//MovieListScreen list ->> viewModel 2: $viewModel"
         )
     }
+    //try paging from room+api
     val currentPagingMoviesFlow: LazyPagingItems<Movie> =
-        viewModel.pagingMoviesFlow.collectAsLazyPagingItems()
+        viewModel.pagerRoomFlow.collectAsLazyPagingItems()
     val onItemClicked = { movie: Movie ->
         navController.navigate(Screen.MovieDetailsScreen.route + "/${movie.id}") {
             restoreState = true
@@ -103,6 +105,23 @@ fun MovieListScreenContent(
     lazyPagingItems: LazyPagingItems<Movie>,
     onItemClicked: (movie: Movie) -> Unit
 ) {
+    val context = LocalContext.current
+    LaunchedEffect(key1 = lazyPagingItems.loadState) {
+        if (lazyPagingItems.loadState.refresh is LoadState.Error) {
+            Toast.makeText(
+                context,
+                "Error Occurred " + (lazyPagingItems.loadState.refresh as LoadState.Error).error.message,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        if (lazyPagingItems.loadState.append is LoadState.Error) {
+            Toast.makeText(
+                context,
+                "Error Occurred " + (lazyPagingItems.loadState.append as LoadState.Error).error.message,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
     PullToRefreshMovieLazyColumn(lazyPagingItems, onItemClicked)
 }
 
