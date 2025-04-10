@@ -165,8 +165,10 @@ fun PullToRefreshMovieLazyColumn(
                 }
             }
             items(count = lazyPagingItems.itemCount) { index ->
-                val item = lazyPagingItems[index]
-                MovieItemView(dataItem = item!!, onItemClicked)
+                println("temptest item is null sometimes fix the problem ") //TODO
+                lazyPagingItems[index]?.let { item ->
+                    MovieItemView(dataItem = item, onItemClicked)
+                }
             }
             if (lazyPagingItems.loadState.append == LoadState.Loading) {
                 item {
