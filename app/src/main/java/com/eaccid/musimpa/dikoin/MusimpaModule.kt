@@ -18,7 +18,7 @@ import com.eaccid.musimpa.repository.AuthenticationRepository
 import com.eaccid.musimpa.repository.AuthenticationRepositoryImpl
 import com.eaccid.musimpa.repository.MoviesRepository
 import com.eaccid.musimpa.repository.MoviesRepositoryImpl
-import com.eaccid.musimpa.ui.PreferencesDataStoreManager
+import com.eaccid.musimpa.ui.navigation.PreferencesDataStoreManager
 import com.eaccid.musimpa.ui.mainscreen.MainScreenViewModel
 import com.eaccid.musimpa.ui.moviedetailsscreen.MovieDetailsScreenViewModel
 import com.eaccid.musimpa.ui.movielistscreen.MovieListScreenViewModel

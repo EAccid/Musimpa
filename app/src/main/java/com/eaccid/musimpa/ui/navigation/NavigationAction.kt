@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.ui
+package com.eaccid.musimpa.ui.navigation
 
 import androidx.navigation.NavOptionsBuilder
 
@@ -9,6 +9,5 @@ sealed interface NavigationAction {
         val navOptions: NavOptionsBuilder.() -> Unit = {}
     ) : NavigationAction
 
-    //data object PopBackStack: NavigationAction
     data object NavigateUp : NavigationAction
 }

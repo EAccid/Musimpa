@@ -2,7 +2,7 @@ package com.eaccid.musimpa.ui.mainscreen
 
 typealias GreetingText = String
 
-//todo add Loading
+//TODO add Loading
 sealed class MainScreenState(
     val text: GreetingText = ""
 ) {
@@ -12,7 +12,7 @@ sealed class MainScreenState(
     data object OnSiteLogin : MainScreenState()
 }
 
-//todo refactor state handling
+//TODO refactor state handling
 data class MainScreenViewState(
     val state: MainScreenState = MainScreenState.NoData,
     val loginData: LoginOnSiteData? = null

@@ -28,7 +28,7 @@ inline fun <T> safeApiRequest(apiCall: () -> T): ApiResponse<T> {
             is HttpException -> {
                 val code = throwable.code()
                 val errorMessage = throwable.message()
-                ApiResponse.Error(code, errorMessage)
+                ApiResponse.Error(code, errorMessage, throwable)
             }
 
             else -> {

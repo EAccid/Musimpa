@@ -55,7 +55,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.eaccid.musimpa.data.domain.Movie
 import com.eaccid.musimpa.ui.SaveLastScreenEffect
-import com.eaccid.musimpa.ui.Screen
+import com.eaccid.musimpa.ui.navigation.Screen
 import com.eaccid.musimpa.utils.PosterSize
 import com.eaccid.musimpa.utils.toImageUri
 import kotlinx.coroutines.launch
@@ -75,7 +75,7 @@ fun MovieListScreen(navController: NavController) {
     val currentPagingMoviesFlow: LazyPagingItems<Movie> =
         viewModel.pagerRoomFlow.collectAsLazyPagingItems()
     val onItemClicked = { movie: Movie ->
-        navController.navigate(Screen.MovieDetailsScreen.route + "/${movie.id}") {
+        navController.navigate(Screen.MovieDetails.createRoute(movie.id)) {
             restoreState = true
         }
     }
@@ -84,14 +84,14 @@ fun MovieListScreen(navController: NavController) {
         if (navController.previousBackStackEntry != null) {
             navController.popBackStack()
         } else {
-            navController.navigate(Screen.MainScreen.route) {
+            navController.navigate(Screen.Main.route) {
                 popUpTo(0)
                 launchSingleTop = true
                 restoreState = true
             }
         }
     }
-    SaveLastScreenEffect(Screen.MovieListScreen.route)
+    SaveLastScreenEffect(Screen.MovieList.route)
 
     DisposableEffect(Unit) {
         println("temptest DisposableEffect MovieListScreen Entered")

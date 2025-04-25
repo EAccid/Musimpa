@@ -29,20 +29,19 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.eaccid.musimpa.ui.SaveLastScreenEffect
-import com.eaccid.musimpa.ui.Screen
+import com.eaccid.musimpa.ui.navigation.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainScreen(navController: NavController) {
-    // fyi koin causes recomposition, check later
     val viewModel = koinViewModel<MainScreenViewModel>()
 
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
     MainScreenContent(viewState, onLoginClicked = {
         viewModel.login()
     }, onMoviesClicked = {
-        navController.navigate(Screen.MovieListScreen.route)
+        navController.navigate(Screen.MovieList.route)
     }, onWebActionSucceed = { succeed: Boolean ->
         viewModel.onWebAction(succeed)
     }
@@ -53,7 +52,7 @@ fun MainScreen(navController: NavController) {
             "@Composable//MainScreen ->> viewModel 1: $viewModel"
         )
     }
-    SaveLastScreenEffect(Screen.MainScreen.route)
+    SaveLastScreenEffect(Screen.Main.route)
     DisposableEffect(Unit) {
         println("temptest DisposableEffect MainScreen Entered")
         onDispose { println("temptest DisposableEffect MainScreen Disposed") }
@@ -90,11 +89,11 @@ fun MainScreenContent(
                         Text(text = "Login")
                     }
                 }
-                //todo handle onsite login url properly
+                //TODO handle onsite login url properly
                 MainScreenState.OnSiteLogin -> {
                     WebView(
                         url = viewState.loginData?.url ?: "",
-                        TMDBWebViewClient(onWebActionSucceed)
+                        TmdbWebViewClient(onWebActionSucceed)
                     )
                 }
 
@@ -127,7 +126,7 @@ fun WebView(url: String, webViewClient: WebViewClient) {
     )
 }
 
-class TMDBWebViewClient(val succeed: (Boolean) -> Unit) : WebViewClient() {
+class TmdbWebViewClient(val succeed: (Boolean) -> Unit) : WebViewClient() {
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
         val url = request?.url.toString()
         if (url.contains("/allow")) {

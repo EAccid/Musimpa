@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.eaccid.musimpa.ui.AppNavigation
-import com.eaccid.musimpa.ui.PreferencesDataStoreManager
+import com.eaccid.musimpa.ui.navigation.AppNavigation
+import com.eaccid.musimpa.ui.navigation.PreferencesDataStoreManager
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject

@@ -9,7 +9,8 @@ import com.eaccid.musimpa.data.remote.services.AuthenticationApi
 import com.eaccid.musimpa.utils.API_VERSION
 
 class AuthenticationRepositoryImpl(
-    private val serviceAPI: AuthenticationApi, private val localData: LocalData
+    private val serviceAPI: AuthenticationApi,
+    private val localData: LocalData
 ) :
     AuthenticationRepository {
     override suspend fun getToken(): ApiResponse<Authentication> {
