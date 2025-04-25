@@ -11,7 +11,7 @@ class MusimpaApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin {
-            // declare modules
+            //koin declare modules
             androidContext(this@MusimpaApplication)
             modules(getModules())
         }

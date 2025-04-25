@@ -16,8 +16,9 @@ sealed class ApiResponse<out T> {
         val error: Throwable? = null
     ) : ApiResponse<Nothing>()
 
-    object NetworkError : ApiResponse<Nothing>()
+    data object NetworkError : ApiResponse<Nothing>()
 }
+
 inline fun <T> safeApiRequest(apiCall: () -> T): ApiResponse<T> {
     try {
         return ApiResponse.Success(apiCall())

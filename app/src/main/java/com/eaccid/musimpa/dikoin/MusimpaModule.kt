@@ -10,7 +10,10 @@ import com.eaccid.musimpa.data.MovieRemoteMediator
 import com.eaccid.musimpa.data.local.MIGRATION_1_2
 import com.eaccid.musimpa.data.local.MovieDatabase
 import com.eaccid.musimpa.data.local.MovieEntity
-import com.eaccid.musimpa.data.remote.TmdbServiceAPI
+import com.eaccid.musimpa.data.remote.services.AccountApi
+import com.eaccid.musimpa.data.remote.services.AuthenticationApi
+import com.eaccid.musimpa.data.remote.services.MovieApi
+import com.eaccid.musimpa.data.remote.services.MovieListApi
 import com.eaccid.musimpa.repository.AuthenticationRepository
 import com.eaccid.musimpa.repository.AuthenticationRepositoryImpl
 import com.eaccid.musimpa.repository.MoviesRepository
@@ -41,13 +44,13 @@ val repositoryModule = module {
             .build()
     }
 
-    fun provideTMDbServiceAPI(retrofit: Retrofit): TmdbServiceAPI {
-        return retrofit.create(TmdbServiceAPI::class.java)
-    }
-    single { provideTMDbServiceAPI(get()) }
+    single<AuthenticationApi> { get<Retrofit>().create(AuthenticationApi::class.java) }
+    single<AccountApi> { get<Retrofit>().create(AccountApi::class.java) }
+    single<MovieApi> { get<Retrofit>().create(MovieApi::class.java) }
+    single<MovieListApi> { get<Retrofit>().create(MovieListApi::class.java) }
 
     fun provideAuthenticationRepository(
-        api: TmdbServiceAPI,
+        api: AuthenticationApi,
         pref: LocalData
     ): AuthenticationRepository {
         return AuthenticationRepositoryImpl(api, pref)
@@ -55,12 +58,11 @@ val repositoryModule = module {
     single { provideAuthenticationRepository(get(), get()) }
 
     fun provideMoviesRepository(
-        api: TmdbServiceAPI,
-        pref: LocalData
+        api: MovieApi
     ): MoviesRepository {
-        return MoviesRepositoryImpl(api, pref)
+        return MoviesRepositoryImpl(api)
     }
-    single { provideMoviesRepository(get(), get()) }
+    single { provideMoviesRepository(get()) }
 }
 
 @OptIn(ExperimentalPagingApi::class)
@@ -89,14 +91,8 @@ val dataModule = module {
     }
 }
 
-val navigationModule = module {
-//    single<Navigator> { DefaultNavigator(get()) }
-}
-
 val viewModelsModule = module {
-
     viewModel { MainScreenViewModel(get()) }
     viewModel { MovieListScreenViewModel(get(), get()) }
     viewModel { MovieDetailsScreenViewModel(get(), get()) }
-
 }

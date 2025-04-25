@@ -1,18 +1,16 @@
 package com.eaccid.musimpa.repository
 
 import com.eaccid.musimpa.BuildConfig
-import com.eaccid.musimpa.LocalData
+import com.eaccid.musimpa.data.remote.ApiResponse
 import com.eaccid.musimpa.data.remote.entities.DiscoverDto
 import com.eaccid.musimpa.data.remote.entities.MovieDto
 import com.eaccid.musimpa.data.remote.entities.VideosResult
-import com.eaccid.musimpa.data.remote.ApiResponse
-import com.eaccid.musimpa.data.remote.TmdbServiceAPI
 import com.eaccid.musimpa.data.remote.safeApiRequest
+import com.eaccid.musimpa.data.remote.services.MovieApi
 import com.eaccid.musimpa.utils.API_VERSION
 
 class MoviesRepositoryImpl(
-    private val serviceAPI: TmdbServiceAPI,
-    private val localData: LocalData
+    private val serviceAPI: MovieApi
 ) : MoviesRepository {
 
     override suspend fun discoverAll(page: Int): ApiResponse<DiscoverDto> {

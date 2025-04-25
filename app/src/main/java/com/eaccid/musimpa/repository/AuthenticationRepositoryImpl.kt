@@ -2,14 +2,14 @@ package com.eaccid.musimpa.repository
 
 import com.eaccid.musimpa.BuildConfig
 import com.eaccid.musimpa.LocalData
-import com.eaccid.musimpa.data.remote.entities.Authentication
 import com.eaccid.musimpa.data.remote.ApiResponse
-import com.eaccid.musimpa.data.remote.TmdbServiceAPI
+import com.eaccid.musimpa.data.remote.entities.Authentication
 import com.eaccid.musimpa.data.remote.safeApiRequest
+import com.eaccid.musimpa.data.remote.services.AuthenticationApi
 import com.eaccid.musimpa.utils.API_VERSION
 
 class AuthenticationRepositoryImpl(
-    private val serviceAPI: TmdbServiceAPI, private val localData: LocalData
+    private val serviceAPI: AuthenticationApi, private val localData: LocalData
 ) :
     AuthenticationRepository {
     override suspend fun getToken(): ApiResponse<Authentication> {
@@ -27,7 +27,8 @@ class AuthenticationRepositoryImpl(
 
     override suspend fun createSessionId(): ApiResponse<Authentication> {
         val result = safeApiRequest {
-            serviceAPI.createSession(BuildConfig.THE_MOVIE_DB_API_READ_ACCESS_TOKEN,
+            serviceAPI.createSession(
+                BuildConfig.THE_MOVIE_DB_API_READ_ACCESS_TOKEN,
                 API_VERSION,
                 Authentication(request_token = getLocalDataToken())
             )

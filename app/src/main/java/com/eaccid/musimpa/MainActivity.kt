@@ -19,13 +19,13 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
-    val preferencesDataStoreManager by inject<PreferencesDataStoreManager>()
+    private val preferencesDataStoreManager by inject<PreferencesDataStoreManager>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.i("temptest MainActivity", "MainActivity ${this@MainActivity} - onCreate")
 
-        // TODO! move lastScreen to another logic
+        // TODO try to move lastScreen to another logic
         // Launch a coroutine in lifecycleScope, using Lifecycle.State.STARTED to ensure it runs when Activity is started
         lifecycleScope.launch {
             // Collect the data only when the Activity is in STARTED state

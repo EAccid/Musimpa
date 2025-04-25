@@ -12,6 +12,7 @@ interface MovieDao {
     suspend fun insertAll(movies: List<MovieEntity>)
 
     //int - page number
+    // delete this if pagination information in a separate table
     @Query("SELECT * FROM movieentity")
     fun pagingSource(): PagingSource<Int, MovieEntity>
 

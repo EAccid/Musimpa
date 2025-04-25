@@ -5,7 +5,13 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class MovieEntity(
-    @PrimaryKey(autoGenerate = true) val localId: Int = 0, // delete when store the pagination information in a separate table
+    
+    // delete this if pagination information in a separate table
+    @PrimaryKey(autoGenerate = true) val localId: Int = 0,
+    // this is just to see how pager works
+    // pagination would work better with separate table according to the documentation
+    var page: Int = 0,
+
     val apiId: Int = 0,
     val originalTitle: String?,
     val releaseDate: String?,
@@ -15,6 +21,5 @@ data class MovieEntity(
     val voteAverage: Int = 0, //percentage
     val tagline: String?,
     val runtime: Int? = 0,
-    var videoKey: String = "",
-    var page: Int = 0 //just temporary to see how pager works
+    var videoKey: String = ""
 )

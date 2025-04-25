@@ -20,7 +20,7 @@ import com.eaccid.musimpa.R;
 
 
 /**
- * View shows progress (%)
+ * View shows score in a circle (%)
  */
 
 public class UserScoreCustomView extends View {

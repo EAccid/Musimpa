@@ -3,6 +3,7 @@ package com.eaccid.musimpa.data.remote.entities
 import com.squareup.moshi.Json
 
 data class Video(
+    val id: String,
 
     @Json(name = "iso_639_1")
     val iso639_1: String,
@@ -18,7 +19,6 @@ data class Video(
     val official: Boolean,
 
     @Json(name = "published_at")
-    val publishedAt: String,
+    val publishedAt: String
 
-    val id: String
 )
