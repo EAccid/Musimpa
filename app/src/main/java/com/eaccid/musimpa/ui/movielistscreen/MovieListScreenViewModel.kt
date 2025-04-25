@@ -10,7 +10,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.eaccid.musimpa.data.domain.Movie
 import com.eaccid.musimpa.data.local.MovieEntity
-import com.eaccid.musimpa.repository.DiscoverPagingSource
+import com.eaccid.musimpa.data.DiscoverPagingSource
 import com.eaccid.musimpa.repository.MoviesRepository
 import com.eaccid.musimpa.utils.toMovie
 import kotlinx.coroutines.cancel

@@ -15,28 +15,29 @@ import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
 class MovieRemoteMediator(
-    private val moviesRepository: MoviesRepository, //TmdbServiceAPI
+    private val moviesRepository: MoviesRepository,
     private val movieDatabase: MovieDatabase
 ) : RemoteMediator<Int, MovieEntity>() {
     override suspend fun load(
-        loadType: LoadType,//refresh, new items from new page
-        state: PagingState<Int, MovieEntity>//current page info
+        loadType: LoadType, // refresh, new items from new page
+        state: PagingState<Int, MovieEntity> // current page info
     ): MediatorResult {
         return try {
             val loadKey = when (loadType) {
                 LoadType.REFRESH -> 1
-                LoadType.PREPEND -> return MediatorResult.Success(//not using, adding only to the end of the list
+                LoadType.PREPEND -> return MediatorResult.Success( // not using, adding only to the end of the list
                     endOfPaginationReached = true
                 )
+
                 LoadType.APPEND -> {
                     /** better practice in bigger projects would be to store
                      * the pagination information in a separate table.
-                     *  But, for my small test-project this complexity is not necessary.*/
-                      val lastItem = state.lastItemOrNull()
+                     *  But, for this small test-project this complexity is not necessary.*/
+                    val lastItem = state.lastItemOrNull()
                     if (lastItem == null) {
                         1
                     } else {
-                        println("------------mediator test lastItem.id = $lastItem.id ---------------------")
+                        println("------------mediator test lastItem.id = $lastItem.id to get api page---------------------")
                         lastItem.page + 1
                     }
                 }
@@ -54,7 +55,7 @@ class MovieRemoteMediator(
                         movieDatabase.movieDao.insertAll(movieEntities)
                     }
                     MediatorResult.Success(
-                        endOfPaginationReached = movies.isEmpty()//loadKey == response.data.totalPages,
+                        endOfPaginationReached = movies.isEmpty() // might work but not safe: loadKey == response.data.totalPages,
                     )
                 }
 

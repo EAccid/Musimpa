@@ -1,11 +1,13 @@
-package com.eaccid.musimpa.repository
+package com.eaccid.musimpa.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.eaccid.musimpa.data.remote.ApiResponse
 import com.eaccid.musimpa.data.domain.Movie
+import com.eaccid.musimpa.repository.MoviesRepository
 import com.eaccid.musimpa.utils.toMovie
 
+//Not in use but kept to see how PagingSource works
 class DiscoverPagingSource(
     private val moviesRepository: MoviesRepository
 ) : PagingSource<Int, Movie>() {
@@ -24,7 +26,7 @@ class DiscoverPagingSource(
             when (val response = moviesRepository.discoverAll(currentPage)) {
                 is ApiResponse.Success -> {
                     LoadResult.Page(
-                        data = response.data.movies.map { it.toMovie() }, // Convert to UI model
+                        data = response.data.movies.map { it.toMovie() }, // Convert to presentation model
                         prevKey = if (currentPage == 1) null else currentPage - 1,
                         nextKey = if (response.data.movies.isEmpty()) null else currentPage + 1
                     )
