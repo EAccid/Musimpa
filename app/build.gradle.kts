@@ -107,6 +107,8 @@ dependencies {
     implementation("androidx.compose.material:material-icons-core:1.7.8")
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
     implementation(platform("androidx.compose:compose-bom:2025.03.01"))
+    implementation("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
 
 //koin
     implementation("io.insert-koin:koin-core:3.5.2-RC1")
