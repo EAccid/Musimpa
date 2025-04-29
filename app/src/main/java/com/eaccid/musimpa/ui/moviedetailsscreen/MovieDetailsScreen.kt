@@ -99,7 +99,25 @@ fun MoviesDetailsScreenContent(
         }
 
         is MovieDetailsScreenViewState.Success -> {
-            MovieDetails(viewState.movie)
+            Column(
+                modifier = Modifier
+                    .windowInsetsPadding(WindowInsets.statusBars)
+                    .fillMaxWidth()
+            ) {
+                MovieDetails(viewState.movie)
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp, 0.dp, 0.dp, 8.dp),
+                    text = "Top Billed Cast",
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.DarkGray
+                    )
+                )
+                //modify modifier here
+                CastPagerView(viewState.cast)
+            }
         }
 
         else -> {
@@ -127,7 +145,6 @@ fun MovieDetails(dataItem: Movie) {
     Column(
         modifier = Modifier
             .padding(16.dp)
-            .windowInsetsPadding(WindowInsets.statusBars)
             .fillMaxWidth()
 
     ) {
@@ -250,7 +267,7 @@ class MoviesDetailsScreenViewPreviewParameterProvider :
                 tagline = TODO(),
                 runtime = TODO(),
                 videoKey = TODO()
-            )
+            ), cast = listOf()
         ),
         MovieDetailsScreenViewState.NoData
     )

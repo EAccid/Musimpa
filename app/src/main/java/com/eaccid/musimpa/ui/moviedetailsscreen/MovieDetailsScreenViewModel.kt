@@ -5,9 +5,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eaccid.musimpa.data.remote.ApiResponse
+import com.eaccid.musimpa.data.remote.entities.MovieCredits
 import com.eaccid.musimpa.data.remote.entities.MovieDto
 import com.eaccid.musimpa.data.remote.entities.VideosResult
 import com.eaccid.musimpa.repository.MoviesRepository
+import com.eaccid.musimpa.utils.toActor
 import com.eaccid.musimpa.utils.toMovie
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -49,12 +51,16 @@ class MovieDetailsScreenViewModel(
                 val videosResponseDeferred = async {
                     moviesRepository.getMovieVideos(movieId = Integer.parseInt(movieId))
                 }
-                val (movieDtoResponse, videosResponse) = awaitAll(
+                val creditResponseDeferred = async {
+                    moviesRepository.getMovieCredits(movieId = Integer.parseInt(movieId))
+                }
+                val (movieDtoResponse, videosResponse, creditResponse) = awaitAll(
                     movieDtoDeferred,
-                    videosResponseDeferred
+                    videosResponseDeferred,
+                    creditResponseDeferred
                 )
                 when {
-                    movieDtoResponse is ApiResponse.Success && videosResponse is ApiResponse.Success -> {
+                    movieDtoResponse is ApiResponse.Success && videosResponse is ApiResponse.Success && creditResponse is ApiResponse.Success -> {
                         val movie = (movieDtoResponse.data as MovieDto).toMovie()
                         val movieVideos = (videosResponse.data as VideosResult).results
                         if (movieVideos != null) {
@@ -65,11 +71,15 @@ class MovieDetailsScreenViewModel(
                                 }
                             }
                         }
-                        _uiState.value = MovieDetailsScreenViewState.Success(movie = movie)
+                        val cast =
+                            (creditResponse.data as MovieCredits).cast.map { actorDto -> actorDto.toActor() }
+                        _uiState.value =
+                            MovieDetailsScreenViewState.Success(movie = movie, cast = cast)
                     }
 
                     movieDtoResponse is ApiResponse.NetworkError -> {
-                        //TODO handle network error
+                        //handle network error
+                        TODO()
                     }
 
                     movieDtoResponse is ApiResponse.Error -> {
@@ -78,6 +88,14 @@ class MovieDetailsScreenViewModel(
 
                     videosResponse is ApiResponse.Error -> {
                         _uiState.value = MovieDetailsScreenViewState.Error(videosResponse.error)
+                    }
+
+                    creditResponse is ApiResponse.Error -> {
+                        _uiState.value = MovieDetailsScreenViewState.Error(creditResponse.error)
+                        Log.e(
+                            "ApiResponseError",
+                            creditResponse.error?.message ?: "creditResponse error"
+                        )
                     }
 
                     else -> {

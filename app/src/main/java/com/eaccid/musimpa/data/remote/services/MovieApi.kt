@@ -1,6 +1,7 @@
 package com.eaccid.musimpa.data.remote.services
 
 import com.eaccid.musimpa.data.remote.entities.DiscoverDto
+import com.eaccid.musimpa.data.remote.entities.MovieCredits
 import com.eaccid.musimpa.data.remote.entities.MovieDto
 import com.eaccid.musimpa.data.remote.entities.VideosResult
 import retrofit2.http.GET
@@ -28,4 +29,11 @@ interface MovieApi {
         @Path("movie_id") movieItemId: Int,
         @QueryMap options: Map<String, String>
     ): MovieDto
+
+    @GET("{version}/movie/{movie_id}/credits")
+    suspend fun getMovieCredits(
+        @Path("version") version: Int,
+        @Path("movie_id") movieItemId: Int,
+        @QueryMap options: Map<String, String>
+    ): MovieCredits
 }
