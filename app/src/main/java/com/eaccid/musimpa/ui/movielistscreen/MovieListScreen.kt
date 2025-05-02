@@ -54,6 +54,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.eaccid.musimpa.data.domain.Movie
+import com.eaccid.musimpa.ui.LogCompositions
 import com.eaccid.musimpa.ui.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.navigation.Screen
 import com.eaccid.musimpa.utils.PosterSize
@@ -63,6 +64,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MovieListScreen(navController: NavController) {
+    LogCompositions("MovieListScreen")
+
     val viewModel = koinViewModel<MovieListScreenViewModel>()
     SideEffect {
         Log.i("temptest ", " --------------- ")

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,25 +21,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.eaccid.musimpa.data.domain.Actor
+import com.eaccid.musimpa.ui.LogCompositions
 import com.eaccid.musimpa.utils.PosterSize
 import com.eaccid.musimpa.utils.toImageUri
 
-//TODO check recomposition
-//refactor
-//make preview
-
 @Composable
 fun CastPagerView(actors: List<Actor>, modifier: Modifier = Modifier) {
+    LogCompositions("CastPagerView")
+
     val pagerState = rememberPagerState(pageCount = { actors.size })
     HorizontalPager(
         state = pagerState,
         pageSize = PageSize.Fixed(120.dp),
         modifier = modifier
+            .padding(horizontal = 16.dp)
     ) { page ->
         val actor = actors[page]
         Column(
             modifier = Modifier
-                .padding(horizontal = 8.dp)
                 .fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -48,11 +48,14 @@ fun CastPagerView(actors: List<Actor>, modifier: Modifier = Modifier) {
                 painter = rememberAsyncImagePainter(
                     actor.profilePath?.toImageUri(PosterSize.W154) ?: "Non"
                 ),
+                contentScale = ContentScale.Crop,
                 contentDescription = actor.profilePath
             )
             Text(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = actor.name ?: "",
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(0.dp, 8.dp, 0.dp, 0.dp),
+                text = actor.name.takeIf { !it.isNullOrBlank() } ?: "Unknown",
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp,
@@ -61,7 +64,7 @@ fun CastPagerView(actors: List<Actor>, modifier: Modifier = Modifier) {
             )
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = actor.character ?: "",
+                text = actor.character.takeIf { !it.isNullOrBlank() } ?: "Unknown",
                 style = TextStyle(
                     fontSize = 12.sp,
                 )
@@ -73,13 +76,10 @@ fun CastPagerView(actors: List<Actor>, modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun CastPagerViewPreview() {
-    val actors = listOf(
-        Actor(1, "Actor 1", "/path1"),
-        Actor(2, "Actor 2", "/path2"),
-        Actor(3, "Actor 3", "/path3"),
+    val mockActors = listOf(
+        Actor(1, "Character 1", "/some/path1.jpg"),
+        Actor(2, "Character 2", "/some/path2.jpg"),
+        Actor(3, "Character 3", "/some/path3.jpg")
     )
-    CastPagerView(
-        actors = actors,
-        modifier = Modifier
-    )
+    CastPagerView(actors = mockActors)
 }

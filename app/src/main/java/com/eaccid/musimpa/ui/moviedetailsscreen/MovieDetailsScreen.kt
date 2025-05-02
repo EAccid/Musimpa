@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -33,8 +34,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.eaccid.musimpa.R
 import com.eaccid.musimpa.data.domain.Movie
 import com.eaccid.musimpa.javaclasses.UserScoreCustomView
+import com.eaccid.musimpa.ui.LogCompositions
 import com.eaccid.musimpa.ui.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.navigation.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
@@ -49,8 +52,9 @@ fun MovieDetailsScreen(
     movieId: String,
     navController: NavController,
 ) {
-    val viewModel = koinViewModel<MovieDetailsScreenViewModel>()
+    LogCompositions("MovieDetailsScreen")
 
+    val viewModel = koinViewModel<MovieDetailsScreenViewModel>()
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
     MoviesDetailsScreenContent(viewState)
     SideEffect {
@@ -108,14 +112,14 @@ fun MoviesDetailsScreenContent(
                 Text(
                     modifier = Modifier
                         .padding(16.dp, 0.dp, 0.dp, 8.dp),
-                    text = "Top Billed Cast",
+                    text = stringResource(R.string.top_billed_cast),
                     style = TextStyle(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.DarkGray
                     )
                 )
-                //modify modifier here
+                //add correct modifier here
                 CastPagerView(viewState.cast)
             }
         }

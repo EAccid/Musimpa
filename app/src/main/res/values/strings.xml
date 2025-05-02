@@ -2,4 +2,5 @@
     <string name="app_name">Musimpa</string>
     <string name="app_greeting_text">Hello</string>
     <string name="app_greeting_text_error">Try again</string>
+    <string name="top_billed_cast">Top Billed Cast</string>
 </resources>
