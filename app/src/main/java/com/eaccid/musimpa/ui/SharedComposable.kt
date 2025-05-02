@@ -2,6 +2,7 @@ package com.eaccid.musimpa.ui
 
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
@@ -52,5 +53,9 @@ fun LogCompositions(tag: String) {
     SideEffect {
         count.value++
         Log.d("Recompose", "$tag recomposed ${count.value} times")
+    }
+    DisposableEffect(Unit) {
+        println("--> $tag DisposableEffect Entered")
+        onDispose { println("<-- $tag DisposableEffect Disposed") }
     }
 }

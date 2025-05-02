@@ -8,9 +8,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.eaccid.musimpa.data.DiscoverPagingSource
 import com.eaccid.musimpa.data.domain.Movie
 import com.eaccid.musimpa.data.local.MovieEntity
-import com.eaccid.musimpa.data.DiscoverPagingSource
 import com.eaccid.musimpa.repository.MoviesRepository
 import com.eaccid.musimpa.utils.toMovie
 import kotlinx.coroutines.cancel
@@ -44,7 +44,7 @@ class MovieListScreenViewModel(
     }
 
     private fun collectPagingData() {
-        Log.i("MoviesViewModel temptest ----------------- ", "$this collectPagingData")
+        Log.i("MoviesViewModel", "$this collectPagingData")
         viewModelScope.launch {
             pager.collectLatest { pagingData ->
                 _pagingMoviesFlow.value = pagingData
@@ -53,7 +53,7 @@ class MovieListScreenViewModel(
     }
 
     private fun collectPagingDataWithRoom() {
-        Log.i("MoviesViewModel temptest ----------------- ", "$this collectPagingData")
+        Log.i("MoviesViewModel temptest", "$this collectPagingDataWithRoom")
         viewModelScope.launch {
             pagerRoomFlow.collectLatest { pagingData ->
                 _pagingMoviesFlow.value = pagingData

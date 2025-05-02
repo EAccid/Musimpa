@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -59,12 +58,7 @@ fun MovieDetailsScreen(
     MoviesDetailsScreenContent(viewState)
     SideEffect {
         Log.i("MusimpaApp", "MovieDetailsScreen: movie $movieId screen open")
-        Log.i(
-            "temptest @Composable//MovieDetailsScreen",
-            "@Composable//MovieDetailsScreen ->> viewModel 3: $viewModel"
-        )
     }
-
     BackHandler {
         if (navController.previousBackStackEntry != null) {
             navController.popBackStack()
@@ -78,11 +72,6 @@ fun MovieDetailsScreen(
     }
     // just to see how it works with parameter and navigation
     SaveLastScreenEffect(Screen.MovieDetails.route + "/${movieId}")
-    DisposableEffect(Unit) {
-        println("temptest DisposableEffect MovieDetailsScreen Entered")
-        onDispose { println("temptest DisposableEffect MovieDetailsScreen Disposed") }
-    }
-
 }
 
 @Composable
@@ -262,15 +251,9 @@ class MoviesDetailsScreenViewPreviewParameterProvider :
         MovieDetailsScreenViewState.Success(
             Movie(
                 id = 0,
-                originalTitle = TODO(),
-                releaseDate = TODO(),
-                posterPath = TODO(),
-                title = TODO(),
-                overview = TODO(),
-                voteAverage = TODO(),
-                tagline = TODO(),
-                runtime = TODO(),
-                videoKey = TODO()
+                originalTitle = "originalTitle",
+                title = "title",
+                videoKey = "videoKey"
             ), cast = listOf()
         ),
         MovieDetailsScreenViewState.NoData

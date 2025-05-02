@@ -35,7 +35,7 @@ class MovieDetailsScreenViewModel(
 
     init {
         Log.i("MusimpaApp", "MovieDetailsScreenViewModel movie ${movieId} from state")
-        Log.i("MovieDetailsScreenViewModel temptest ----------------- ", " $this is created 3")
+        Log.i("MovieDetailsScreenViewModel", " $this is created 3")
         getMovieDetails(movieId)
     }
 
@@ -110,8 +110,7 @@ class MovieDetailsScreenViewModel(
         super.onCleared()
         viewModelScope.cancel()
         Log.i(
-            "MovieDetailsScreenViewModel temptest ----------------- ",
-            " $this is cleared 3"
+            "MovieDetailsScreenViewModel", " $this is cleared 3"
         )
     }
 }

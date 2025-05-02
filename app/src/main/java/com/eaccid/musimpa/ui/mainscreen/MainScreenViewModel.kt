@@ -22,7 +22,7 @@ class MainScreenViewModel(
     val uiState: StateFlow<MainScreenViewState> = _uiState.asStateFlow()
 
     init {
-        Log.i("MainScreenViewModel temptest ----------------- ", " $this is created 1")
+        Log.i("MainScreenViewModel", " $this is created 1")
         if (authenticationRepository.isUserLoggedIn())
             _uiState.update { it.copy(state = MainScreenState.Success) }
         else {
@@ -48,11 +48,10 @@ class MainScreenViewModel(
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
-        Log.i("MainScreenViewModel temptest ----------------- ", " $this is cleared 1")
+        Log.i("MainScreenViewModel", " $this is cleared 1")
     }
 
     fun onWebAction(succeed: Boolean) {
-        Log.i("MusimpaApp", "onWebAction = $succeed")
         if (succeed) {
             viewModelScope.launch {
                 val apiResponse = authenticationRepository.createSessionId()

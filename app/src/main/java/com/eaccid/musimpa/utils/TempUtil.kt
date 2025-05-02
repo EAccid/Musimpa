@@ -30,7 +30,7 @@ fun MovieDto.toMovie(): Movie { //todo do we need this?
         overview = overview,
         voteAverage = voteAverage?.times(10)?.toInt() ?: 0,
         tagline = tagline,
-        runtime = runtime
+        runtime = runtime ?: 0
     )
 }
 
@@ -59,7 +59,7 @@ fun MovieEntity.toMovie(): Movie {
         overview = overview,
         voteAverage = voteAverage,
         tagline = tagline,
-        runtime = runtime
+        runtime = runtime ?:0
     )
 }
 

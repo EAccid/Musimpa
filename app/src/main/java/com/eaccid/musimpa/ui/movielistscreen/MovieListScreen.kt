@@ -1,6 +1,5 @@
 package com.eaccid.musimpa.ui.movielistscreen
 
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
@@ -27,9 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -67,13 +64,7 @@ fun MovieListScreen(navController: NavController) {
     LogCompositions("MovieListScreen")
 
     val viewModel = koinViewModel<MovieListScreenViewModel>()
-    SideEffect {
-        Log.i("temptest ", " --------------- ")
-        Log.i(
-            "temptest @Composable//MovieListScreen",
-            "@Composable//MovieListScreen list ->> viewModel 2: $viewModel"
-        )
-    }
+
     //try paging from room+api
     val currentPagingMoviesFlow: LazyPagingItems<Movie> =
         viewModel.pagerRoomFlow.collectAsLazyPagingItems()
@@ -95,12 +86,6 @@ fun MovieListScreen(navController: NavController) {
         }
     }
     SaveLastScreenEffect(Screen.MovieList.route)
-
-    DisposableEffect(Unit) {
-        println("temptest DisposableEffect MovieListScreen Entered")
-        onDispose { println("temptest DisposableEffect MovieListScreen Disposed") }
-    }
-
 }
 
 @Composable
@@ -168,7 +153,7 @@ fun PullToRefreshMovieLazyColumn(
                 }
             }
             items(count = lazyPagingItems.itemCount) { index ->
-                println("temptest item is null sometimes fix the problem ") //TODO
+                //TODO item is null here sometimes check the problem
                 lazyPagingItems[index]?.let { item ->
                     MovieItemView(dataItem = item, onItemClicked)
                 }

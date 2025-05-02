@@ -1,7 +1,6 @@
 package com.eaccid.musimpa.ui.mainscreen
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -16,8 +15,6 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.eaccid.musimpa.ui.LogCompositions
 import com.eaccid.musimpa.ui.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.navigation.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
@@ -35,8 +33,9 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainScreen(navController: NavController) {
-    val viewModel = koinViewModel<MainScreenViewModel>()
+    LogCompositions("MovieListScreen")
 
+    val viewModel = koinViewModel<MainScreenViewModel>()
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
     MainScreenContent(viewState, onLoginClicked = {
         viewModel.login()
@@ -46,17 +45,7 @@ fun MainScreen(navController: NavController) {
         viewModel.onWebAction(succeed)
     }
     )
-    SideEffect {
-        Log.i(
-            "temptest @Composable//MainScreen",
-            "@Composable//MainScreen ->> viewModel 1: $viewModel"
-        )
-    }
     SaveLastScreenEffect(Screen.Main.route)
-    DisposableEffect(Unit) {
-        println("temptest DisposableEffect MainScreen Entered")
-        onDispose { println("temptest DisposableEffect MainScreen Disposed") }
-    }
 }
 
 @Composable
