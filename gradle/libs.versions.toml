@@ -2,7 +2,9 @@
 kotlin = "2.1.10"
 uiTestJunit4Android = "1.8.0"
 uiTestJunit4AndroidVersion = "1.8.0"
+junitKtx = "1.2.1"
 [libraries]
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 # TODO  androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4AndroidVersion" }
 #androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
 

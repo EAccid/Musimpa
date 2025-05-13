@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
@@ -18,5 +19,8 @@ interface MovieDao {
 
     @Query("DELETE FROM movieentity")
     suspend fun clearAll()
+
+    @Query("SELECT * FROM movieentity ORDER BY localId ASC")
+    fun getAllMovies(): Flow<List<MovieEntity>>
 
 }

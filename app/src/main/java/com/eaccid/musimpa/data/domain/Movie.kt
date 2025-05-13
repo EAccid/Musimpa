@@ -11,7 +11,7 @@ data class Movie(
     val posterPath: String? = null,
     val title: String? = null,
     val overview: String? = null,
-    val voteAverage: Int = 0, //percentage
+    val voteAverage: Double = 0.0, //percentage
     val tagline: String? = null,
     val runtime: Int = 0,
     var videoKey: String = ""

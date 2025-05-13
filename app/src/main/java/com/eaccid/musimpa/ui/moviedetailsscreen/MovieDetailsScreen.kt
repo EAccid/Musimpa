@@ -159,7 +159,7 @@ fun MovieDetails(dataItem: Movie) {
                     for now its just temp old java that does not work correctly
                     with object UserScoreCustomViewStyle.Attributes in Style.kt*/
                 }
-                view.score = dataItem.voteAverage
+                view.score = dataItem.voteAverage.toInt()
                 view.setTextSize(24)
                 view
             })

@@ -14,8 +14,6 @@ const val AUTHENTICATE_REQUEST_TOKEN_URL = "https://www.themoviedb.org/authentic
 const val API_VERSION = 3
 const val EMPTY_STRING_VALUE = ""
 
-//extensions: work with API
-
 fun String.toImageUri(posterSize: PosterSize): Uri {
     return (posterSize.imagePath + this).toUri().buildUpon().scheme("https").build()
 }
@@ -28,7 +26,7 @@ fun MovieDto.toMovie(): Movie { //todo do we need this?
         posterPath = posterPath,
         title = title,
         overview = overview,
-        voteAverage = voteAverage?.times(10)?.toInt() ?: 0,
+        voteAverage = voteAverage?.times(10) ?: 0.0,
         tagline = tagline,
         runtime = runtime ?: 0
     )
@@ -42,9 +40,9 @@ fun MovieDto.toMovieEntity(page: Int = 0): MovieEntity {
         posterPath = posterPath,
         title = title,
         overview = overview,
-        voteAverage = voteAverage?.times(10)?.toInt() ?: 0,
+        voteAverage = voteAverage?.times(10) ?: 0.0,
         tagline = tagline,
-        runtime = runtime,
+        runtime = runtime ?: 0,
         page = page
     )
 }
@@ -59,10 +57,9 @@ fun MovieEntity.toMovie(): Movie {
         overview = overview,
         voteAverage = voteAverage,
         tagline = tagline,
-        runtime = runtime ?:0
+        runtime = runtime
     )
 }
-
 
 fun ActorDto.toActor(): Actor {
     return Actor(
