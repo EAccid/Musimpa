@@ -1,7 +1,7 @@
 package com.eaccid.musimpa.ui.moviedetailsscreen
 
-import com.eaccid.musimpa.data.domain.Actor
-import com.eaccid.musimpa.data.domain.Movie
+import com.eaccid.musimpa.domain.model.Actor
+import com.eaccid.musimpa.domain.model.Movie
 
 //TODO rethink status
 sealed class MovieDetailsScreenViewState {

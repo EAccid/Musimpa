@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.ui
+package com.eaccid.musimpa.ui.component
 
 import android.util.Log
 import androidx.compose.runtime.Composable

@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.eaccid.musimpa.data.domain.Actor
+import com.eaccid.musimpa.domain.model.Actor
 import com.eaccid.musimpa.ui.moviedetailsscreen.CastPagerView
 import org.junit.Rule
 import org.junit.Test

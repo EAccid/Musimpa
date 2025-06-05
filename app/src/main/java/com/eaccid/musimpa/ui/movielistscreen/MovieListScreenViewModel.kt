@@ -8,10 +8,10 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.eaccid.musimpa.data.DiscoverPagingSource
-import com.eaccid.musimpa.data.domain.Movie
-import com.eaccid.musimpa.data.local.MovieEntity
-import com.eaccid.musimpa.repository.MoviesRepository
+import com.eaccid.musimpa.data.paging.DiscoverPagingSource
+import com.eaccid.musimpa.domain.model.Movie
+import com.eaccid.musimpa.data.local.room.MovieEntity
+import com.eaccid.musimpa.domain.repository.MoviesRepository
 import com.eaccid.musimpa.utils.toMovie
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow

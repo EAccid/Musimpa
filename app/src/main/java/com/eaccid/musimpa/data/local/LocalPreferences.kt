@@ -1,4 +1,4 @@
-package com.eaccid.musimpa
+package com.eaccid.musimpa.data.local
 
 interface LocalPreferences {
     fun saveString(key: String, value: String)

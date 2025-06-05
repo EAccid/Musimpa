@@ -34,10 +34,10 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.eaccid.musimpa.R
-import com.eaccid.musimpa.data.domain.Movie
+import com.eaccid.musimpa.domain.model.Movie
 import com.eaccid.musimpa.javaclasses.UserScoreCustomView
-import com.eaccid.musimpa.ui.LogCompositions
-import com.eaccid.musimpa.ui.SaveLastScreenEffect
+import com.eaccid.musimpa.ui.component.LogCompositions
+import com.eaccid.musimpa.ui.component.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.navigation.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer

@@ -2,9 +2,9 @@ package com.eaccid.musimpa.utils
 
 import android.net.Uri
 import androidx.core.net.toUri
-import com.eaccid.musimpa.data.domain.Actor
-import com.eaccid.musimpa.data.domain.Movie
-import com.eaccid.musimpa.data.local.MovieEntity
+import com.eaccid.musimpa.domain.model.Actor
+import com.eaccid.musimpa.domain.model.Movie
+import com.eaccid.musimpa.data.local.room.MovieEntity
 import com.eaccid.musimpa.data.remote.entities.ActorDto
 import com.eaccid.musimpa.data.remote.entities.MovieDto
 

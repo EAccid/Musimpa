@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.data
+package com.eaccid.musimpa.data.paging
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -6,10 +6,10 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import coil.network.HttpException
-import com.eaccid.musimpa.data.local.MovieDatabase
-import com.eaccid.musimpa.data.local.MovieEntity
+import com.eaccid.musimpa.data.local.room.MovieDatabase
+import com.eaccid.musimpa.data.local.room.MovieEntity
 import com.eaccid.musimpa.data.remote.ApiResponse
-import com.eaccid.musimpa.repository.MoviesRepository
+import com.eaccid.musimpa.domain.repository.MoviesRepository
 import com.eaccid.musimpa.utils.toMovieEntity
 import java.io.IOException
 

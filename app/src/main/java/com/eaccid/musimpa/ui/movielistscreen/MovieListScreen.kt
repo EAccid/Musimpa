@@ -50,9 +50,9 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.eaccid.musimpa.data.domain.Movie
-import com.eaccid.musimpa.ui.LogCompositions
-import com.eaccid.musimpa.ui.SaveLastScreenEffect
+import com.eaccid.musimpa.domain.model.Movie
+import com.eaccid.musimpa.ui.component.LogCompositions
+import com.eaccid.musimpa.ui.component.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.navigation.Screen
 import com.eaccid.musimpa.utils.PosterSize
 import com.eaccid.musimpa.utils.toImageUri

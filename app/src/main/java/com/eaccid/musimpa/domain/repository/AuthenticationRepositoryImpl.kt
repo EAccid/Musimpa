@@ -1,7 +1,7 @@
-package com.eaccid.musimpa.repository
+package com.eaccid.musimpa.domain.repository
 
 import com.eaccid.musimpa.BuildConfig
-import com.eaccid.musimpa.LocalData
+import com.eaccid.musimpa.data.local.LocalData
 import com.eaccid.musimpa.data.remote.ApiResponse
 import com.eaccid.musimpa.data.remote.entities.Authentication
 import com.eaccid.musimpa.data.remote.safeApiRequest

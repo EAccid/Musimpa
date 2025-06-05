@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.repository
+package com.eaccid.musimpa.domain.repository
 
 import com.eaccid.musimpa.BuildConfig
 import com.eaccid.musimpa.data.remote.ApiResponse

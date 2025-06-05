@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.eaccid.musimpa.ui.LogCompositions
-import com.eaccid.musimpa.ui.SaveLastScreenEffect
+import com.eaccid.musimpa.ui.component.LogCompositions
+import com.eaccid.musimpa.ui.component.SaveLastScreenEffect
 import com.eaccid.musimpa.ui.navigation.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import org.koin.androidx.compose.koinViewModel

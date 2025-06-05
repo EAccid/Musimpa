@@ -1,4 +1,4 @@
-package com.eaccid.musimpa
+package com.eaccid.musimpa.data.local
 
 interface LocalData {
     fun saveToken(value: String)

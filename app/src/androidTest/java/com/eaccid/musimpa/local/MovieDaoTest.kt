@@ -4,6 +4,9 @@ import androidx.paging.PagingSource
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.eaccid.musimpa.data.local.room.MovieDao
+import com.eaccid.musimpa.data.local.room.MovieDatabase
+import com.eaccid.musimpa.data.local.room.MovieEntity
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first

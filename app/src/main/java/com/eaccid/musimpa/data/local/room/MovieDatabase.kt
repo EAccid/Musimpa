@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.data.local
+package com.eaccid.musimpa.data.local.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

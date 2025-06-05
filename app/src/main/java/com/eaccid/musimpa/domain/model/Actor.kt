@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.data.domain
+package com.eaccid.musimpa.domain.model
 
 data class Actor(
     val id: Int = 0,

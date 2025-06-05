@@ -1,10 +1,10 @@
-package com.eaccid.musimpa.data
+package com.eaccid.musimpa.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.eaccid.musimpa.data.remote.ApiResponse
-import com.eaccid.musimpa.data.domain.Movie
-import com.eaccid.musimpa.repository.MoviesRepository
+import com.eaccid.musimpa.domain.model.Movie
+import com.eaccid.musimpa.domain.repository.MoviesRepository
 import com.eaccid.musimpa.utils.toMovie
 
 //Not in use but kept to see how PagingSource works

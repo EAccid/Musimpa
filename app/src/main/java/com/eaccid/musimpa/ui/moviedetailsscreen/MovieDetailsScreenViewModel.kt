@@ -8,7 +8,7 @@ import com.eaccid.musimpa.data.remote.ApiResponse
 import com.eaccid.musimpa.data.remote.entities.MovieCredits
 import com.eaccid.musimpa.data.remote.entities.MovieDto
 import com.eaccid.musimpa.data.remote.entities.VideosResult
-import com.eaccid.musimpa.repository.MoviesRepository
+import com.eaccid.musimpa.domain.repository.MoviesRepository
 import com.eaccid.musimpa.utils.toActor
 import com.eaccid.musimpa.utils.toMovie
 import kotlinx.coroutines.async

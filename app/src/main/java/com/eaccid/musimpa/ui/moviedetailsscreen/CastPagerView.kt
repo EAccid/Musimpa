@@ -20,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.eaccid.musimpa.data.domain.Actor
-import com.eaccid.musimpa.ui.LogCompositions
+import com.eaccid.musimpa.domain.model.Actor
+import com.eaccid.musimpa.ui.component.LogCompositions
 import com.eaccid.musimpa.utils.PosterSize
 import com.eaccid.musimpa.utils.toImageUri
 

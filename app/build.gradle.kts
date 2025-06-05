@@ -113,6 +113,8 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager:0.28.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
     implementation(libs.androidx.junit.ktx)
+    implementation("androidx.work:work-runtime-ktx:2.10.1")
+
 
 //tests
 //    implementation(libs.androidx.ui.test.junit4.android) todo add to libs.versions.TOML and not only here

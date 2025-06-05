@@ -1,4 +1,4 @@
-package com.eaccid.musimpa
+package com.eaccid.musimpa.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -12,7 +12,11 @@ private const val APP_PREF = "musimpaPrefs"
 
 class LocalEncryptedSharedPreferences(context: Context) : LocalData, LocalPreferences {
     private val masterKey = MasterKey.Builder(context)
-        .setKeyGenParameterSpec(KeyGenParameterSpec.Builder(MasterKey.DEFAULT_MASTER_KEY_ALIAS, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
+        .setKeyGenParameterSpec(
+            KeyGenParameterSpec.Builder(
+                MasterKey.DEFAULT_MASTER_KEY_ALIAS,
+                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+            )
             .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
             .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
             .setKeySize(256).build()).build()

@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.data.local
+package com.eaccid.musimpa.data.local.room
 
 import androidx.paging.PagingSource
 import androidx.room.Dao

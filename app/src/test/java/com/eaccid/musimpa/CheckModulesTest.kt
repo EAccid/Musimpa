@@ -1,12 +1,13 @@
 package com.eaccid.musimpa
 
+import com.eaccid.musimpa.data.local.LocalData
 import com.eaccid.musimpa.data.remote.services.AccountApi
 import com.eaccid.musimpa.data.remote.services.AuthenticationApi
 import com.eaccid.musimpa.data.remote.services.MovieApi
 import com.eaccid.musimpa.data.remote.services.MovieListApi
 import com.eaccid.musimpa.dikoin.repositoryModule
-import com.eaccid.musimpa.repository.AuthenticationRepository
-import com.eaccid.musimpa.repository.MoviesRepository
+import com.eaccid.musimpa.domain.repository.AuthenticationRepository
+import com.eaccid.musimpa.domain.repository.MoviesRepository
 import io.mockk.mockk
 import org.junit.After
 import org.junit.Before

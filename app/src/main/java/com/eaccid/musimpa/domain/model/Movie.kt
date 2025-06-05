@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.data.domain
+package com.eaccid.musimpa.domain.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
