@@ -6,10 +6,9 @@ import androidx.paging.PagingConfig
 import androidx.room.Room
 import com.eaccid.musimpa.data.local.LocalData
 import com.eaccid.musimpa.data.local.LocalEncryptedSharedPreferences
-import com.eaccid.musimpa.data.paging.MovieRemoteMediator
 import com.eaccid.musimpa.data.local.room.MIGRATION_1_2
 import com.eaccid.musimpa.data.local.room.MovieDatabase
-import com.eaccid.musimpa.data.local.room.MovieEntity
+import com.eaccid.musimpa.data.paging.MovieRemoteMediator
 import com.eaccid.musimpa.data.remote.services.AccountApi
 import com.eaccid.musimpa.data.remote.services.AuthenticationApi
 import com.eaccid.musimpa.data.remote.services.MovieApi
@@ -18,10 +17,11 @@ import com.eaccid.musimpa.domain.repository.AuthenticationRepository
 import com.eaccid.musimpa.domain.repository.AuthenticationRepositoryImpl
 import com.eaccid.musimpa.domain.repository.MoviesRepository
 import com.eaccid.musimpa.domain.repository.MoviesRepositoryImpl
-import com.eaccid.musimpa.ui.navigation.PreferencesDataStoreManager
+import com.eaccid.musimpa.domain.usecase.SyncPopularMoviesUseCase
 import com.eaccid.musimpa.ui.mainscreen.MainScreenViewModel
 import com.eaccid.musimpa.ui.moviedetailsscreen.MovieDetailsScreenViewModel
 import com.eaccid.musimpa.ui.movielistscreen.MovieListScreenViewModel
+import com.eaccid.musimpa.ui.navigation.PreferencesDataStoreManager
 import com.eaccid.musimpa.utils.BASE_URL
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -58,11 +58,11 @@ val repositoryModule = module {
     single { provideAuthenticationRepository(get(), get()) }
 
     fun provideMoviesRepository(
-        api: MovieApi
+        api: MovieApi, movieDb: MovieDatabase
     ): MoviesRepository {
-        return MoviesRepositoryImpl(api)
+        return MoviesRepositoryImpl(api, movieDb)
     }
-    single { provideMoviesRepository(get()) }
+    single { provideMoviesRepository(get(), get<MovieDatabase>()) }
 }
 
 @OptIn(ExperimentalPagingApi::class)
@@ -78,21 +78,34 @@ val dataModule = module {
             .addMigrations(MIGRATION_1_2)
             .build()
     }
-    single<Pager<Int, MovieEntity>> {
-        Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                initialLoadSize = 20,  // Load only the first page
-                jumpThreshold = 20 // Ensures loading happens only at the last item
-            ),
-            remoteMediator = MovieRemoteMediator(get(), get()),
-            pagingSourceFactory = { get<MovieDatabase>().movieDao.pagingSource() }
-        )
-    }
+}
+val useCaseModule = module {
+    single { SyncPopularMoviesUseCase(get()) }
 }
 
+@OptIn(ExperimentalPagingApi::class)
 val viewModelsModule = module {
     viewModel { MainScreenViewModel(get()) }
-    viewModel { MovieListScreenViewModel(get(), get()) }
+    viewModel {
+        val repository: MoviesRepository = get()
+        val movieDb: MovieDatabase = get()
+        MovieListScreenViewModel(
+            createPager = {
+                Pager(
+                    config = PagingConfig(pageSize = 20),
+                    remoteMediator = MovieRemoteMediator(
+                        moviesRepository = repository
+                    ),
+                    pagingSourceFactory = {
+                        movieDb.movieDao.pagingSource()
+                    }
+                )
+            }
+        )
+    }
     viewModel { MovieDetailsScreenViewModel(get(), get()) }
+}
+
+val workerModule = module {
+    single { KoinWorkerFactory(getKoin()) }
 }

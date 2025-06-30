@@ -4,19 +4,15 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import androidx.room.withTransaction
 import coil.network.HttpException
-import com.eaccid.musimpa.data.local.room.MovieDatabase
 import com.eaccid.musimpa.data.local.room.MovieEntity
 import com.eaccid.musimpa.data.remote.ApiResponse
 import com.eaccid.musimpa.domain.repository.MoviesRepository
-import com.eaccid.musimpa.utils.toMovieEntity
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
 class MovieRemoteMediator(
-    private val moviesRepository: MoviesRepository,
-    private val movieDatabase: MovieDatabase
+    private val moviesRepository: MoviesRepository
 ) : RemoteMediator<Int, MovieEntity>() {
     override suspend fun load(
         loadType: LoadType, // refresh, new items from new page
@@ -43,19 +39,13 @@ class MovieRemoteMediator(
                 }
             }
             println("$loadType mediator test loadKey = $loadKey")
-            when (val response = moviesRepository.discoverAll(loadKey)) {
+            when (val response = moviesRepository.discoverAndCachePopularMovies(
+                loadKey,
+                loadType == LoadType.REFRESH
+            )) {
                 is ApiResponse.Success -> {
-                    val movies = response.data.movies
-                    movieDatabase.withTransaction {
-                        if (loadType == LoadType.REFRESH) {
-                            movieDatabase.movieDao.clearAll()
-                        }
-                        val movieEntities =
-                            movies.map { it.toMovieEntity(page = loadKey) }
-                        movieDatabase.movieDao.insertAll(movieEntities)
-                    }
                     MediatorResult.Success(
-                        endOfPaginationReached = movies.isEmpty() // might work but not safe: loadKey == response.data.totalPages,
+                        endOfPaginationReached = response.data.movies.isEmpty() // might work but not safe: loadKey == response.data.totalPages,
                     )
                 }
 
@@ -67,6 +57,5 @@ class MovieRemoteMediator(
         } catch (e: HttpException) {
             MediatorResult.Error(e)
         }
-
     }
 }

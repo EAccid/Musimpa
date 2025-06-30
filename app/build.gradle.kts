@@ -115,7 +115,6 @@ dependencies {
     implementation(libs.androidx.junit.ktx)
     implementation("androidx.work:work-runtime-ktx:2.10.1")
 
-
 //tests
 //    implementation(libs.androidx.ui.test.junit4.android) todo add to libs.versions.TOML and not only here
     androidTestImplementation(platform("androidx.compose:compose-bom:2025.03.01"))
@@ -148,6 +147,7 @@ dependencies {
     implementation("io.insert-koin:koin-core:3.5.2-RC1")
     implementation("io.insert-koin:koin-android:3.5.2-RC1")
     implementation("io.insert-koin:koin-androidx-compose:3.5.2-RC1")
+    implementation("io.insert-koin:koin-androidx-workmanager:3.5.3")
 
 //api json
     implementation("com.squareup.moshi:moshi-kotlin:1.12.0")

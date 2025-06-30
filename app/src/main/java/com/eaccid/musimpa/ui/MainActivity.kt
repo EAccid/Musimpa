@@ -1,4 +1,4 @@
-package com.eaccid.musimpa
+package com.eaccid.musimpa.ui
 
 import android.os.Bundle
 import android.util.Log
