@@ -13,6 +13,7 @@ import com.eaccid.musimpa.data.remote.services.AccountApi
 import com.eaccid.musimpa.data.remote.services.AuthenticationApi
 import com.eaccid.musimpa.data.remote.services.MovieApi
 import com.eaccid.musimpa.data.remote.services.MovieListApi
+import com.eaccid.musimpa.data.remote.services.interceptors.KeyLanguageQueryInterceptor
 import com.eaccid.musimpa.data.worker.MovieSyncWorker
 import com.eaccid.musimpa.domain.repository.AuthenticationRepository
 import com.eaccid.musimpa.domain.repository.AuthenticationRepositoryImpl
@@ -26,6 +27,7 @@ import com.eaccid.musimpa.ui.navigation.PreferencesDataStoreManager
 import com.eaccid.musimpa.utils.BASE_URL
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker
@@ -36,6 +38,11 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 val repositoryModule = module {
     single {
+        OkHttpClient.Builder()
+            .addInterceptor(KeyLanguageQueryInterceptor())
+            .build()
+    }
+    single {
         Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
@@ -43,6 +50,7 @@ val repositoryModule = module {
     single<Retrofit> {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(/*okHttpClient*/ get())
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .build()
     }
