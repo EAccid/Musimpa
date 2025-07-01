@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 fun scheduleMovieSync(context: Context) {
     periodicWorkRequest(context)
-    //oneTimeWorkRequest(context)
+//    oneTimeWorkRequest(context)
 }
 
 fun oneTimeWorkRequest(context: Context) {

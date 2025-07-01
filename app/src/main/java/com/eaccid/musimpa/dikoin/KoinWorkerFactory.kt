@@ -1,7 +1,6 @@
 package com.eaccid.musimpa.dikoin
 
 import android.content.Context
-import android.util.Log
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
@@ -17,10 +16,10 @@ class KoinWorkerFactory(
         workerClassName: String,
         workerParameters: WorkerParameters
     ): ListenableWorker? {
-        Log.i("MovieSyncWorker", "createWorker called for $workerClassName")
+        println("MovieSyncWorker: createWorker called for $workerClassName")
         return when (workerClassName) {
             MovieSyncWorker::class.qualifiedName -> {
-                Log.i("MovieSyncWorker", "Creating MovieSyncWorker")
+                println("MovieSyncWorker: Creating MovieSyncWorker")
                 MovieSyncWorker(
                     appContext,
                     workerParameters,

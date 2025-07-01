@@ -93,8 +93,9 @@ class MoviesRepositoryImpl(
                     val movieEntities = movies.map { it.toMovieEntity(page = page) }
                     movieDatabase.movieDao.insertAll(movieEntities)
                 }
-                Log.i("MovieSyncWorker", "MoviesRepositoryImpl handleFetchAndCachePopularMovies Success")
+                println("MovieSyncWorker: MoviesRepositoryImpl handleFetchAndCachePopularMovies Success")
             }
+
             is ApiResponse.Error -> Log.e("MoviesRepositoryImpl", "error: ${response.message}")
             is ApiResponse.NetworkError -> Log.e("MoviesRepositoryImpl", "Network error")
         }
