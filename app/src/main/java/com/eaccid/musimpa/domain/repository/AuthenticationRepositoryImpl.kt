@@ -14,9 +14,8 @@ class AuthenticationRepositoryImpl(
 ) :
     AuthenticationRepository {
     override suspend fun getToken(): ApiResponse<Authentication> {
-        val params = mapOf("api_key" to BuildConfig.THE_MOVIE_DB_API_KEY)
         val result = safeApiRequest {
-            serviceAPI.requestToken(API_VERSION, params)
+            serviceAPI.requestToken(API_VERSION, emptyMap())
         }
         updateLocalDataToken(result)
         return result
