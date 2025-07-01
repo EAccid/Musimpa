@@ -13,6 +13,7 @@ import com.eaccid.musimpa.data.remote.services.AccountApi
 import com.eaccid.musimpa.data.remote.services.AuthenticationApi
 import com.eaccid.musimpa.data.remote.services.MovieApi
 import com.eaccid.musimpa.data.remote.services.MovieListApi
+import com.eaccid.musimpa.data.worker.MovieSyncWorker
 import com.eaccid.musimpa.domain.repository.AuthenticationRepository
 import com.eaccid.musimpa.domain.repository.AuthenticationRepositoryImpl
 import com.eaccid.musimpa.domain.repository.MoviesRepository
@@ -27,6 +28,8 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.androidx.workmanager.dsl.worker
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -65,7 +68,6 @@ val repositoryModule = module {
     single { provideMoviesRepository(get(), get<MovieDatabase>()) }
 }
 
-@OptIn(ExperimentalPagingApi::class)
 val dataModule = module {
     single { PreferencesDataStoreManager(androidContext()) }
     single<LocalData> { LocalEncryptedSharedPreferences(androidContext()) }
@@ -78,9 +80,6 @@ val dataModule = module {
             .addMigrations(MIGRATION_1_2)
             .build()
     }
-}
-val useCaseModule = module {
-    single { SyncPopularMoviesUseCase(get()) }
 }
 
 @OptIn(ExperimentalPagingApi::class)
@@ -106,6 +105,11 @@ val viewModelsModule = module {
     viewModel { MovieDetailsScreenViewModel(get(), get()) }
 }
 
+val useCaseModule = module {
+    single { SyncPopularMoviesUseCase(get()) }
+}
+
 val workerModule = module {
-    single { KoinWorkerFactory(getKoin()) }
+    worker(named<MovieSyncWorker>()) { MovieSyncWorker(get(), get(), get()) }
+    factory { KoinWorkerFactory(get()) }
 }

@@ -16,6 +16,7 @@ import com.eaccid.musimpa.ui.navigation.PreferencesDataStoreManager
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {
     private val preferencesDataStoreManager by inject<PreferencesDataStoreManager>()
@@ -30,13 +31,15 @@ class MainActivity : ComponentActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 val lastScreen = preferencesDataStoreManager.getLastScreen()
                 setContent {
-                    MusimpaTheme {
-                        // A surface container using the 'background' color from the theme
-                        Surface(
-                            modifier = Modifier.fillMaxSize(1.0f),
-                            color = MaterialTheme.colorScheme.background
-                        ) {
-                            AppNavigation(lastScreen)
+                    KoinContext {
+                        MusimpaTheme {
+                            // A surface container using the 'background' color from the theme
+                            Surface(
+                                modifier = Modifier.fillMaxSize(1.0f),
+                                color = MaterialTheme.colorScheme.background
+                            ) {
+                                AppNavigation(lastScreen)
+                            }
                         }
                     }
                 }

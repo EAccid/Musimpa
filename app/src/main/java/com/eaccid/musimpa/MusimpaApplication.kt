@@ -1,33 +1,31 @@
 package com.eaccid.musimpa
 
 import android.app.Application
-import androidx.work.Configuration
-import com.eaccid.musimpa.dikoin.KoinWorkerFactory
+import com.eaccid.musimpa.data.worker.scheduleMovieSync
 import com.eaccid.musimpa.dikoin.dataModule
 import com.eaccid.musimpa.dikoin.repositoryModule
 import com.eaccid.musimpa.dikoin.useCaseModule
 import com.eaccid.musimpa.dikoin.viewModelsModule
 import com.eaccid.musimpa.dikoin.workerModule
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.workmanager.koin.workManagerFactory
+import org.koin.core.component.KoinComponent
 import org.koin.core.context.GlobalContext.startKoin
-import org.koin.java.KoinJavaComponent.getKoin
 
-class MusimpaApplication : Application(), Configuration.Provider {
-
-    override val workManagerConfiguration: Configuration
-        get() = Configuration.Builder()
-            .setWorkerFactory(getKoin().get<KoinWorkerFactory>())
-            .build()
+class MusimpaApplication : Application(), KoinComponent {
 
     override fun onCreate() {
         super.onCreate()
         startKoin {
-            //koin declare modules
+            androidLogger()
             androidContext(this@MusimpaApplication)
             modules(getModules())
+            workManagerFactory()
         }
+        scheduleMovieSync(this) //for testing reason it is scheduled here
     }
 
-    private fun getModules() = listOf(repositoryModule, dataModule, useCaseModule, viewModelsModule, workerModule)
-
+    private fun getModules() =
+        listOf(repositoryModule, dataModule, useCaseModule, workerModule, viewModelsModule)
 }

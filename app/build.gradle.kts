@@ -113,7 +113,6 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager:0.28.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
     implementation(libs.androidx.junit.ktx)
-    implementation("androidx.work:work-runtime-ktx:2.10.1")
 
 //tests
 //    implementation(libs.androidx.ui.test.junit4.android) todo add to libs.versions.TOML and not only here
@@ -142,11 +141,13 @@ dependencies {
 
     testImplementation("io.mockk:mockk:1.13.10")
 
-
 //koin
-    implementation("io.insert-koin:koin-core:3.5.2-RC1")
-    implementation("io.insert-koin:koin-android:3.5.2-RC1")
-    implementation("io.insert-koin:koin-androidx-compose:3.5.2-RC1")
+    implementation("io.insert-koin:koin-core:3.5.3")
+    implementation("io.insert-koin:koin-android:3.5.3")
+    implementation("io.insert-koin:koin-androidx-compose:3.5.3")
+
+// WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.10.2")
     implementation("io.insert-koin:koin-androidx-workmanager:3.5.3")
 
 //api json
