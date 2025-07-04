@@ -1,7 +1,7 @@
 package com.eaccid.musimpa.data.remote.services
 
-import com.eaccid.musimpa.data.remote.entities.MovieListDto
-import com.eaccid.musimpa.data.remote.entities.UserAccount
+import com.eaccid.musimpa.data.remote.dto.MovieListDto
+import com.eaccid.musimpa.data.remote.dto.UserAccountDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -12,7 +12,7 @@ interface AccountApi {
     fun getAccount(
         @Path("version") version: Int,
         @QueryMap options: Map<String, String>
-    ): UserAccount
+    ): UserAccountDto
 
     @GET("account/{account_id}/favorite/movies")
     fun getFavoriteMovies(

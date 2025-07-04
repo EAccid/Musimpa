@@ -20,13 +20,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.eaccid.musimpa.domain.model.Actor
 import com.eaccid.musimpa.ui.component.LogCompositions
+import com.eaccid.musimpa.ui.models.ActorUi
 import com.eaccid.musimpa.utils.PosterSize
 import com.eaccid.musimpa.utils.toImageUri
 
 @Composable
-fun CastPagerView(actors: List<Actor>, modifier: Modifier = Modifier) {
+fun CastPagerView(actors: List<ActorUi>, modifier: Modifier = Modifier) {
     LogCompositions("CastPagerView")
 
     val pagerState = rememberPagerState(pageCount = { actors.size })
@@ -77,9 +77,9 @@ fun CastPagerView(actors: List<Actor>, modifier: Modifier = Modifier) {
 @Composable
 fun CastPagerViewPreview() {
     val mockActors = listOf(
-        Actor(1, "Character 1", "/some/path1.jpg"),
-        Actor(2, "Character 2", "/some/path2.jpg"),
-        Actor(3, "Character 3", "/some/path3.jpg")
+        ActorUi(1, "Character 1", "/some/path1.jpg"),
+        ActorUi(2, "Character 2", "/some/path2.jpg"),
+        ActorUi(3, "Character 3", "/some/path3.jpg")
     )
     CastPagerView(actors = mockActors)
 }

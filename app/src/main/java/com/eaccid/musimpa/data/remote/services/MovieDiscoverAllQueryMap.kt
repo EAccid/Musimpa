@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.domain.model
+package com.eaccid.musimpa.data.remote.services
 
 data class MovieDiscoverAllQueryMap(
     val page: Int = 1,

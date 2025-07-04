@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.data.remote.entities
+package com.eaccid.musimpa.data.remote.dto
 
 import com.squareup.moshi.Json
 

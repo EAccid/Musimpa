@@ -5,7 +5,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.eaccid.musimpa.data.local.room.MovieEntity
-import com.eaccid.musimpa.data.remote.entities.DiscoverDto
+import com.eaccid.musimpa.data.remote.dto.DiscoverDto
 import com.eaccid.musimpa.domain.common.DataResult
 import com.eaccid.musimpa.domain.repository.MoviesRepository
 

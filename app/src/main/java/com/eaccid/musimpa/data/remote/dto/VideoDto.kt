@@ -1,8 +1,8 @@
-package com.eaccid.musimpa.data.remote.entities
+package com.eaccid.musimpa.data.remote.dto
 
 import com.squareup.moshi.Json
 
-data class Video(
+data class VideoDto(
     val id: String,
 
     @Json(name = "iso_639_1")

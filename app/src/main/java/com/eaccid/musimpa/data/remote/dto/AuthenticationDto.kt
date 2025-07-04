@@ -1,6 +1,6 @@
-package com.eaccid.musimpa.data.remote.entities
+package com.eaccid.musimpa.data.remote.dto
 
-data class Authentication(
+data class AuthenticationDto(
     val success: Boolean?,
     val expires_at: String?,
     val request_token: String?,

@@ -1,6 +1,6 @@
 package com.eaccid.musimpa.data.remote.services
 
-import com.eaccid.musimpa.data.remote.entities.Authentication
+import com.eaccid.musimpa.data.remote.dto.AuthenticationDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -11,11 +11,11 @@ interface AuthenticationApi {
     @GET("authentication/token/new")
     suspend fun requestToken(
         @QueryMap options: Map<String, String>
-    ): Authentication
+    ): AuthenticationDto
 
     @POST("authentication/session/new")
     suspend fun createSession(
         @Header("Authorization") bearer: String,
-        @Body authentication: Authentication
-    ): Authentication
+        @Body authentication: AuthenticationDto
+    ): AuthenticationDto
 }

@@ -1,9 +1,9 @@
 package com.eaccid.musimpa.data.remote.services
 
-import com.eaccid.musimpa.data.remote.entities.DiscoverDto
-import com.eaccid.musimpa.data.remote.entities.MovieCredits
-import com.eaccid.musimpa.data.remote.entities.MovieDto
-import com.eaccid.musimpa.data.remote.entities.VideosResult
+import com.eaccid.musimpa.data.remote.dto.DiscoverDto
+import com.eaccid.musimpa.data.remote.dto.MovieCreditsDto
+import com.eaccid.musimpa.data.remote.dto.MovieDto
+import com.eaccid.musimpa.data.remote.dto.VideosResultDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.QueryMap
@@ -19,7 +19,7 @@ interface MovieApiService {
     suspend fun getMovieVideos(
         @Path("movie_id") movieItemId: Int,
         @QueryMap options: Map<String, String>
-    ): VideosResult
+    ): VideosResultDto
 
     @GET("movie/{movie_id}")
     suspend fun getMovie(
@@ -31,5 +31,5 @@ interface MovieApiService {
     suspend fun getMovieCredits(
         @Path("movie_id") movieItemId: Int,
         @QueryMap options: Map<String, String>
-    ): MovieCredits
+    ): MovieCreditsDto
 }

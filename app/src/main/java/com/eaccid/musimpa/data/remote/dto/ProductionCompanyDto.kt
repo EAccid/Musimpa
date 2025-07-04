@@ -1,8 +1,8 @@
-package com.eaccid.musimpa.data.remote.entities
+package com.eaccid.musimpa.data.remote.dto
 
 import com.squareup.moshi.Json
 
-data class ProductionCompany(
+data class ProductionCompanyDto(
     val id: Int,
 
     @Json(name = "logo_path")

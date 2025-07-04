@@ -1,7 +1,7 @@
 package com.eaccid.musimpa.data.remote.services
 
-import com.eaccid.musimpa.data.remote.entities.MovieListDto
-import com.eaccid.musimpa.data.remote.entities.RequestMediaObject
+import com.eaccid.musimpa.data.remote.dto.MovieListDto
+import com.eaccid.musimpa.data.remote.MediaObjectRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -36,7 +36,7 @@ interface MovieListApi {
     fun addMovieToList(
         @Path("version") version: Int,
         @Path("list_id") listId: Int,
-        @Body mediaObject: RequestMediaObject,
+        @Body mediaObject: MediaObjectRequest,
         @QueryMap options: Map<String, String>
     ): Response<String>
 
@@ -44,7 +44,7 @@ interface MovieListApi {
     fun removeMovieFromList(
         @Path("version") version: Int,
         @Path("list_id") listId: Int,
-        @Body mediaObject: RequestMediaObject,
+        @Body mediaObject: MediaObjectRequest,
         @QueryMap options: Map<String, String>
     ): Response<String>
 }

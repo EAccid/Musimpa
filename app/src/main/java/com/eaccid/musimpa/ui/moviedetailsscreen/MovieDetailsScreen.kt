@@ -34,10 +34,11 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.eaccid.musimpa.R
-import com.eaccid.musimpa.domain.model.Movie
 import com.eaccid.musimpa.javaclasses.UserScoreCustomView
 import com.eaccid.musimpa.ui.component.LogCompositions
 import com.eaccid.musimpa.ui.component.SaveLastScreenEffect
+import com.eaccid.musimpa.ui.models.MovieDetailsUi
+import com.eaccid.musimpa.ui.models.MovieUi
 import com.eaccid.musimpa.ui.navigation.Screen
 import com.eaccid.musimpa.ui.theme.MusimpaTheme
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -97,7 +98,7 @@ fun MoviesDetailsScreenContent(
                     .windowInsetsPadding(WindowInsets.statusBars)
                     .fillMaxWidth()
             ) {
-                MovieDetails(viewState.movie)
+                MovieDetails(viewState.movieDetails)
                 Text(
                     modifier = Modifier
                         .padding(16.dp, 0.dp, 0.dp, 8.dp),
@@ -109,7 +110,7 @@ fun MoviesDetailsScreenContent(
                     )
                 )
                 //add correct modifier here
-                CastPagerView(viewState.cast)
+                CastPagerView(viewState.movieDetails.cast)
             }
         }
 
@@ -134,7 +135,7 @@ fun LoadingIndicator() {
 }
 
 @Composable
-fun MovieDetails(dataItem: Movie) {
+fun MovieDetails(dataItem: MovieDetailsUi) {
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -159,7 +160,7 @@ fun MovieDetails(dataItem: Movie) {
                     for now its just temp old java that does not work correctly
                     with object UserScoreCustomViewStyle.Attributes in Style.kt*/
                 }
-                view.score = dataItem.voteAverage.toInt()
+                view.score = dataItem.movie.voteAverage.toInt()
                 view.setTextSize(24)
                 view
             })
@@ -169,7 +170,7 @@ fun MovieDetails(dataItem: Movie) {
                     .padding(16.dp, 0.dp, 0.dp, 0.dp)
             ) {
                 Text(
-                    text = dataItem.title ?: "Non",
+                    text = dataItem.movie.title ?: "Non",
                     style = TextStyle(
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
@@ -182,13 +183,13 @@ fun MovieDetails(dataItem: Movie) {
                     style = TextStyle(
                         fontStyle = FontStyle.Italic
                     ),
-                    text = dataItem.tagline ?: "Non"
+                    text = dataItem.movie.tagline ?: "Non"
                 )
                 Text(
-                    text = dataItem.releaseDate ?: "Non",
+                    text = dataItem.movie.releaseDate ?: "Non",
                 )
                 Text(
-                    text = "${dataItem.runtime.toString()} min"
+                    text = "${dataItem.movie.runtime.toString()} min"
                 )
             }
         }
@@ -203,7 +204,7 @@ fun MovieDetails(dataItem: Movie) {
             )
         )
         Text(
-            text = dataItem.overview ?: "Non",
+            text = dataItem.movie.overview ?: "Non",
             modifier = Modifier
                 .padding(0.dp, 4.dp, 0.dp, 0.dp)
         )
@@ -249,12 +250,13 @@ class MoviesDetailsScreenViewPreviewParameterProvider :
     PreviewParameterProvider<MovieDetailsScreenViewState> {
     override val values = sequenceOf(
         MovieDetailsScreenViewState.Success(
-            Movie(
-                id = 0,
-                originalTitle = "originalTitle",
-                title = "title",
-                videoKey = "videoKey"
-            ), cast = listOf()
+            MovieDetailsUi(
+                MovieUi(
+                    id = 0,
+                    originalTitle = "originalTitle",
+                    title = "title"
+                ), listOf(), "videoKey"
+            )
         ),
         MovieDetailsScreenViewState.NoData
     )

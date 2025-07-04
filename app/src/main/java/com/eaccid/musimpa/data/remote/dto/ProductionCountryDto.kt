@@ -1,8 +1,8 @@
-package com.eaccid.musimpa.data.remote.entities
+package com.eaccid.musimpa.data.remote.dto
 
 import com.squareup.moshi.Json
 
-data class ProductionCountry(
+data class ProductionCountryDto(
     @Json(name = "iso_3166_1")
     val code: String,
     val name: String

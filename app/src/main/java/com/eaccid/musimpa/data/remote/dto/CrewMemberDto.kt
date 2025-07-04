@@ -1,8 +1,8 @@
-package com.eaccid.musimpa.data.remote.entities
+package com.eaccid.musimpa.data.remote.dto
 
 import com.squareup.moshi.Json
 
-data class CrewMember(
+data class CrewMemberDto(
     @Json(name = "adult") val adult: Boolean = true,
     @Json(name = "gender") val gender: Int = 0,
     @Json(name = "id") val id: Int = 0,

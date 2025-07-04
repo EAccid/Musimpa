@@ -1,10 +1,10 @@
 package com.eaccid.musimpa.domain.usecase
 
-import com.eaccid.musimpa.data.remote.entities.MovieCredits
-import com.eaccid.musimpa.data.remote.entities.MovieDto
-import com.eaccid.musimpa.data.remote.entities.VideosResult
+import com.eaccid.musimpa.data.remote.dto.MovieCreditsDto
+import com.eaccid.musimpa.data.remote.dto.MovieDto
+import com.eaccid.musimpa.data.remote.dto.VideosResultDto
 import com.eaccid.musimpa.domain.common.DataResult
-import com.eaccid.musimpa.domain.model.MovieDetails
+import com.eaccid.musimpa.domain.models.MovieDetails
 import com.eaccid.musimpa.domain.repository.MoviesRepository
 import com.eaccid.musimpa.utils.toActor
 import com.eaccid.musimpa.utils.toMovie
@@ -39,8 +39,8 @@ class GetMovieDetailsUseCaseImpl(
                             creditsResult is DataResult.Success -> {
 
                         val movie = (movieResult.data as MovieDto).toMovie()
-                        val videos = (videosResult.data as VideosResult).results ?: emptyList()
-                        val cast = (creditsResult.data as MovieCredits).cast.map { it.toActor() }
+                        val videos = (videosResult.data as VideosResultDto).results ?: emptyList()
+                        val cast = (creditsResult.data as MovieCreditsDto).cast.map { it.toActor() }
 
                         // Find official video key
                         val officialVideoKey = videos.firstOrNull { video ->
@@ -48,7 +48,7 @@ class GetMovieDetailsUseCaseImpl(
                         }?.key.orEmpty()
 
                         val movieDetails = MovieDetails(
-                            movie = movie.copy(videoKey = officialVideoKey), //todo delete copy
+                            movie = movie,
                             cast = cast,
                             videoKey = officialVideoKey
                         )

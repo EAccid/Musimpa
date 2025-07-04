@@ -6,21 +6,21 @@ import androidx.room.withTransaction
 import com.eaccid.musimpa.data.local.room.MovieDatabase
 import com.eaccid.musimpa.data.local.room.MovieEntity
 import com.eaccid.musimpa.data.remote.ApiResponse
-import com.eaccid.musimpa.data.remote.entities.DiscoverDto
-import com.eaccid.musimpa.data.remote.entities.MovieCredits
-import com.eaccid.musimpa.data.remote.entities.MovieDto
-import com.eaccid.musimpa.data.remote.entities.VideosResult
+import com.eaccid.musimpa.data.remote.dto.DiscoverDto
+import com.eaccid.musimpa.data.remote.dto.MovieCreditsDto
+import com.eaccid.musimpa.data.remote.dto.MovieDto
+import com.eaccid.musimpa.data.remote.dto.VideosResultDto
 import com.eaccid.musimpa.data.remote.safeApiRequest
 import com.eaccid.musimpa.data.remote.services.MovieApiService
-import com.eaccid.musimpa.domain.model.MovieDiscoverAllQueryMap
+import com.eaccid.musimpa.data.remote.services.MovieDiscoverAllQueryMap
 import com.eaccid.musimpa.utils.toMovieEntity
 
 
 interface DeprecatedMoviesRepository {
     suspend fun discoverAll(page: Int = 1): ApiResponse<DiscoverDto>
     suspend fun getMovie(movieId: Int): ApiResponse<MovieDto>
-    suspend fun getMovieVideos(movieId: Int): ApiResponse<VideosResult>
-    suspend fun getMovieCredits(movieId: Int): ApiResponse<MovieCredits>
+    suspend fun getMovieVideos(movieId: Int): ApiResponse<VideosResultDto>
+    suspend fun getMovieCredits(movieId: Int): ApiResponse<MovieCreditsDto>
     suspend fun syncPopularMovies(): Boolean
     suspend fun getLocalPagingSource(): PagingSource<Int, MovieEntity>
 
@@ -51,13 +51,13 @@ class DeprecatedMoviesRepositoryImpl(
         }
     }
 
-    override suspend fun getMovieVideos(movieId: Int): ApiResponse<VideosResult> {
+    override suspend fun getMovieVideos(movieId: Int): ApiResponse<VideosResultDto> {
         return safeApiRequest {
             serviceAPI.getMovieVideos(movieId, emptyMap())
         }
     }
 
-    override suspend fun getMovieCredits(movieId: Int): ApiResponse<MovieCredits> {
+    override suspend fun getMovieCredits(movieId: Int): ApiResponse<MovieCreditsDto> {
         return safeApiRequest {
             serviceAPI.getMovieCredits(movieId, emptyMap())
         }

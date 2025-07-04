@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.data.remote.entities
+package com.eaccid.musimpa.data.remote.dto
 
 import com.squareup.moshi.Json
 
@@ -6,7 +6,7 @@ data class MovieListDto(
     val id: Int?,
     val name: String?,
     val description: String?,
-    val language: SpokenLanguage?,
+    val language: SpokenLanguageDto?,
 
     @Json(name = "created_by")
     val createdBy: String?,

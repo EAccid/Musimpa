@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.data.remote.entities
+package com.eaccid.musimpa.data.remote.dto
 
 import com.squareup.moshi.Json
 
@@ -17,7 +17,7 @@ data class MovieDto(
     val backdropPath: String?,
 
     val budget: Int?,
-    val genres: List<Genre>?,
+    val genre: List<GenreDto>?,
     val homepage: String?,
 
     @Json(name = "imdb_id")
@@ -29,15 +29,15 @@ data class MovieDto(
     val popularity: Double?,
 
     @Json(name = "production_companies")
-    val productionCompanies: List<ProductionCompany>?,
+    val productionCompanies: List<ProductionCompanyDto>?,
 
     @Json(name = "production_countries")
-    val productionCountries: List<ProductionCountry>?,
+    val productionCountries: List<ProductionCountryDto>?,
     val revenue: Int?,
     val runtime: Int?,
 
     @Json(name = "spoken_languages")
-    val spokenLanguages: List<SpokenLanguage>?,
+    val spokenLanguages: List<SpokenLanguageDto>?,
 
     val status: String?,
     val tagline: String?,

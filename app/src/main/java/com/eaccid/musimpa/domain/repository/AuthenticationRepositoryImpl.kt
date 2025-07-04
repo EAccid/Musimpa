@@ -3,7 +3,7 @@ package com.eaccid.musimpa.domain.repository
 import com.eaccid.musimpa.BuildConfig
 import com.eaccid.musimpa.data.local.LocalData
 import com.eaccid.musimpa.data.remote.ApiResponse
-import com.eaccid.musimpa.data.remote.entities.Authentication
+import com.eaccid.musimpa.data.remote.dto.AuthenticationDto
 import com.eaccid.musimpa.data.remote.safeApiRequest
 import com.eaccid.musimpa.data.remote.services.AuthenticationApi
 
@@ -12,7 +12,7 @@ class AuthenticationRepositoryImpl(
     private val localData: LocalData
 ) :
     AuthenticationRepository {
-    override suspend fun getToken(): ApiResponse<Authentication> {
+    override suspend fun getToken(): ApiResponse<AuthenticationDto> {
         val result = safeApiRequest {
             serviceAPI.requestToken(emptyMap())
         }
@@ -24,11 +24,11 @@ class AuthenticationRepositoryImpl(
         return getLocalDataUserSessionId().isNotEmpty()
     }
 
-    override suspend fun createSessionId(): ApiResponse<Authentication> {
+    override suspend fun createSessionId(): ApiResponse<AuthenticationDto> {
         val result = safeApiRequest {
             serviceAPI.createSession(
                 BuildConfig.THE_MOVIE_DB_API_READ_ACCESS_TOKEN,
-                Authentication(request_token = getLocalDataToken())
+                AuthenticationDto(request_token = getLocalDataToken())
             )
         }
         updateSessionID(result)
@@ -39,7 +39,7 @@ class AuthenticationRepositoryImpl(
         return localData.getToken()
     }
 
-    private fun updateLocalDataToken(result: ApiResponse<Authentication>) {
+    private fun updateLocalDataToken(result: ApiResponse<AuthenticationDto>) {
         if (result is ApiResponse.Success) {
             localData.saveToken(result.data.request_token ?: "")
         }
@@ -49,7 +49,7 @@ class AuthenticationRepositoryImpl(
         return localData.getSessionId()
     }
 
-    private fun updateSessionID(result: ApiResponse<Authentication>) {
+    private fun updateSessionID(result: ApiResponse<AuthenticationDto>) {
         if (result is ApiResponse.Success) {
             localData.saveSessionId(result.data.session_id ?: "")
         }

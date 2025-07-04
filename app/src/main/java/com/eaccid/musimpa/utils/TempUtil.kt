@@ -2,11 +2,11 @@ package com.eaccid.musimpa.utils
 
 import android.net.Uri
 import androidx.core.net.toUri
-import com.eaccid.musimpa.domain.model.Actor
-import com.eaccid.musimpa.domain.model.Movie
+import com.eaccid.musimpa.domain.models.Actor
+import com.eaccid.musimpa.domain.models.Movie
 import com.eaccid.musimpa.data.local.room.MovieEntity
-import com.eaccid.musimpa.data.remote.entities.ActorDto
-import com.eaccid.musimpa.data.remote.entities.MovieDto
+import com.eaccid.musimpa.data.remote.dto.ActorDto
+import com.eaccid.musimpa.data.remote.dto.MovieDto
 
 const val BASE_URL = "https://api.themoviedb.org/3/"
 const val MOVIE_IMAGE_URL_PATH = "image.tmdb.org/t/p/"

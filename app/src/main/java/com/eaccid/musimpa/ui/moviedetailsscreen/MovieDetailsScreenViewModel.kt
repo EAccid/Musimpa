@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eaccid.musimpa.domain.common.DataResult
 import com.eaccid.musimpa.domain.usecase.GetMovieDetailsUseCase
+import com.eaccid.musimpa.ui.mappers.toMovieDetailsUi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,8 +39,7 @@ class MovieDetailsScreenViewModel(
                 is DataResult.Success -> {
                     val movieDetails = result.data
                     _uiState.value = MovieDetailsScreenViewState.Success(
-                        movie = movieDetails.movie,
-                        cast = movieDetails.cast
+                        movieDetails = movieDetails.toMovieDetailsUi()
                     )
                 }
 

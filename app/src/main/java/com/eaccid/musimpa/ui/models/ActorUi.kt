@@ -1,10 +1,9 @@
-package com.eaccid.musimpa.domain.model
+package com.eaccid.musimpa.ui.models
 
-data class Actor(
+data class ActorUi(
     val id: Int = 0,
     val name: String? = null,
     val originalName: String? = null,
     val profilePath: String? = null,
-    val character: String? = null,
-    val order: Int = 0
+    val character: String? = null
 )

@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.eaccid.musimpa.domain.model.Actor
+import com.eaccid.musimpa.ui.models.ActorUi
 import com.eaccid.musimpa.ui.moviedetailsscreen.CastPagerView
 import org.junit.Rule
 import org.junit.Test
@@ -22,13 +22,13 @@ class Cast_PagerView_Test {
     @Test
     fun castPagerView_displaysActorNamesAndCharacters() {
         val mockActors = listOf(
-            Actor(
+            ActorUi(
                 id = 1,
                 name = "Tom Hanks",
                 character = "Forrest Gump",
                 profilePath = "/path.jpg"
             ),
-            Actor(
+            ActorUi(
                 id = 2,
                 name = "Robin Wright",
                 character = "Jenny",
@@ -47,7 +47,7 @@ class Cast_PagerView_Test {
     @Test
     fun castPagerView_displaysImageWithCorrectContentDescription() {
         val actors = listOf(
-            Actor(id = 1, name = "Actor 1", character = "Role", profilePath = "path/to/image.jpg")
+            ActorUi(id = 1, name = "Actor 1", character = "Role", profilePath = "path/to/image.jpg")
         )
 
         composeTestRule.setContent {
@@ -59,8 +59,8 @@ class Cast_PagerView_Test {
 
     fun castPagerView_swipeToNextPage_displaysNextActor() {
         val actors = listOf(
-            Actor(id = 1, name = "Actor 1", character = "Hero", profilePath = "path1"),
-            Actor(id = 2, name = "Actor 2", character = "Villain", profilePath = "path2")
+            ActorUi(id = 1, name = "Actor 1", character = "Hero", profilePath = "path1"),
+            ActorUi(id = 2, name = "Actor 2", character = "Villain", profilePath = "path2")
         )
 
         composeTestRule.setContent {

@@ -1,21 +1,21 @@
 package com.eaccid.musimpa.domain.repository
 
 import android.util.Log
-import com.eaccid.musimpa.data.remote.entities.DiscoverDto
-import com.eaccid.musimpa.data.remote.entities.MovieCredits
-import com.eaccid.musimpa.data.remote.entities.MovieDto
-import com.eaccid.musimpa.data.remote.entities.VideosResult
+import com.eaccid.musimpa.data.remote.dto.DiscoverDto
+import com.eaccid.musimpa.data.remote.dto.MovieCreditsDto
+import com.eaccid.musimpa.data.remote.dto.MovieDto
+import com.eaccid.musimpa.data.remote.dto.VideosResultDto
 import com.eaccid.musimpa.domain.common.handle
 import com.eaccid.musimpa.domain.common.toDataResult
 import com.eaccid.musimpa.domain.common.DataResult
-import com.eaccid.musimpa.domain.model.MovieDiscoverAllQueryMap
+import com.eaccid.musimpa.data.remote.services.MovieDiscoverAllQueryMap
 import com.eaccid.musimpa.utils.toMovieEntity
 
 interface MoviesRepository {
     suspend fun discoverAll(page: Int = 1): DataResult<DiscoverDto>
     suspend fun getMovie(movieId: Int): DataResult<MovieDto>
-    suspend fun getMovieVideos(movieId: Int): DataResult<VideosResult>
-    suspend fun getMovieCredits(movieId: Int): DataResult<MovieCredits>
+    suspend fun getMovieVideos(movieId: Int): DataResult<VideosResultDto>
+    suspend fun getMovieCredits(movieId: Int): DataResult<MovieCreditsDto>
 
     suspend fun syncPopularMovies(): DataResult<DiscoverDto>
     suspend fun discoverAndCachePopularMovies(
@@ -37,11 +37,11 @@ class MoviesRepositoryImpl(
         return remote.getMovie(movieId).toDataResult()
     }
 
-    override suspend fun getMovieVideos(movieId: Int): DataResult<VideosResult> {
+    override suspend fun getMovieVideos(movieId: Int): DataResult<VideosResultDto> {
         return remote.getMovieVideos(movieId).toDataResult()
     }
 
-    override suspend fun getMovieCredits(movieId: Int): DataResult<MovieCredits> {
+    override suspend fun getMovieCredits(movieId: Int): DataResult<MovieCreditsDto> {
         return remote.getMovieCredits(movieId).toDataResult()
     }
 
