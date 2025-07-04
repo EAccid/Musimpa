@@ -23,7 +23,10 @@ import com.eaccid.musimpa.domain.repository.MoviesRemoteDataSource
 import com.eaccid.musimpa.domain.repository.MoviesRemoteDataSourceImpl
 import com.eaccid.musimpa.domain.repository.MoviesRepository
 import com.eaccid.musimpa.domain.repository.MoviesRepositoryImpl
+import com.eaccid.musimpa.domain.usecase.GetMovieDetailsUseCase
+import com.eaccid.musimpa.domain.usecase.GetMovieDetailsUseCaseImpl
 import com.eaccid.musimpa.domain.usecase.SyncPopularMoviesUseCase
+import com.eaccid.musimpa.domain.usecase.SyncPopularMoviesUseCaseImpl
 import com.eaccid.musimpa.ui.mainscreen.MainScreenViewModel
 import com.eaccid.musimpa.ui.moviedetailsscreen.MovieDetailsScreenViewModel
 import com.eaccid.musimpa.ui.movielistscreen.MovieListScreenViewModel
@@ -122,7 +125,8 @@ val viewModelsModule = module {
 }
 
 val useCaseModule = module {
-    single { SyncPopularMoviesUseCase(get()) }
+    single<SyncPopularMoviesUseCase> { SyncPopularMoviesUseCaseImpl(get()) }
+    single<GetMovieDetailsUseCase> { GetMovieDetailsUseCaseImpl(get()) }
 }
 
 val workerModule = module {
