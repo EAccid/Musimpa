@@ -2,6 +2,7 @@ package com.eaccid.musimpa.data.remote
 
 import retrofit2.HttpException
 import java.io.IOException
+import kotlin.coroutines.cancellation.CancellationException
 
 /**
  * a little help:
@@ -23,17 +24,24 @@ inline fun <T> safeApiRequest(apiCall: () -> T): ApiResponse<T> {
     try {
         return ApiResponse.Success(apiCall())
     } catch (throwable: Throwable) {
+        if (throwable is CancellationException) throw throwable
+
         return when (throwable) {
             is IOException -> ApiResponse.NetworkError
             is HttpException -> {
                 val code = throwable.code()
-                val errorMessage = throwable.message()
+                val errorMessage = try {
+                    throwable.response()?.errorBody()?.string()
+                } catch (e: Exception) {
+                    throwable.message()
+                }
                 ApiResponse.Error(code, errorMessage, throwable)
             }
 
-            else -> {
-                ApiResponse.Error(null, null, throwable)
-            }
+            else -> ApiResponse.Error(null, throwable.message, throwable)
         }
     }
 }
+
+fun ApiResponse.Error.getDisplayMessage(): String =
+    message ?: error?.localizedMessage ?: "Unknown error"

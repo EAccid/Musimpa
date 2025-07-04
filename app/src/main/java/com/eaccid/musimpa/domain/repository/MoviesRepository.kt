@@ -1,24 +1,87 @@
 package com.eaccid.musimpa.domain.repository
 
-import androidx.paging.PagingSource
-import com.eaccid.musimpa.data.local.room.MovieEntity
-import com.eaccid.musimpa.data.remote.ApiResponse
+import android.util.Log
 import com.eaccid.musimpa.data.remote.entities.DiscoverDto
 import com.eaccid.musimpa.data.remote.entities.MovieCredits
 import com.eaccid.musimpa.data.remote.entities.MovieDto
 import com.eaccid.musimpa.data.remote.entities.VideosResult
+import com.eaccid.musimpa.domain.common.handle
+import com.eaccid.musimpa.domain.common.toDataResult
+import com.eaccid.musimpa.domain.common.DataResult
+import com.eaccid.musimpa.domain.model.MovieDiscoverAllQueryMap
+import com.eaccid.musimpa.utils.toMovieEntity
 
 interface MoviesRepository {
-    suspend fun discoverAll(page: Int = 1): ApiResponse<DiscoverDto>
-    suspend fun getMovie(movieId: Int): ApiResponse<MovieDto>
-    suspend fun getMovieVideos(movieId: Int): ApiResponse<VideosResult>
-    suspend fun getMovieCredits(movieId: Int): ApiResponse<MovieCredits>
-    suspend fun syncPopularMovies(): Boolean
-    fun getLocalPagingSource(): PagingSource<Int, MovieEntity>
+    suspend fun discoverAll(page: Int = 1): DataResult<DiscoverDto>
+    suspend fun getMovie(movieId: Int): DataResult<MovieDto>
+    suspend fun getMovieVideos(movieId: Int): DataResult<VideosResult>
+    suspend fun getMovieCredits(movieId: Int): DataResult<MovieCredits>
 
-    //try to think about this in a better way in separate interface
+    suspend fun syncPopularMovies(): DataResult<DiscoverDto>
     suspend fun discoverAndCachePopularMovies(
         page: Int,
         clearDataFirst: Boolean
-    ): ApiResponse<DiscoverDto>
+    ): DataResult<DiscoverDto>
+}
+
+class MoviesRepositoryImpl(
+    private val remote: MoviesRemoteDataSource,
+    private val local: MoviesLocalDataSource
+) : MoviesRepository {
+    override suspend fun discoverAll(page: Int): DataResult<DiscoverDto> {
+        val params = MovieDiscoverAllQueryMap(page = page)
+        return remote.discoverAll(params).toDataResult()
+    }
+
+    override suspend fun getMovie(movieId: Int): DataResult<MovieDto> {
+        return remote.getMovie(movieId).toDataResult()
+    }
+
+    override suspend fun getMovieVideos(movieId: Int): DataResult<VideosResult> {
+        return remote.getMovieVideos(movieId).toDataResult()
+    }
+
+    override suspend fun getMovieCredits(movieId: Int): DataResult<MovieCredits> {
+        return remote.getMovieCredits(movieId).toDataResult()
+    }
+
+    override suspend fun syncPopularMovies(): DataResult<DiscoverDto> {
+        return handleFetchAndCachePopularMovies(1, true)
+    }
+
+    override suspend fun discoverAndCachePopularMovies(
+        page: Int,
+        clearDataFirst: Boolean
+    ): DataResult<DiscoverDto> {
+        return handleFetchAndCachePopularMovies(page, clearDataFirst)
+    }
+
+    private suspend fun handleFetchAndCachePopularMovies(
+        page: Int,
+        clearDataFirst: Boolean
+    ): DataResult<DiscoverDto> {
+        return remote.discoverAll(page).handle(
+            onSuccess = { discoverDto ->
+                try {
+                    val movies = discoverDto.movies
+                    val movieEntities = movies.map { it.toMovieEntity(page) }
+                    local.cachePopularMovies(movieEntities, clearDataFirst)
+                    println("MovieSyncWorker: MoviesRepositoryImpl handleFetchAndCachePopularMovies Success")
+                    DataResult.Success(discoverDto)
+                } catch (e: Exception) {
+                    println("MoviesRepositoryImpl Local caching error: ${e.message}")
+                    DataResult.Failure(e, "Failed to cache data")
+                }
+            },
+            onError = { error, message ->
+                Log.e("MoviesRepositoryImpl", "API Error: $message", error)
+                DataResult.Failure(error ?: Exception(message ?: "Unknown"), message)
+            },
+            onNetworkError = {
+                Log.e("MoviesRepositoryImpl", "Network error")
+                DataResult.NetworkError
+            }
+        )
+    }
+
 }

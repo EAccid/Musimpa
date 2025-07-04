@@ -3,7 +3,7 @@ package com.eaccid.musimpa
 import com.eaccid.musimpa.data.local.LocalData
 import com.eaccid.musimpa.data.remote.services.AccountApi
 import com.eaccid.musimpa.data.remote.services.AuthenticationApi
-import com.eaccid.musimpa.data.remote.services.MovieApi
+import com.eaccid.musimpa.data.remote.services.MovieApiService
 import com.eaccid.musimpa.data.remote.services.MovieListApi
 import com.eaccid.musimpa.dikoin.repositoryModule
 import com.eaccid.musimpa.domain.repository.AuthenticationRepository
@@ -24,7 +24,7 @@ class CheckModulesTest : KoinTest {
     private val testModule = module {
         single<AuthenticationApi> { mockk(relaxed = true) }
         single<AccountApi> { mockk(relaxed = true) }
-        single<MovieApi> { mockk(relaxed = true) }
+        single<MovieApiService> { mockk(relaxed = true) }
         single<MovieListApi> { mockk(relaxed = true) }
         single<LocalData> { mockk(relaxed = true) }
     }

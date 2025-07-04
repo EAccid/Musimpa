@@ -6,7 +6,6 @@ import com.eaccid.musimpa.data.remote.ApiResponse
 import com.eaccid.musimpa.data.remote.entities.Authentication
 import com.eaccid.musimpa.data.remote.safeApiRequest
 import com.eaccid.musimpa.data.remote.services.AuthenticationApi
-import com.eaccid.musimpa.utils.API_VERSION
 
 class AuthenticationRepositoryImpl(
     private val serviceAPI: AuthenticationApi,
@@ -15,7 +14,7 @@ class AuthenticationRepositoryImpl(
     AuthenticationRepository {
     override suspend fun getToken(): ApiResponse<Authentication> {
         val result = safeApiRequest {
-            serviceAPI.requestToken(API_VERSION, emptyMap())
+            serviceAPI.requestToken(emptyMap())
         }
         updateLocalDataToken(result)
         return result
@@ -29,7 +28,6 @@ class AuthenticationRepositoryImpl(
         val result = safeApiRequest {
             serviceAPI.createSession(
                 BuildConfig.THE_MOVIE_DB_API_READ_ACCESS_TOKEN,
-                API_VERSION,
                 Authentication(request_token = getLocalDataToken())
             )
         }

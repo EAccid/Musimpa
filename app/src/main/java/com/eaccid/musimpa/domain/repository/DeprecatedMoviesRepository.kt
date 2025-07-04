@@ -11,15 +11,30 @@ import com.eaccid.musimpa.data.remote.entities.MovieCredits
 import com.eaccid.musimpa.data.remote.entities.MovieDto
 import com.eaccid.musimpa.data.remote.entities.VideosResult
 import com.eaccid.musimpa.data.remote.safeApiRequest
-import com.eaccid.musimpa.data.remote.services.MovieApi
+import com.eaccid.musimpa.data.remote.services.MovieApiService
 import com.eaccid.musimpa.domain.model.MovieDiscoverAllQueryMap
-import com.eaccid.musimpa.utils.API_VERSION
 import com.eaccid.musimpa.utils.toMovieEntity
 
-class MoviesRepositoryImpl(
-    private val serviceAPI: MovieApi,
+
+interface DeprecatedMoviesRepository {
+    suspend fun discoverAll(page: Int = 1): ApiResponse<DiscoverDto>
+    suspend fun getMovie(movieId: Int): ApiResponse<MovieDto>
+    suspend fun getMovieVideos(movieId: Int): ApiResponse<VideosResult>
+    suspend fun getMovieCredits(movieId: Int): ApiResponse<MovieCredits>
+    suspend fun syncPopularMovies(): Boolean
+    suspend fun getLocalPagingSource(): PagingSource<Int, MovieEntity>
+
+    //try to think about this in a better way in separate interface
+    suspend fun discoverAndCachePopularMovies(
+        page: Int,
+        clearDataFirst: Boolean
+    ): ApiResponse<DiscoverDto>
+}
+
+class DeprecatedMoviesRepositoryImpl(
+    private val serviceAPI: MovieApiService,
     private val movieDatabase: MovieDatabase
-) : MoviesRepository {
+) : DeprecatedMoviesRepository {
 
     override suspend fun discoverAll(page: Int): ApiResponse<DiscoverDto> {
         return discoverAll(MovieDiscoverAllQueryMap(page = page))
@@ -27,28 +42,28 @@ class MoviesRepositoryImpl(
 
     private suspend fun discoverAll(query: MovieDiscoverAllQueryMap): ApiResponse<DiscoverDto> {
         val params = query.toQueryMap()
-        return safeApiRequest { serviceAPI.discoverAll(API_VERSION, params) }
+        return safeApiRequest { serviceAPI.discoverAll(params) }
     }
 
     override suspend fun getMovie(movieId: Int): ApiResponse<MovieDto> {
         return safeApiRequest {
-            serviceAPI.getMovie(API_VERSION, movieId, emptyMap())
+            serviceAPI.getMovie(movieId, emptyMap())
         }
     }
 
     override suspend fun getMovieVideos(movieId: Int): ApiResponse<VideosResult> {
         return safeApiRequest {
-            serviceAPI.getMovieVideos(API_VERSION, movieId, emptyMap())
+            serviceAPI.getMovieVideos(movieId, emptyMap())
         }
     }
 
     override suspend fun getMovieCredits(movieId: Int): ApiResponse<MovieCredits> {
         return safeApiRequest {
-            serviceAPI.getMovieCredits(API_VERSION, movieId, emptyMap())
+            serviceAPI.getMovieCredits(movieId, emptyMap())
         }
     }
 
-    override fun getLocalPagingSource(): PagingSource<Int, MovieEntity> {
+    override suspend fun getLocalPagingSource(): PagingSource<Int, MovieEntity> {
         return movieDatabase.movieDao.pagingSource()
     }
 

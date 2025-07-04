@@ -8,31 +8,27 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.QueryMap
 
-interface MovieApi {
-    
-    @GET("{version}/discover/movie")
+interface MovieApiService {
+
+    @GET("discover/movie")
     suspend fun discoverAll(
-        @Path("version") version: Int,
         @QueryMap options: Map<String, String>
     ): DiscoverDto
 
-    @GET("{version}/movie/{movie_id}/videos")
+    @GET("movie/{movie_id}/videos")
     suspend fun getMovieVideos(
-        @Path("version") version: Int,
         @Path("movie_id") movieItemId: Int,
         @QueryMap options: Map<String, String>
     ): VideosResult
 
-    @GET("{version}/movie/{movie_id}")
+    @GET("movie/{movie_id}")
     suspend fun getMovie(
-        @Path("version") version: Int,
         @Path("movie_id") movieItemId: Int,
         @QueryMap options: Map<String, String>
     ): MovieDto
 
-    @GET("{version}/movie/{movie_id}/credits")
+    @GET("movie/{movie_id}/credits")
     suspend fun getMovieCredits(
-        @Path("version") version: Int,
         @Path("movie_id") movieItemId: Int,
         @QueryMap options: Map<String, String>
     ): MovieCredits

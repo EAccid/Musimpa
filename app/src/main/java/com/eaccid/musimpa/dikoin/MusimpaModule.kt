@@ -11,12 +11,16 @@ import com.eaccid.musimpa.data.local.room.MovieDatabase
 import com.eaccid.musimpa.data.paging.MovieRemoteMediator
 import com.eaccid.musimpa.data.remote.services.AccountApi
 import com.eaccid.musimpa.data.remote.services.AuthenticationApi
-import com.eaccid.musimpa.data.remote.services.MovieApi
+import com.eaccid.musimpa.data.remote.services.MovieApiService
 import com.eaccid.musimpa.data.remote.services.MovieListApi
 import com.eaccid.musimpa.data.remote.services.interceptors.KeyLanguageQueryInterceptor
 import com.eaccid.musimpa.data.worker.MovieSyncWorker
 import com.eaccid.musimpa.domain.repository.AuthenticationRepository
 import com.eaccid.musimpa.domain.repository.AuthenticationRepositoryImpl
+import com.eaccid.musimpa.domain.repository.MoviesLocalDataSource
+import com.eaccid.musimpa.domain.repository.MoviesLocalDataSourceImpl
+import com.eaccid.musimpa.domain.repository.MoviesRemoteDataSource
+import com.eaccid.musimpa.domain.repository.MoviesRemoteDataSourceImpl
 import com.eaccid.musimpa.domain.repository.MoviesRepository
 import com.eaccid.musimpa.domain.repository.MoviesRepositoryImpl
 import com.eaccid.musimpa.domain.usecase.SyncPopularMoviesUseCase
@@ -57,7 +61,7 @@ val repositoryModule = module {
 
     single<AuthenticationApi> { get<Retrofit>().create(AuthenticationApi::class.java) }
     single<AccountApi> { get<Retrofit>().create(AccountApi::class.java) }
-    single<MovieApi> { get<Retrofit>().create(MovieApi::class.java) }
+    single<MovieApiService> { get<Retrofit>().create(MovieApiService::class.java) }
     single<MovieListApi> { get<Retrofit>().create(MovieListApi::class.java) }
 
     fun provideAuthenticationRepository(
@@ -68,12 +72,16 @@ val repositoryModule = module {
     }
     single { provideAuthenticationRepository(get(), get()) }
 
+    single<MoviesRemoteDataSource> { MoviesRemoteDataSourceImpl(get()) }
+    single<MoviesLocalDataSource> { MoviesLocalDataSourceImpl(get()) }
+
     fun provideMoviesRepository(
-        api: MovieApi, movieDb: MovieDatabase
+        remote: MoviesRemoteDataSource,
+        local: MoviesLocalDataSource
     ): MoviesRepository {
-        return MoviesRepositoryImpl(api, movieDb)
+        return MoviesRepositoryImpl(remote, local)
     }
-    single { provideMoviesRepository(get(), get<MovieDatabase>()) }
+    single { provideMoviesRepository(get(), get()) }
 }
 
 val dataModule = module {

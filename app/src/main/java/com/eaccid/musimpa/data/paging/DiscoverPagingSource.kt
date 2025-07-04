@@ -2,7 +2,7 @@ package com.eaccid.musimpa.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.eaccid.musimpa.data.remote.ApiResponse
+import com.eaccid.musimpa.domain.common.handleReturn
 import com.eaccid.musimpa.domain.model.Movie
 import com.eaccid.musimpa.domain.repository.MoviesRepository
 import com.eaccid.musimpa.utils.toMovie
@@ -23,18 +23,22 @@ class DiscoverPagingSource(
         return try {
             val currentPage = params.key ?: 1
             println("temptest DiscoverPagingSource load page: currentPage $currentPage")
-            when (val response = moviesRepository.discoverAll(currentPage)) {
-                is ApiResponse.Success -> {
-                    LoadResult.Page(
-                        data = response.data.movies.map { it.toMovie() }, // Convert to presentation model
-                        prevKey = if (currentPage == 1) null else currentPage - 1,
-                        nextKey = if (response.data.movies.isEmpty()) null else currentPage + 1
-                    )
-                }
-
-                is ApiResponse.Error -> LoadResult.Error(Exception(response.message)) // Handle API errors
-                ApiResponse.NetworkError -> LoadResult.Error(Exception("Network error occurred")) // Handle network failures
-            }
+            moviesRepository.discoverAll(currentPage)
+                .handleReturn(
+                    onSuccess = { data ->
+                        LoadResult.Page(
+                            data = data.movies.map { it.toMovie() },
+                            prevKey = if (currentPage == 1) null else currentPage - 1,
+                            nextKey = if (data.movies.isEmpty()) null else currentPage + 1
+                        )
+                    },
+                    onFailure = { error, message ->
+                        LoadResult.Error(Exception(message, error))
+                    },
+                    onNetworkError = {
+                        LoadResult.Error(Exception("Network error occurred"))
+                    }
+                )
         } catch (e: Exception) {
             LoadResult.Error(e) // Handle unknown errors
         }

@@ -8,10 +8,9 @@ import com.eaccid.musimpa.data.local.room.MovieEntity
 import com.eaccid.musimpa.data.remote.entities.ActorDto
 import com.eaccid.musimpa.data.remote.entities.MovieDto
 
-const val BASE_URL = "https://api.themoviedb.org/"
+const val BASE_URL = "https://api.themoviedb.org/3/"
 const val MOVIE_IMAGE_URL_PATH = "image.tmdb.org/t/p/"
 const val AUTHENTICATE_REQUEST_TOKEN_URL = "https://www.themoviedb.org/authenticate/"
-const val API_VERSION = 3
 const val EMPTY_STRING_VALUE = ""
 
 fun String.toImageUri(posterSize: PosterSize): Uri {

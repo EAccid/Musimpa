@@ -5,20 +5,17 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
-import retrofit2.http.Path
 import retrofit2.http.QueryMap
 
 interface AuthenticationApi {
-    @GET("{version}/authentication/token/new")
+    @GET("authentication/token/new")
     suspend fun requestToken(
-        @Path("version") version: Int,
         @QueryMap options: Map<String, String>
     ): Authentication
 
-    @POST("{version}/authentication/session/new")
+    @POST("authentication/session/new")
     suspend fun createSession(
         @Header("Authorization") bearer: String,
-        @Path("version") version: Int,
         @Body authentication: Authentication
     ): Authentication
 }

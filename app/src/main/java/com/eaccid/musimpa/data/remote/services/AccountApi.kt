@@ -8,13 +8,13 @@ import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
 interface AccountApi {
-    @GET("{version}/account/")
+    @GET("account/")
     fun getAccount(
         @Path("version") version: Int,
         @QueryMap options: Map<String, String>
     ): UserAccount
 
-    @GET("{version}/account/{account_id}/favorite/movies")
+    @GET("account/{account_id}/favorite/movies")
     fun getFavoriteMovies(
         @Path("version") version: Int,
         @Path("account_id") listId: Int,

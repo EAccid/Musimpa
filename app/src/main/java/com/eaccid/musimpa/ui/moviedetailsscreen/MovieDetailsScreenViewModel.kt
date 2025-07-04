@@ -59,49 +59,49 @@ class MovieDetailsScreenViewModel(
                     videosResponseDeferred,
                     creditResponseDeferred
                 )
-                when {
-                    movieDtoResponse is ApiResponse.Success && videosResponse is ApiResponse.Success && creditResponse is ApiResponse.Success -> {
-                        val movie = (movieDtoResponse.data as MovieDto).toMovie()
-                        val movieVideos = (videosResponse.data as VideosResult).results
-                        if (movieVideos != null) {
-                            for (video in movieVideos) {
-                                if (video.official && video.key.isNotEmpty()) {
-                                    movie.videoKey = video.key
-                                    break // Assuming only one official video is needed
-                                }
-                            }
-                        }
-                        val cast =
-                            (creditResponse.data as MovieCredits).cast.map { actorDto -> actorDto.toActor() }
-                        _uiState.value =
-                            MovieDetailsScreenViewState.Success(movie = movie, cast = cast)
-                    }
-
-                    movieDtoResponse is ApiResponse.NetworkError -> {
-                        //handle network error
-                        TODO()
-                    }
-
-                    movieDtoResponse is ApiResponse.Error -> {
-                        _uiState.value = MovieDetailsScreenViewState.Error(movieDtoResponse.error)
-                    }
-
-                    videosResponse is ApiResponse.Error -> {
-                        _uiState.value = MovieDetailsScreenViewState.Error(videosResponse.error)
-                    }
-
-                    creditResponse is ApiResponse.Error -> {
-                        _uiState.value = MovieDetailsScreenViewState.Error(creditResponse.error)
-                        Log.e(
-                            "ApiResponseError",
-                            creditResponse.error?.message ?: "creditResponse error"
-                        )
-                    }
-
-                    else -> {
-                        _uiState.value = MovieDetailsScreenViewState.NoData
-                    }
-                }
+//                when {
+//                    movieDtoResponse is ApiResponse.Success && videosResponse is ApiResponse.Success && creditResponse is ApiResponse.Success -> {
+//                        val movie = (movieDtoResponse.data as MovieDto).toMovie()
+//                        val movieVideos = (videosResponse.data as VideosResult).results
+//                        if (movieVideos != null) {
+//                            for (video in movieVideos) {
+//                                if (video.official && video.key.isNotEmpty()) {
+//                                    movie.videoKey = video.key
+//                                    break // Assuming only one official video is needed
+//                                }
+//                            }
+//                        }
+//                        val cast =
+//                            (creditResponse.data as MovieCredits).cast.map { actorDto -> actorDto.toActor() }
+//                        _uiState.value =
+//                            MovieDetailsScreenViewState.Success(movie = movie, cast = cast)
+//                    }
+//
+//                    movieDtoResponse is ApiResponse.NetworkError -> {
+//                        //handle network error
+//                        TODO()
+//                    }
+//
+//                    movieDtoResponse is ApiResponse.Error -> {
+//                        _uiState.value = MovieDetailsScreenViewState.Error(movieDtoResponse.error)
+//                    }
+//
+//                    videosResponse is ApiResponse.Error -> {
+//                        _uiState.value = MovieDetailsScreenViewState.Error(videosResponse.error)
+//                    }
+//
+//                    creditResponse is ApiResponse.Error -> {
+//                        _uiState.value = MovieDetailsScreenViewState.Error(creditResponse.error)
+//                        Log.e(
+//                            "ApiResponseError",
+//                            creditResponse.error?.message ?: "creditResponse error"
+//                        )
+//                    }
+//
+//                    else -> {
+//                        _uiState.value = MovieDetailsScreenViewState.NoData
+//                    }
+//                }
             }
         }
     }

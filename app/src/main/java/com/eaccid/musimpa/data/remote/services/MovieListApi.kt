@@ -11,28 +11,28 @@ import retrofit2.http.QueryMap
 
 interface MovieListApi {
 
-    @POST("{version}/list")
+    @POST("list")
     fun createList(
         @Path("version") version: Int,
         @Body list: MovieListDto,
         @QueryMap options: Map<String, String>
     ): Response<String>
 
-    @POST("{version}/list/{list_id}/clear")
+    @POST("list/{list_id}/clear")
     fun clearList(
         @Path("version") version: Int,
         @Path("list_id") listId: Int,
         @QueryMap options: Map<String, String>
     ): Response<String>
 
-    @GET("{version}/list/{list_id}")
+    @GET("list/{list_id}")
     fun getListDetails(
         @Path("version") version: Int,
         @Path("list_id") listId: Int,
         @QueryMap options: Map<String, String>
     ): MovieListDto
 
-    @POST("{version}/list/{list_id}/add_item")
+    @POST("list/{list_id}/add_item")
     fun addMovieToList(
         @Path("version") version: Int,
         @Path("list_id") listId: Int,
@@ -40,7 +40,7 @@ interface MovieListApi {
         @QueryMap options: Map<String, String>
     ): Response<String>
 
-    @POST("{version}/list/{list_id}/remove_item")
+    @POST("list/{list_id}/remove_item")
     fun removeMovieFromList(
         @Path("version") version: Int,
         @Path("list_id") listId: Int,
