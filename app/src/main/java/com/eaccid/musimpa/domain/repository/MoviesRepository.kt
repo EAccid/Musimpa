@@ -1,14 +1,13 @@
 package com.eaccid.musimpa.domain.repository
 
-import android.util.Log
 import com.eaccid.musimpa.data.remote.dto.DiscoverDto
 import com.eaccid.musimpa.data.remote.dto.MovieCreditsDto
 import com.eaccid.musimpa.data.remote.dto.MovieDto
 import com.eaccid.musimpa.data.remote.dto.VideosResultDto
+import com.eaccid.musimpa.data.remote.services.MovieDiscoverAllQueryMap
+import com.eaccid.musimpa.domain.common.DataResult
 import com.eaccid.musimpa.domain.common.handle
 import com.eaccid.musimpa.domain.common.toDataResult
-import com.eaccid.musimpa.domain.common.DataResult
-import com.eaccid.musimpa.data.remote.services.MovieDiscoverAllQueryMap
 import com.eaccid.musimpa.utils.toMovieEntity
 
 interface MoviesRepository {
@@ -74,11 +73,11 @@ class MoviesRepositoryImpl(
                 }
             },
             onError = { error, message ->
-                Log.e("MoviesRepositoryImpl", "API Error: $message", error)
+                println("MoviesRepositoryImpl API Error: $message")
                 DataResult.Failure(error ?: Exception(message ?: "Unknown"), message)
             },
             onNetworkError = {
-                Log.e("MoviesRepositoryImpl", "Network error")
+                println("MoviesRepositoryImpl Network error")
                 DataResult.NetworkError
             }
         )

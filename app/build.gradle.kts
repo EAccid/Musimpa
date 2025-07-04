@@ -141,6 +141,10 @@ dependencies {
 
     testImplementation("io.mockk:mockk:1.13.10")
 
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+    testImplementation("io.kotest:kotest-assertions-core:5.8.0")
+
 //koin
     implementation("io.insert-koin:koin-core:3.5.3")
     implementation("io.insert-koin:koin-android:3.5.3")
