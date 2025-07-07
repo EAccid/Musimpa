@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eaccid.musimpa.data.remote.ApiResponse
-import com.eaccid.musimpa.domain.repository.AuthenticationRepository
+import com.eaccid.musimpa.data.repository.AuthenticationRepository
 import com.eaccid.musimpa.utils.AUTHENTICATE_REQUEST_TOKEN_URL
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow

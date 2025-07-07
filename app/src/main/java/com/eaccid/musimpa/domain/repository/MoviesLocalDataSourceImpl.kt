@@ -4,11 +4,7 @@ import androidx.paging.PagingSource
 import androidx.room.withTransaction
 import com.eaccid.musimpa.data.local.room.MovieDatabase
 import com.eaccid.musimpa.data.local.room.MovieEntity
-
-interface MoviesLocalDataSource {
-    suspend fun getLocalPagingSource(): PagingSource<Int, MovieEntity>
-    suspend fun cachePopularMovies(moviesEntity: List<MovieEntity>, clearDataFirst: Boolean)
-}
+import com.eaccid.musimpa.data.repository.MoviesLocalDataSource
 
 class MoviesLocalDataSourceImpl(
     private val moviesDatabase: MovieDatabase

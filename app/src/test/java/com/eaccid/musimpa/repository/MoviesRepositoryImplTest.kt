@@ -6,9 +6,9 @@ import com.eaccid.musimpa.data.remote.dto.MovieDto
 import com.eaccid.musimpa.data.remote.services.MovieDiscoverAllQueryMap
 import com.eaccid.musimpa.domain.common.DataResult
 import com.eaccid.musimpa.domain.common.toDataResult
-import com.eaccid.musimpa.domain.repository.MoviesLocalDataSource
-import com.eaccid.musimpa.domain.repository.MoviesRemoteDataSource
-import com.eaccid.musimpa.domain.repository.MoviesRepository
+import com.eaccid.musimpa.data.repository.MoviesLocalDataSource
+import com.eaccid.musimpa.data.repository.MoviesRemoteDataSource
+import com.eaccid.musimpa.data.repository.MoviesRepository
 import com.eaccid.musimpa.domain.repository.MoviesRepositoryImpl
 import io.mockk.Runs
 import io.mockk.coEvery

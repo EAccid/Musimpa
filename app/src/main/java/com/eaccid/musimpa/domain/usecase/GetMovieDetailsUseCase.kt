@@ -5,7 +5,7 @@ import com.eaccid.musimpa.data.remote.dto.MovieDto
 import com.eaccid.musimpa.data.remote.dto.VideosResultDto
 import com.eaccid.musimpa.domain.common.DataResult
 import com.eaccid.musimpa.domain.models.MovieDetails
-import com.eaccid.musimpa.domain.repository.MoviesRepository
+import com.eaccid.musimpa.data.repository.MoviesRepository
 import com.eaccid.musimpa.utils.toActor
 import com.eaccid.musimpa.utils.toMovie
 import kotlinx.coroutines.async

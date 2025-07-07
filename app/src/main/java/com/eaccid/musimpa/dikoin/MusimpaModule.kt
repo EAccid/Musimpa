@@ -15,13 +15,13 @@ import com.eaccid.musimpa.data.remote.services.MovieApiService
 import com.eaccid.musimpa.data.remote.services.MovieListApi
 import com.eaccid.musimpa.data.remote.services.interceptors.KeyLanguageQueryInterceptor
 import com.eaccid.musimpa.data.worker.MovieSyncWorker
-import com.eaccid.musimpa.domain.repository.AuthenticationRepository
+import com.eaccid.musimpa.data.repository.AuthenticationRepository
 import com.eaccid.musimpa.domain.repository.AuthenticationRepositoryImpl
-import com.eaccid.musimpa.domain.repository.MoviesLocalDataSource
+import com.eaccid.musimpa.data.repository.MoviesLocalDataSource
 import com.eaccid.musimpa.domain.repository.MoviesLocalDataSourceImpl
-import com.eaccid.musimpa.domain.repository.MoviesRemoteDataSource
+import com.eaccid.musimpa.data.repository.MoviesRemoteDataSource
 import com.eaccid.musimpa.domain.repository.MoviesRemoteDataSourceImpl
-import com.eaccid.musimpa.domain.repository.MoviesRepository
+import com.eaccid.musimpa.data.repository.MoviesRepository
 import com.eaccid.musimpa.domain.repository.MoviesRepositoryImpl
 import com.eaccid.musimpa.domain.usecase.GetMovieDetailsUseCase
 import com.eaccid.musimpa.domain.usecase.GetMovieDetailsUseCaseImpl

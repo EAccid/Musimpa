@@ -7,7 +7,7 @@ import com.eaccid.musimpa.data.remote.dto.VideoDto
 import com.eaccid.musimpa.data.remote.dto.VideosResultDto
 import com.eaccid.musimpa.domain.common.DataResult
 import com.eaccid.musimpa.domain.models.MovieDetails
-import com.eaccid.musimpa.domain.repository.MoviesRepository
+import com.eaccid.musimpa.data.repository.MoviesRepository
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain

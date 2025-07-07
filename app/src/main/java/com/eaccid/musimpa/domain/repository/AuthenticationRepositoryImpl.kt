@@ -6,6 +6,7 @@ import com.eaccid.musimpa.data.remote.ApiResponse
 import com.eaccid.musimpa.data.remote.dto.AuthenticationDto
 import com.eaccid.musimpa.data.remote.safeApiRequest
 import com.eaccid.musimpa.data.remote.services.AuthenticationApi
+import com.eaccid.musimpa.data.repository.AuthenticationRepository
 
 class AuthenticationRepositoryImpl(
     private val serviceAPI: AuthenticationApi,

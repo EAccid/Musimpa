@@ -7,7 +7,7 @@ import androidx.paging.RemoteMediator
 import com.eaccid.musimpa.data.local.room.MovieEntity
 import com.eaccid.musimpa.data.remote.dto.DiscoverDto
 import com.eaccid.musimpa.domain.common.DataResult
-import com.eaccid.musimpa.domain.repository.MoviesRepository
+import com.eaccid.musimpa.data.repository.MoviesRepository
 
 @OptIn(ExperimentalPagingApi::class)
 class MovieRemoteMediator(

@@ -6,8 +6,8 @@ import com.eaccid.musimpa.data.remote.services.AuthenticationApi
 import com.eaccid.musimpa.data.remote.services.MovieApiService
 import com.eaccid.musimpa.data.remote.services.MovieListApi
 import com.eaccid.musimpa.dikoin.repositoryModule
-import com.eaccid.musimpa.domain.repository.AuthenticationRepository
-import com.eaccid.musimpa.domain.repository.MoviesRepository
+import com.eaccid.musimpa.data.repository.AuthenticationRepository
+import com.eaccid.musimpa.data.repository.MoviesRepository
 import io.mockk.mockk
 import org.junit.After
 import org.junit.Before

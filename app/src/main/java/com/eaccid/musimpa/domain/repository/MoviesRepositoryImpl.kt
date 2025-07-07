@@ -5,23 +5,13 @@ import com.eaccid.musimpa.data.remote.dto.MovieCreditsDto
 import com.eaccid.musimpa.data.remote.dto.MovieDto
 import com.eaccid.musimpa.data.remote.dto.VideosResultDto
 import com.eaccid.musimpa.data.remote.services.MovieDiscoverAllQueryMap
+import com.eaccid.musimpa.data.repository.MoviesLocalDataSource
+import com.eaccid.musimpa.data.repository.MoviesRemoteDataSource
+import com.eaccid.musimpa.data.repository.MoviesRepository
 import com.eaccid.musimpa.domain.common.DataResult
 import com.eaccid.musimpa.domain.common.handle
 import com.eaccid.musimpa.domain.common.toDataResult
 import com.eaccid.musimpa.utils.toMovieEntity
-
-interface MoviesRepository {
-    suspend fun discoverAll(page: Int = 1): DataResult<DiscoverDto>
-    suspend fun getMovie(movieId: Int): DataResult<MovieDto>
-    suspend fun getMovieVideos(movieId: Int): DataResult<VideosResultDto>
-    suspend fun getMovieCredits(movieId: Int): DataResult<MovieCreditsDto>
-
-    suspend fun syncPopularMovies(): DataResult<DiscoverDto>
-    suspend fun discoverAndCachePopularMovies(
-        page: Int,
-        clearDataFirst: Boolean
-    ): DataResult<DiscoverDto>
-}
 
 class MoviesRepositoryImpl(
     private val remote: MoviesRemoteDataSource,

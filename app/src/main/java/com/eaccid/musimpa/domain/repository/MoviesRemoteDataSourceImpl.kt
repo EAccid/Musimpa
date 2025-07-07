@@ -8,14 +8,7 @@ import com.eaccid.musimpa.data.remote.dto.VideosResultDto
 import com.eaccid.musimpa.data.remote.safeApiRequest
 import com.eaccid.musimpa.data.remote.services.MovieApiService
 import com.eaccid.musimpa.data.remote.services.MovieDiscoverAllQueryMap
-
-interface MoviesRemoteDataSource {
-    suspend fun discoverAll(page: Int = 1): ApiResponse<DiscoverDto>
-    suspend fun discoverAll(query: MovieDiscoverAllQueryMap): ApiResponse<DiscoverDto>
-    suspend fun getMovie(movieId: Int): ApiResponse<MovieDto>
-    suspend fun getMovieVideos(movieId: Int): ApiResponse<VideosResultDto>
-    suspend fun getMovieCredits(movieId: Int): ApiResponse<MovieCreditsDto>
-}
+import com.eaccid.musimpa.data.repository.MoviesRemoteDataSource
 
 class MoviesRemoteDataSourceImpl(
     private val apiService: MovieApiService

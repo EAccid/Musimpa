@@ -1,6 +1,6 @@
 package com.eaccid.musimpa.domain.usecase
 
-import com.eaccid.musimpa.domain.repository.MoviesRepository
+import com.eaccid.musimpa.data.repository.MoviesRepository
 
 interface SyncPopularMoviesUseCase {
     suspend operator fun invoke()
