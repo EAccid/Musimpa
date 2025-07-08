@@ -100,7 +100,6 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
     implementation("androidx.navigation:navigation-compose:2.8.9")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
@@ -113,6 +112,8 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager:0.28.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
     implementation(libs.androidx.junit.ktx)
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.compose.material3:material3:1.3.2")
 
 //tests
 //    implementation(libs.androidx.ui.test.junit4.android) todo add to libs.versions.TOML and not only here
@@ -125,8 +126,8 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    testImplementation("androidx.room:room-testing:2.7.1")
-    androidTestImplementation("androidx.room:room-testing:2.7.1")
+    testImplementation("androidx.room:room-testing:2.7.2")
+    androidTestImplementation("androidx.room:room-testing:2.7.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("androidx.paging:paging-common:3.3.6")
     androidTestImplementation("androidx.paging:paging-testing:3.3.6")
@@ -165,11 +166,11 @@ dependencies {
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 
 //room
-    implementation("androidx.room:room-runtime:2.7.1")
-    implementation("androidx.room:room-ktx:2.7.1")
+    implementation("androidx.room:room-runtime:2.7.2")
+    implementation("androidx.room:room-ktx:2.7.2")
 
-    ksp("androidx.room:room-compiler:2.7.1")
-    implementation("androidx.room:room-paging:2.7.1")
+    ksp("androidx.room:room-compiler:2.7.2")
+    implementation("androidx.room:room-paging:2.7.2")
 
 
 }

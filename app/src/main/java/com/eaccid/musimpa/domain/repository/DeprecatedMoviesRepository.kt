@@ -13,7 +13,7 @@ import com.eaccid.musimpa.data.remote.dto.VideosResultDto
 import com.eaccid.musimpa.data.remote.safeApiRequest
 import com.eaccid.musimpa.data.remote.services.MovieApiService
 import com.eaccid.musimpa.data.remote.services.MovieDiscoverAllQueryMap
-import com.eaccid.musimpa.utils.toMovieEntity
+import com.eaccid.musimpa.domain.mappers.toMovieEntity
 
 
 interface DeprecatedMoviesRepository {

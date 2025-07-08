@@ -12,7 +12,7 @@ import com.eaccid.musimpa.data.paging.DiscoverPagingSource
 import com.eaccid.musimpa.domain.models.Movie
 import com.eaccid.musimpa.data.local.room.MovieEntity
 import com.eaccid.musimpa.data.repository.MoviesRepository
-import com.eaccid.musimpa.utils.toMovie
+import com.eaccid.musimpa.domain.mappers.toMovie
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -24,6 +24,19 @@ inline fun <T> ApiResponse<T>.handle(
     }
 }
 
+inline fun <T, R> ApiResponse<T>.handleReturn(
+    onSuccess: (T) -> DataResult<R>,
+    noinline onError: ((Throwable?, String?) -> DataResult<R>)? = null,
+    noinline onNetworkError: (() -> DataResult<R>)? = null
+): DataResult<R> {
+    return when (this) {
+        is ApiResponse.Success -> onSuccess(data)
+        is ApiResponse.Error -> onError?.invoke(error, message)
+            ?: DataResult.Failure(error ?: Exception(message ?: "Unknown error"), message)
+        is ApiResponse.NetworkError -> onNetworkError?.invoke() ?: DataResult.NetworkError
+    }
+}
+
 inline fun <T> DataResult<T>.handle(
     onSuccess: (T) -> Unit,
     onFailure: (Throwable, String?) -> Unit = { _, _ -> },

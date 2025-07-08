@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.eaccid.musimpa.domain.common.handleReturn
 import com.eaccid.musimpa.domain.models.Movie
 import com.eaccid.musimpa.data.repository.MoviesRepository
-import com.eaccid.musimpa.utils.toMovie
+import com.eaccid.musimpa.domain.mappers.toMovie
 
 //Not in use but kept to see how PagingSource works
 class DiscoverPagingSource(

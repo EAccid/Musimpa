@@ -7,6 +7,7 @@ import androidx.room.Room
 import com.eaccid.musimpa.data.local.LocalData
 import com.eaccid.musimpa.data.local.LocalEncryptedSharedPreferences
 import com.eaccid.musimpa.data.local.room.MIGRATION_1_2
+import com.eaccid.musimpa.data.local.room.MIGRATION_2_3
 import com.eaccid.musimpa.data.local.room.MovieDatabase
 import com.eaccid.musimpa.data.paging.MovieRemoteMediator
 import com.eaccid.musimpa.data.remote.services.AccountApi
@@ -14,14 +15,14 @@ import com.eaccid.musimpa.data.remote.services.AuthenticationApi
 import com.eaccid.musimpa.data.remote.services.MovieApiService
 import com.eaccid.musimpa.data.remote.services.MovieListApi
 import com.eaccid.musimpa.data.remote.services.interceptors.KeyLanguageQueryInterceptor
-import com.eaccid.musimpa.data.worker.MovieSyncWorker
 import com.eaccid.musimpa.data.repository.AuthenticationRepository
-import com.eaccid.musimpa.domain.repository.AuthenticationRepositoryImpl
 import com.eaccid.musimpa.data.repository.MoviesLocalDataSource
-import com.eaccid.musimpa.domain.repository.MoviesLocalDataSourceImpl
 import com.eaccid.musimpa.data.repository.MoviesRemoteDataSource
-import com.eaccid.musimpa.domain.repository.MoviesRemoteDataSourceImpl
 import com.eaccid.musimpa.data.repository.MoviesRepository
+import com.eaccid.musimpa.data.worker.MovieSyncWorker
+import com.eaccid.musimpa.domain.repository.AuthenticationRepositoryImpl
+import com.eaccid.musimpa.domain.repository.MoviesLocalDataSourceImpl
+import com.eaccid.musimpa.domain.repository.MoviesRemoteDataSourceImpl
 import com.eaccid.musimpa.domain.repository.MoviesRepositoryImpl
 import com.eaccid.musimpa.domain.usecase.GetMovieDetailsUseCase
 import com.eaccid.musimpa.domain.usecase.GetMovieDetailsUseCaseImpl
@@ -29,6 +30,7 @@ import com.eaccid.musimpa.domain.usecase.SyncPopularMoviesUseCase
 import com.eaccid.musimpa.domain.usecase.SyncPopularMoviesUseCaseImpl
 import com.eaccid.musimpa.ui.mainscreen.MainScreenViewModel
 import com.eaccid.musimpa.ui.moviedetailsscreen.MovieDetailsScreenViewModel
+import com.eaccid.musimpa.ui.movielistscreen.MovieListScreenSearchAndFilterViewModel
 import com.eaccid.musimpa.ui.movielistscreen.MovieListScreenViewModel
 import com.eaccid.musimpa.ui.navigation.PreferencesDataStoreManager
 import com.eaccid.musimpa.utils.BASE_URL
@@ -97,6 +99,7 @@ val dataModule = module {
             "movie_database",
         )
             .addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_2_3)
             .build()
     }
 }
@@ -121,6 +124,7 @@ val viewModelsModule = module {
             }
         )
     }
+    viewModel { MovieListScreenSearchAndFilterViewModel(get()) }
     viewModel { MovieDetailsScreenViewModel(get(), get()) }
 }
 

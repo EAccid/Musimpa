@@ -9,5 +9,6 @@ data class Movie(
     val overview: String? = null,
     val voteAverage: Double = 0.0, //percentage
     val tagline: String? = null,
-    val runtime: Int = 0
+    val runtime: Int = 0,
+    val genreIds: List<Int> = emptyList()
 )

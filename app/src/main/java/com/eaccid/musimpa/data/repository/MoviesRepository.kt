@@ -1,10 +1,17 @@
 package com.eaccid.musimpa.data.repository
 
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingData
+import com.eaccid.musimpa.data.local.room.MovieEntity
 import com.eaccid.musimpa.data.remote.dto.DiscoverDto
 import com.eaccid.musimpa.data.remote.dto.MovieCreditsDto
 import com.eaccid.musimpa.data.remote.dto.MovieDto
 import com.eaccid.musimpa.data.remote.dto.VideosResultDto
 import com.eaccid.musimpa.domain.common.DataResult
+import com.eaccid.musimpa.domain.models.Genre
+import com.eaccid.musimpa.domain.models.MovieSearchFilter
+import kotlinx.coroutines.flow.Flow
 
 interface MoviesRepository {
     suspend fun discoverAll(page: Int = 1): DataResult<DiscoverDto>
@@ -17,5 +24,33 @@ interface MoviesRepository {
         page: Int,
         clearDataFirst: Boolean
     ): DataResult<DiscoverDto>
+
+    fun getDiscoverMoviesPager(): Pager<Int, MovieEntity>
+    fun getSearchMoviesPager(
+        searchQuery: String,
+        filter: MovieSearchFilter
+    ): Pager<Int, MovieEntity>
+
+    fun getGenreMoviesPager(genreId: Int): Pager<Int, MovieEntity>
+    suspend fun searchAndCacheMovies(
+        searchQuery: String,
+        filter: MovieSearchFilter,
+        page: Int,
+        clearDataFirst: Boolean
+    ): DataResult<DiscoverDto>
+
+    suspend fun getGenres(): DataResult<List<Genre>>
+    fun getMoviesWithFilter(filter: Flow<MovieSearchFilter>): Flow<PagingData<MovieEntity>>
+    @OptIn(ExperimentalPagingApi::class)
+    fun getDiscoverMoviesPager(filter: MovieSearchFilter? = null): Pager<Int, MovieEntity>
+    @OptIn(ExperimentalPagingApi::class)
+    fun getGenreMoviesPager(genreIds: List<Int>): Pager<Int, MovieEntity>
+    @OptIn(ExperimentalPagingApi::class)
+    fun getDiscoverMoviesWithFilter(filter: MovieSearchFilter): Pager<Int, MovieEntity>
+    suspend fun discoverAndCacheMoviesWithFilter(
+        filter: MovieSearchFilter,
+        page: Int,
+        clearDataFirst: Boolean
+    ):  DataResult<DiscoverDto>
 }
 

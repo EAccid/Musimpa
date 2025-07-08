@@ -2,11 +2,6 @@ package com.eaccid.musimpa.utils
 
 import android.net.Uri
 import androidx.core.net.toUri
-import com.eaccid.musimpa.domain.models.Actor
-import com.eaccid.musimpa.domain.models.Movie
-import com.eaccid.musimpa.data.local.room.MovieEntity
-import com.eaccid.musimpa.data.remote.dto.ActorDto
-import com.eaccid.musimpa.data.remote.dto.MovieDto
 
 const val BASE_URL = "https://api.themoviedb.org/3/"
 const val MOVIE_IMAGE_URL_PATH = "image.tmdb.org/t/p/"
@@ -15,60 +10,6 @@ const val EMPTY_STRING_VALUE = ""
 
 fun String.toImageUri(posterSize: PosterSize): Uri {
     return (posterSize.imagePath + this).toUri().buildUpon().scheme("https").build()
-}
-
-fun MovieDto.toMovie(): Movie { //todo do we need this?
-    return Movie(
-        id = id,
-        originalTitle = originalTitle,
-        releaseDate = releaseDate,
-        posterPath = posterPath,
-        title = title,
-        overview = overview,
-        voteAverage = voteAverage?.times(10) ?: 0.0,
-        tagline = tagline,
-        runtime = runtime ?: 0
-    )
-}
-
-fun MovieDto.toMovieEntity(page: Int = 0): MovieEntity {
-    return MovieEntity(
-        apiId = id,
-        originalTitle = originalTitle,
-        releaseDate = releaseDate,
-        posterPath = posterPath,
-        title = title,
-        overview = overview,
-        voteAverage = voteAverage?.times(10) ?: 0.0,
-        tagline = tagline,
-        runtime = runtime ?: 0,
-        page = page
-    )
-}
-
-fun MovieEntity.toMovie(): Movie {
-    return Movie(
-        id = apiId,
-        originalTitle = originalTitle,
-        releaseDate = releaseDate,
-        posterPath = posterPath,
-        title = title,
-        overview = overview,
-        voteAverage = voteAverage,
-        tagline = tagline,
-        runtime = runtime
-    )
-}
-
-fun ActorDto.toActor(): Actor {
-    return Actor(
-        id = id,
-        name = name,
-        originalName = originalName,
-        profilePath = profilePath,
-        character = character,
-        order = order
-    )
 }
 
 enum class PosterSize(imageSize: String) {

@@ -10,8 +10,10 @@ class MoviesLocalDataSourceImpl(
     private val moviesDatabase: MovieDatabase
 ) : MoviesLocalDataSource {
 
+    private val movieDao = moviesDatabase.movieDao
+
     override suspend fun getLocalPagingSource(): PagingSource<Int, MovieEntity> =
-        moviesDatabase.movieDao.pagingSource()
+        movieDao.pagingSource()
 
     override suspend fun cachePopularMovies(
         moviesEntity: List<MovieEntity>,
@@ -19,9 +21,45 @@ class MoviesLocalDataSourceImpl(
     ) {
         moviesDatabase.withTransaction {
             if (clearDataFirst) {
-                moviesDatabase.movieDao.clearAll()
+                movieDao.clearAll()
             }
-            moviesDatabase.movieDao.insertAll(moviesEntity)
+            movieDao.insertAll(moviesEntity)
         }
     }
+
+    override fun getDiscoverMoviesPagingSource(): PagingSource<Int, MovieEntity> {
+        return movieDao.getDiscoverMoviesPagingSource()
+    }
+
+    override fun getSearchMoviesPagingSource(query: String): PagingSource<Int, MovieEntity> {
+        return movieDao.getSearchMoviesPagingSource(query)
+    }
+
+    override fun getGenreMoviesPagingSource(genreId: String): PagingSource<Int, MovieEntity> {
+        return movieDao.getGenreMoviesPagingSource(genreId)
+    }
+
+    override fun getCombinedFilterPagingSource(
+        query: String,
+        genreId: String
+    ): PagingSource<Int, MovieEntity> {
+        return movieDao.getCombinedFilterPagingSource(query, genreId)
+    }
+
+    override suspend fun clearBySearchType(searchType: String) {
+        movieDao.clearBySearchType(searchType)
+    }
+
+    override suspend fun clearBySearchTypeAndQuery(searchType: String, query: String) {
+        movieDao.clearBySearchTypeAndQuery(searchType, query)
+    }
+
+    override suspend fun getMovieCount(searchType: String, query: String): Int {
+        return movieDao.getMovieCount(searchType, query)
+    }
+
+    override suspend fun cacheMovies(movieEntities: List<MovieEntity>) {
+        movieDao.insertAll(movieEntities)
+    }
+
 }
