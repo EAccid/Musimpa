@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.eaccid.musimpa.ui.mainscreen.MainScreen
 import com.eaccid.musimpa.ui.moviedetailsscreen.MovieDetailsScreen
 import com.eaccid.musimpa.ui.movielistscreen.MovieListScreen
+import com.eaccid.musimpa.ui.movielistscreen.SearchAndFilterMovieListScreen
 
 @Composable
 fun AppNavigation(lastScreen: String) {
@@ -31,6 +32,9 @@ fun AppNavigation(lastScreen: String) {
         }
         composable(route = Screen.MovieList.route) {
             MovieListScreen(navController = navController)
+        }
+        composable(route = Screen.SearchAndFilterMovieList.route) {
+            SearchAndFilterMovieListScreen(navController = navController)
         }
         composable(
             route = Screen.MovieDetails.route + "/{movieId}",

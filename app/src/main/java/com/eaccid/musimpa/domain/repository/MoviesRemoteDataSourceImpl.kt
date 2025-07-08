@@ -10,7 +10,6 @@ import com.eaccid.musimpa.data.remote.safeApiRequest
 import com.eaccid.musimpa.data.remote.services.MovieApiService
 import com.eaccid.musimpa.data.remote.services.MovieDiscoverAllQueryMap
 import com.eaccid.musimpa.data.repository.MoviesRemoteDataSource
-import com.eaccid.musimpa.domain.common.DataResult
 import com.eaccid.musimpa.domain.models.MovieSearchFilter
 
 class MoviesRemoteDataSourceImpl(
@@ -34,10 +33,7 @@ class MoviesRemoteDataSourceImpl(
             page = page,
             searchQuery = searchQuery,
             genreIds = filter.selectedGenreIds,
-            sortBy = filter.sortBy.value,
-            primaryReleaseYear = filter.releaseYear,
-            voteAverageGte = filter.minRating,
-            voteAverageLte = filter.maxRating
+            sortBy = filter.sortBy.value
         )
 
         return safeApiRequest {

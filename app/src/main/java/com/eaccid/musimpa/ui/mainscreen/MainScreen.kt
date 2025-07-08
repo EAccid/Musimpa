@@ -43,7 +43,8 @@ fun MainScreen(navController: NavController) {
         navController.navigate(Screen.MovieList.route)
     }, onWebActionSucceed = { succeed: Boolean ->
         viewModel.onWebAction(succeed)
-    }
+    },
+        onSearchMoviesClicked = { navController.navigate(Screen.SearchAndFilterMovieList.route) }
     )
     SaveLastScreenEffect(Screen.Main.route)
 }
@@ -53,6 +54,7 @@ fun MainScreenContent(
     viewState: MainScreenViewState,
     onLoginClicked: () -> Unit,
     onMoviesClicked: () -> Unit,
+    onSearchMoviesClicked: () -> Unit,
     onWebActionSucceed: (Boolean) -> Unit
 ) {
     Box() {
@@ -91,6 +93,12 @@ fun MainScreenContent(
                         modifier = columnChildModifier.width(150.dp), onClick = onMoviesClicked
                     ) {
                         Text(text = "Start movies")
+                    }
+                    Button(
+                        modifier = columnChildModifier.width(150.dp),
+                        onClick = onSearchMoviesClicked
+                    ) {
+                        Text(text = "Test search")
                     }
                 }
             }
@@ -138,6 +146,6 @@ class MainViewPreviewParameterProvider : PreviewParameterProvider<MainScreenView
 @Composable
 fun MainScreenPreview(@PreviewParameter(MainViewPreviewParameterProvider::class) viewState: MainScreenViewState) {
     MusimpaTheme {
-        MainScreenContent(viewState, {}, {}, {})
+        MainScreenContent(MainScreenViewState(MainScreenState.Success), {}, {}, {}, {})
     }
 }

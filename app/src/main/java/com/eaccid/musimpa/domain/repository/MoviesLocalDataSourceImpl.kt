@@ -28,38 +28,11 @@ class MoviesLocalDataSourceImpl(
     }
 
     override fun getDiscoverMoviesPagingSource(): PagingSource<Int, MovieEntity> {
-        return movieDao.getDiscoverMoviesPagingSource()
+        return movieDao.getDiscoverMoviesPagingSource() //temporary
     }
 
     override fun getSearchMoviesPagingSource(query: String): PagingSource<Int, MovieEntity> {
-        return movieDao.getSearchMoviesPagingSource(query)
-    }
-
-    override fun getGenreMoviesPagingSource(genreId: String): PagingSource<Int, MovieEntity> {
-        return movieDao.getGenreMoviesPagingSource(genreId)
-    }
-
-    override fun getCombinedFilterPagingSource(
-        query: String,
-        genreId: String
-    ): PagingSource<Int, MovieEntity> {
-        return movieDao.getCombinedFilterPagingSource(query, genreId)
-    }
-
-    override suspend fun clearBySearchType(searchType: String) {
-        movieDao.clearBySearchType(searchType)
-    }
-
-    override suspend fun clearBySearchTypeAndQuery(searchType: String, query: String) {
-        movieDao.clearBySearchTypeAndQuery(searchType, query)
-    }
-
-    override suspend fun getMovieCount(searchType: String, query: String): Int {
-        return movieDao.getMovieCount(searchType, query)
-    }
-
-    override suspend fun cacheMovies(movieEntities: List<MovieEntity>) {
-        movieDao.insertAll(movieEntities)
+        return movieDao.getDiscoverMoviesPagingSource() //temporary
     }
 
 }

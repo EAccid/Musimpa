@@ -10,13 +10,19 @@ import com.eaccid.musimpa.domain.common.DataResult
 import com.eaccid.musimpa.domain.models.MovieSearchFilter
 import com.eaccid.musimpa.domain.repository.MoviesRepositoryImpl
 
+enum class SearchType {
+    SEARCH,
+    DISCOVER,
+    POPULAR,
+    FILTER
+}
+
 @OptIn(ExperimentalPagingApi::class)
 class MovieSearchRemoteMediator(
     private val repository: MoviesRepositoryImpl,
-    private val searchType: String,
+    private val searchType: SearchType,
     private val searchQuery: String = "",
-    private val filter: MovieSearchFilter = MovieSearchFilter(),
-    private val genreId: Int? = null // Keep for backward compatibility
+    private val filter: MovieSearchFilter = MovieSearchFilter()
 ) : RemoteMediator<Int, MovieEntity>() {
 
     companion object {
@@ -33,8 +39,9 @@ class MovieSearchRemoteMediator(
             LoadType.APPEND -> state.lastItemOrNull()?.page?.plus(1) ?: STARTING_PAGE_INDEX
         }
 
+        //Is not allowed combining search and filter due to tmdb api restrictions
         return when (searchType) {
-            "search" -> {
+            SearchType.SEARCH -> {
                 repository.searchAndCacheMovies(
                     searchQuery = searchQuery,
                     filter = filter,
@@ -42,27 +49,15 @@ class MovieSearchRemoteMediator(
                     clearDataFirst = loadType == LoadType.REFRESH
                 ).toMediatorResult()
             }
-            "genre" -> {
-                // Fixed: Use all selected genres from filter, not just genreId
-                val genreFilter = if (genreId != null) {
-                    filter.copy(selectedGenreIds = listOf(genreId))
-                } else {
-                    filter
-                }
-                repository.discoverAndCacheMoviesWithFilter(
-                    filter = genreFilter,
-                    page = loadKey,
-                    clearDataFirst = loadType == LoadType.REFRESH
-                ).toMediatorResult()
-            }
-            "discover" -> {
-                // Fixed: Use discover with filter instead of separate method
+
+            SearchType.FILTER -> {
                 repository.discoverAndCacheMoviesWithFilter(
                     filter = filter,
                     page = loadKey,
                     clearDataFirst = loadType == LoadType.REFRESH
                 ).toMediatorResult()
             }
+            //SearchType. Combined???
             else -> {
                 repository.discoverAndCachePopularMovies(
                     page = loadKey,
@@ -77,6 +72,7 @@ class MovieSearchRemoteMediator(
             is DataResult.Success -> MediatorResult.Success(
                 endOfPaginationReached = data.movies.isEmpty()
             )
+
             is DataResult.Failure -> MediatorResult.Error(error)
             is DataResult.NetworkError -> MediatorResult.Error(Exception("Network error"))
         }

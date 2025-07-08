@@ -5,8 +5,6 @@ import com.eaccid.musimpa.data.remote.dto.ActorDto
 import com.eaccid.musimpa.data.remote.dto.MovieDto
 import com.eaccid.musimpa.domain.models.Actor
 import com.eaccid.musimpa.domain.models.Movie
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 fun MovieDto.toMovie(): Movie { //todo do we need this?
     return Movie(
@@ -53,22 +51,11 @@ fun MovieDto.toMovieEntity(
         overview = overview,
         voteAverage = voteAverage ?: 0.0,
         tagline = tagline,
-        runtime = runtime ?: 0,
-        genreIds = if (genreIds.isNotEmpty()) Gson().toJson(genreIds) else null
-//        searchQuery = searchQuery,
-//        searchType = searchType
+        runtime = runtime ?: 0
     )
 }
 
 fun MovieEntity.toMovie(): Movie {
-    val genreIdsList: List<Int> = try {
-        genreIds?.let {
-            Gson().fromJson<List<Int>>(it, object : TypeToken<List<Int>>() {}.type)
-        } ?: emptyList()
-    } catch (e: Exception) {
-        emptyList<Int>()
-    }
-
     return Movie(
         id = apiId,
         originalTitle = originalTitle,
@@ -78,8 +65,7 @@ fun MovieEntity.toMovie(): Movie {
         overview = overview,
         voteAverage = voteAverage,
         tagline = tagline,
-        runtime = runtime,
-        genreIds = genreIdsList
+        runtime = runtime
     )
 }
 

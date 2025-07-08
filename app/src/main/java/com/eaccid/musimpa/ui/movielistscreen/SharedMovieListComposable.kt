@@ -1,7 +1,6 @@
 package com.eaccid.musimpa.ui.movielistscreen
 
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,78 +43,18 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.eaccid.musimpa.domain.models.Movie
-import com.eaccid.musimpa.ui.component.LogCompositions
-import com.eaccid.musimpa.ui.component.SaveLastScreenEffect
-import com.eaccid.musimpa.ui.navigation.Screen
 import com.eaccid.musimpa.utils.PosterSize
 import com.eaccid.musimpa.utils.toImageUri
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
-
-@Composable
-fun DeprecatedMovieListScreen(navController: NavController) {
-    LogCompositions("MovieListScreen")
-
-    val viewModel = koinViewModel<MovieListScreenViewModel>()
-
-    //try paging from room+api
-    val currentPagingMoviesFlow: LazyPagingItems<Movie> =
-        viewModel.pagerRoomFlow.collectAsLazyPagingItems()
-    val onItemClicked = { movie: Movie ->
-        navController.navigate(Screen.MovieDetails.createRoute(movie.id)) {
-            restoreState = true
-        }
-    }
-    DeprecatedMovieListScreenContent(currentPagingMoviesFlow, onItemClicked)
-    BackHandler {
-        if (navController.previousBackStackEntry != null) {
-            navController.popBackStack()
-        } else {
-            navController.navigate(Screen.Main.route) {
-                popUpTo(0)
-                launchSingleTop = true
-                restoreState = true
-            }
-        }
-    }
-    SaveLastScreenEffect(Screen.MovieList.route)
-}
-
-@Composable
-fun DeprecatedMovieListScreenContent(
-    lazyPagingItems: LazyPagingItems<Movie>,
-    onItemClicked: (movie: Movie) -> Unit
-) {
-    val context = LocalContext.current
-    LaunchedEffect(key1 = lazyPagingItems.loadState) {
-        if (lazyPagingItems.loadState.refresh is LoadState.Error) {
-            Toast.makeText(
-                context,
-                "Error Occurred " + (lazyPagingItems.loadState.refresh as LoadState.Error).error.message,
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-        if (lazyPagingItems.loadState.append is LoadState.Error) {
-            Toast.makeText(
-                context,
-                "Error Occurred " + (lazyPagingItems.loadState.append as LoadState.Error).error.message,
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
-    DeprecatedPullToRefreshMovieLazyColumn(lazyPagingItems, onItemClicked)
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeprecatedPullToRefreshMovieLazyColumn(
+fun PullToRefreshMovieLazyColumn(
     lazyPagingItems: LazyPagingItems<Movie>,
     onItemClicked: (movie: Movie) -> Unit
 ) {
@@ -155,7 +94,7 @@ fun DeprecatedPullToRefreshMovieLazyColumn(
             items(count = lazyPagingItems.itemCount) { index ->
                 //TODO item is null here sometimes check the problem
                 lazyPagingItems[index]?.let { item ->
-                    DeprecatedMovieItemView(dataItem = item, onItemClicked)
+                    MovieItemView(dataItem = item, onItemClicked)
                 }
             }
             if (lazyPagingItems.loadState.append == LoadState.Loading) {
@@ -191,7 +130,7 @@ fun DeprecatedPullToRefreshMovieLazyColumn(
 }
 
 @Composable
-fun DeprecatedMovieItemView(dataItem: Movie, onItemClick: (movie: Movie) -> Unit) {
+fun MovieItemView(dataItem: Movie, onItemClick: (movie: Movie) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -234,6 +173,29 @@ fun DeprecatedMovieItemView(dataItem: Movie, onItemClick: (movie: Movie) -> Unit
                     text = dataItem.voteAverage.toString()
                 )
             }
+        }
+    }
+}
+
+
+@Composable
+fun <T : Any> LazyPagingItems<T>.HandleLoadStates() {
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = loadState) {
+        if (loadState.refresh is LoadState.Error) {
+            Toast.makeText(
+                context,
+                "Error Occurred: ${(loadState.refresh as LoadState.Error).error.message}",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        if (loadState.append is LoadState.Error) {
+            Toast.makeText(
+                context,
+                "Error Occurred: ${(loadState.append as LoadState.Error).error.message}",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }

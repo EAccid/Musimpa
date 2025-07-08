@@ -24,28 +24,26 @@ interface MovieDao {
     fun getAllMovies(): Flow<List<MovieEntity>>
 
     //TODO alter MovieEntity or create MovieCacheJoin
-    @Query("SELECT * FROM movieentity WHERE searchType = 'discover' ORDER BY page ASC, localId ASC")
+    @Query("SELECT * FROM movieentity")
     fun getDiscoverMoviesPagingSource(): PagingSource<Int, MovieEntity>
+//
+//    @Query("SELECT * FROM movieentity WHERE searchType = 'search' AND searchQuery = :query ORDER BY page ASC, localId ASC")
+//    fun getSearchMoviesPagingSource(query: String): PagingSource<Int, MovieEntity>
+//
+//    @Query("SELECT * FROM movieentity WHERE searchType = 'genre' AND genreIds LIKE '%' || :genreId || '%' ORDER BY page ASC, localId ASC")
+//    fun getGenreMoviesPagingSource(genreId: String): PagingSource<Int, MovieEntity>
+//
+//    @Query("SELECT * FROM movieentity WHERE searchType = 'combined' AND searchQuery = :query AND genreIds LIKE '%' || :genreId || '%' ORDER BY page ASC, localId ASC")
+//    fun getCombinedFilterPagingSource(
+//        query: String,
+//        genreId: String
+//    ): PagingSource<Int, MovieEntity>
+//
+//    @Query("DELETE FROM movieentity WHERE searchType = :searchType")
+//    suspend fun clearBySearchType(searchType: String)
+//
+//    @Query("DELETE FROM movieentity WHERE searchType = :searchType AND searchQuery = :query")
+//    suspend fun clearBySearchTypeAndQuery(searchType: String, query: String)
 
-    @Query("SELECT * FROM movieentity WHERE searchType = 'search' AND searchQuery = :query ORDER BY page ASC, localId ASC")
-    fun getSearchMoviesPagingSource(query: String): PagingSource<Int, MovieEntity>
-
-    @Query("SELECT * FROM movieentity WHERE searchType = 'genre' AND genreIds LIKE '%' || :genreId || '%' ORDER BY page ASC, localId ASC")
-    fun getGenreMoviesPagingSource(genreId: String): PagingSource<Int, MovieEntity>
-
-    @Query("SELECT * FROM movieentity WHERE searchType = 'combined' AND searchQuery = :query AND genreIds LIKE '%' || :genreId || '%' ORDER BY page ASC, localId ASC")
-    fun getCombinedFilterPagingSource(
-        query: String,
-        genreId: String
-    ): PagingSource<Int, MovieEntity>
-
-    @Query("DELETE FROM movieentity WHERE searchType = :searchType")
-    suspend fun clearBySearchType(searchType: String)
-
-    @Query("DELETE FROM movieentity WHERE searchType = :searchType AND searchQuery = :query")
-    suspend fun clearBySearchTypeAndQuery(searchType: String, query: String)
-
-    @Query("SELECT COUNT(*) FROM movieentity WHERE searchType = :searchType AND searchQuery = :query")
-    suspend fun getMovieCount(searchType: String, query: String): Int
 
 }
