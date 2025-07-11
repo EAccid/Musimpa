@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.data.paging
+package com.eaccid.musimpa.domain.paging
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType

@@ -37,18 +37,6 @@ inline fun <T, R> ApiResponse<T>.handleReturn(
     }
 }
 
-inline fun <T> DataResult<T>.handle(
-    onSuccess: (T) -> Unit,
-    onFailure: (Throwable, String?) -> Unit = { _, _ -> },
-    onNetworkError: () -> Unit = {}
-) {
-   return when (this) {
-        is DataResult.Success -> onSuccess(data)
-        is DataResult.Failure -> onFailure(error, message)
-        is DataResult.NetworkError -> onNetworkError()
-    }
-}
-
 inline fun <T, R> DataResult<T>.handleReturn(
     onSuccess: (T) -> R,
     onFailure: (Throwable, String?) -> R,

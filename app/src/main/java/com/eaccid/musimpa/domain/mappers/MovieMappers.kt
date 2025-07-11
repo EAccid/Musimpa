@@ -6,7 +6,7 @@ import com.eaccid.musimpa.data.remote.dto.MovieDto
 import com.eaccid.musimpa.domain.models.Actor
 import com.eaccid.musimpa.domain.models.Movie
 
-fun MovieDto.toMovie(): Movie { //todo do we need this?
+fun MovieDto.toMovie(): Movie {
     return Movie(
         id = id,
         originalTitle = originalTitle,
@@ -32,26 +32,6 @@ fun MovieDto.toMovieEntity(page: Int = 0): MovieEntity {
         tagline = tagline,
         runtime = runtime ?: 0,
         page = page
-    )
-}
-
-fun MovieDto.toMovieEntity(
-    page: Int,
-    searchQuery: String = "",
-    searchType: String = "discover",
-    genreIds: List<Int> = emptyList()
-): MovieEntity {
-    return MovieEntity(
-        page = page,
-        apiId = id,
-        originalTitle = originalTitle,
-        releaseDate = releaseDate,
-        posterPath = posterPath,
-        title = title,
-        overview = overview,
-        voteAverage = voteAverage ?: 0.0,
-        tagline = tagline,
-        runtime = runtime ?: 0
     )
 }
 

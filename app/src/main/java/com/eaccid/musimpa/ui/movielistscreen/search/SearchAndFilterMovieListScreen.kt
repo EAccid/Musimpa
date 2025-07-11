@@ -1,4 +1,4 @@
-package com.eaccid.musimpa.ui.movielistscreen
+package com.eaccid.musimpa.ui.movielistscreen.search
 
 
 import android.util.Log
@@ -9,11 +9,17 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,7 +28,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -32,6 +42,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -43,12 +54,18 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.eaccid.musimpa.domain.models.Genre
 import com.eaccid.musimpa.ui.component.LogCompositions
 import com.eaccid.musimpa.ui.component.SaveLastScreenEffect
+import com.eaccid.musimpa.ui.models.GenreUi
+import com.eaccid.musimpa.ui.models.MovieUi
+import com.eaccid.musimpa.ui.movielistscreen.ErrorStateContent
+import com.eaccid.musimpa.ui.movielistscreen.PullToRefreshMovieLazyColumn
 import com.eaccid.musimpa.ui.navigation.Screen
 import org.koin.androidx.compose.koinViewModel
 
@@ -60,12 +77,14 @@ fun SearchAndFilterMovieListScreen(navController: NavController) {
 
     val searchQuery by viewModel.searchQuery.collectAsState()
     val selectedGenres by viewModel.selectedGenres.collectAsState()
-    val genres by viewModel.genres.collectAsState()
-    //TODO Add error handling for the search and genre loading states
-    // for better UX during search operations
-
+    val genresState by viewModel.genresState.collectAsState()
     val lazyPagingItems = viewModel.pagerFlow.collectAsLazyPagingItems()
-    lazyPagingItems.HandleLoadStates()
+
+    val onItemClicked = { movie: MovieUi ->
+        navController.navigate(Screen.MovieDetails.createRoute(movie.id)) {
+            restoreState = true
+        }
+    }
 
     // Handle back press
     BackHandler {
@@ -87,26 +106,92 @@ fun SearchAndFilterMovieListScreen(navController: NavController) {
             onClearSearch = viewModel::clearSearch
         )
 
-        GenreFilterSection(
-            genres = genres,
-            selectedGenres = selectedGenres,
-            onToggleGenre = viewModel::toggleGenre,
-            onClearAllGenres = viewModel::clearAllGenres
-        )
+        // Genre filter section with state handling
+        when (genresState) {
+            is GenresState.Loading -> {
+                GenreLoadingSection()
+            }
 
-        // Movie list
-        PullToRefreshMovieLazyColumn(
+            is GenresState.Success -> {
+                GenreFilterSection(
+                    genres = (genresState as GenresState.Success).genres,
+                    selectedGenres = selectedGenres,
+                    onToggleGenre = viewModel::toggleGenre,
+                    onClearAllGenres = viewModel::clearAllGenres
+                )
+            }
+
+            is GenresState.Error -> {
+                GenreErrorSection(
+                    message = (genresState as GenresState.Error).exception.message
+                        ?: "Failed to load genres",
+                    onRetry = viewModel::retryGenres
+                )
+            }
+        }
+
+        SearchMovieListScreenContent(
             lazyPagingItems = lazyPagingItems,
-            onItemClicked = { movie ->
-                navController.navigate(Screen.MovieDetails.createRoute(movie.id)) {
-                    restoreState = true
+            searchQuery = searchQuery,
+            selectedGenres = selectedGenres,
+            genresState = genresState,
+            onItemClicked = onItemClicked
+        )
+    }
+
+    SaveLastScreenEffect(Screen.SearchAndFilterMovieList.route)
+}
+
+
+@Composable
+private fun SearchMovieListScreenContent(
+    lazyPagingItems: LazyPagingItems<MovieUi>,
+    searchQuery: String,
+    selectedGenres: List<Int>,
+    genresState: GenresState,
+    onItemClicked: (movie: MovieUi) -> Unit
+) {
+    // Movie list with state handling
+    when (lazyPagingItems.loadState.refresh) {
+        is LoadState.Loading -> {
+            // Show loading only if we don't have any items yet
+            if (lazyPagingItems.itemCount == 0) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
                 }
             }
-        )
+        }
 
-        SaveLastScreenEffect(Screen.SearchAndFilterMovieList.route)
+        is LoadState.Error -> {
+            val error = lazyPagingItems.loadState.refresh as LoadState.Error
+            ErrorStateContent(
+                message = error.error.message ?: "Failed to load movies",
+                onRetry = { lazyPagingItems.retry() }
+            )
+        }
+
+        is LoadState.NotLoading -> {
+            if (lazyPagingItems.itemCount == 0) {
+                // Empty state
+                EmptyMovieState(
+                    searchQuery = searchQuery,
+                    selectedGenres = selectedGenres,
+                    genresState = genresState
+                )
+            } else {
+                // Success state - show the list
+                PullToRefreshMovieLazyColumn(
+                    lazyPagingItems = lazyPagingItems,
+                    onItemClicked = onItemClicked
+                )
+            }
+        }
     }
 }
+
 
 @Composable
 private fun SearchTextField(
@@ -198,8 +283,74 @@ private fun ClearSearchButton(
 }
 
 @Composable
+private fun GenreLoadingSection() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(16.dp),
+                strokeWidth = 2.dp
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "Loading genres...",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+
+@Composable
+private fun GenreErrorSection(
+    message: String,
+    onRetry: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.errorContainer
+        )
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.Error,
+                contentDescription = "Error",
+                tint = MaterialTheme.colorScheme.onErrorContainer,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onErrorContainer,
+                modifier = Modifier.weight(1f)
+            )
+            TextButton(onClick = onRetry) {
+                Text(
+                    text = "Retry",
+                    color = MaterialTheme.colorScheme.onErrorContainer
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun GenreFilterSection(
-    genres: List<Genre>,
+    genres: List<GenreUi>,
     selectedGenres: List<Int>,
     onToggleGenre: (Int) -> Unit,
     onClearAllGenres: () -> Unit,
@@ -249,7 +400,7 @@ private fun GenreFilterSection(
 
 @Composable
 private fun GenreFilterChip(
-    genre: Genre,
+    genre: GenreUi,
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -290,5 +441,50 @@ private fun ClearAllGenresButton(
             contentDescription = "Clear all genres",
             modifier = Modifier.size(16.dp)
         )
+    }
+}
+
+@Composable
+private fun EmptyMovieState(
+    searchQuery: String,
+    selectedGenres: List<Int>,
+    genresState: GenresState
+) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "No results",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(64.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            val message = when {
+                searchQuery.isNotBlank() -> "No movies found for '$searchQuery'"
+                selectedGenres.isNotEmpty() && genresState is GenresState.Success -> {
+                    val genreNames = genresState.genres
+                        .filter { it.id in selectedGenres }
+                        .joinToString(", ") { it.name }
+                    "No movies found for genres: $genreNames"
+                }
+
+                else -> "No movies available"
+            }
+
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 32.dp)
+            )
+        }
     }
 }

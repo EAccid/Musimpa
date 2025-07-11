@@ -1,11 +1,5 @@
 package com.eaccid.musimpa.domain.repository
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import com.eaccid.musimpa.data.local.room.MovieEntity
-import com.eaccid.musimpa.data.paging.MovieSearchRemoteMediator
-import com.eaccid.musimpa.data.paging.SearchType
 import com.eaccid.musimpa.data.remote.dto.DiscoverDto
 import com.eaccid.musimpa.data.remote.dto.MovieCreditsDto
 import com.eaccid.musimpa.data.remote.dto.MovieDto
@@ -131,7 +125,7 @@ class MoviesRepositoryImpl(
                         movieDto.toMovieEntity().copy(page = page)
                     }
                     // TODO cache with filter query
-                    local.cachePopularMovies(movieEntities, clearDataFirst)
+                    local.cachePopularMovies(movieEntities, clearDataFirst)  //temp
                     DataResult.Success(discoverDto)
                 },
                 onError = { error, message ->
@@ -147,59 +141,6 @@ class MoviesRepositoryImpl(
             DataResult.Failure(e)
         }
 
-    }
-
-    //todo move out
-
-    @OptIn(ExperimentalPagingApi::class)
-    override fun getDiscoverMoviesPager(): Pager<Int, MovieEntity> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                prefetchDistance = 5,
-                enablePlaceholders = false
-            ),
-            remoteMediator = MovieSearchRemoteMediator(
-                repository = this,
-                searchType = SearchType.DISCOVER
-            ),
-            pagingSourceFactory = { local.getDiscoverMoviesPagingSource() }
-        )
-    }
-
-    @OptIn(ExperimentalPagingApi::class)
-    override fun getSearchMoviesPager(
-        searchQuery: String,
-        filter: MovieSearchFilter
-    ): Pager<Int, MovieEntity> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                prefetchDistance = 5,
-                enablePlaceholders = false
-            ),
-            remoteMediator = MovieSearchRemoteMediator(
-                repository = this,
-                searchType = SearchType.SEARCH,
-                searchQuery = searchQuery,
-                filter = filter
-            ),
-            pagingSourceFactory = { local.getSearchMoviesPagingSource(searchQuery) }
-        )
-    }
-
-    //for now is only by genre
-    @OptIn(ExperimentalPagingApi::class)
-    override fun getDiscoverMoviesWithFilter(filter: MovieSearchFilter): Pager<Int, MovieEntity> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            remoteMediator = MovieSearchRemoteMediator(
-                repository = this,
-                searchType = SearchType.FILTER,
-                filter = filter
-            ),
-            pagingSourceFactory = { local.getDiscoverMoviesPagingSource() } //todo with filter
-        )
     }
 
 }

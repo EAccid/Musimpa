@@ -1,7 +1,5 @@
 package com.eaccid.musimpa.data.repository
 
-import androidx.paging.Pager
-import com.eaccid.musimpa.data.local.room.MovieEntity
 import com.eaccid.musimpa.data.remote.dto.DiscoverDto
 import com.eaccid.musimpa.data.remote.dto.MovieCreditsDto
 import com.eaccid.musimpa.data.remote.dto.MovieDto
@@ -35,17 +33,6 @@ interface MoviesRepository {
         page: Int,
         clearDataFirst: Boolean
     ): DataResult<DiscoverDto>
-
-
-    //todo move away
-
-    fun getDiscoverMoviesPager(): Pager<Int, MovieEntity>
-    fun getDiscoverMoviesWithFilter(filter: MovieSearchFilter): Pager<Int, MovieEntity>
-    fun getSearchMoviesPager(
-        searchQuery: String,
-        filter: MovieSearchFilter
-    ): Pager<Int, MovieEntity>
-
 
 }
 

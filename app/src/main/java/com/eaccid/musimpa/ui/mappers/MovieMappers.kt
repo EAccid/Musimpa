@@ -1,9 +1,11 @@
 package com.eaccid.musimpa.ui.mappers
 
 import com.eaccid.musimpa.domain.models.Actor
+import com.eaccid.musimpa.domain.models.Genre
 import com.eaccid.musimpa.domain.models.Movie
 import com.eaccid.musimpa.domain.models.MovieDetails
 import com.eaccid.musimpa.ui.models.ActorUi
+import com.eaccid.musimpa.ui.models.GenreUi
 import com.eaccid.musimpa.ui.models.MovieDetailsUi
 import com.eaccid.musimpa.ui.models.MovieUi
 
@@ -28,6 +30,13 @@ fun Actor.toActorUi(): ActorUi {
         originalName = originalName,
         profilePath = profilePath,
         character = character,
+    )
+}
+
+fun Genre.toGenreUi(): GenreUi {
+    return GenreUi(
+        id = id,
+        name = name,
     )
 }
 

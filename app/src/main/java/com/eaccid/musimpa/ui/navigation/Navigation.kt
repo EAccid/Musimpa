@@ -10,8 +10,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.eaccid.musimpa.ui.mainscreen.MainScreen
 import com.eaccid.musimpa.ui.moviedetailsscreen.MovieDetailsScreen
-import com.eaccid.musimpa.ui.movielistscreen.MovieListScreen
-import com.eaccid.musimpa.ui.movielistscreen.SearchAndFilterMovieListScreen
+import com.eaccid.musimpa.ui.movielistscreen.discover.MovieListScreen
+import com.eaccid.musimpa.ui.movielistscreen.search.SearchAndFilterMovieListScreen
 
 @Composable
 fun AppNavigation(lastScreen: String) {
